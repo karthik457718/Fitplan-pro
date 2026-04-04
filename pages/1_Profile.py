@@ -132,19 +132,41 @@ div[data-baseweb="select"] div div{background:transparent!important;color:#fff!i
 """, unsafe_allow_html=True)
 
 # ── NAV ──────────────────────────────────────────────────────────────────────
-nc1, nc2, nc3, nc4 = st.columns([3,2,2,2])
-with nc1:
+_has_plan = bool(st.session_state.get("structured_days"))
+_pn = st.columns([1.8,1,1,1,1,1,1,1,1,1.3])
+with _pn[0]:
     st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
-with nc2:
-    if st.session_state.get("structured_days"):
-        if st.button("🏠 Home", use_container_width=True, key="prof_dash"):
-            st.switch_page("pages/2_Dashboard.py")
-with nc3:
-    if st.session_state.get("structured_days"):
-        if st.button("⚡ Workout", use_container_width=True, key="prof_wp"):
-            st.switch_page("pages/3_Workout_Plan.py")
-with nc4:
-    if st.button("🚪 Sign Out", use_container_width=True, key="prof_so2"):
+with _pn[1]:
+    if st.button("🏠 Home",     key="pn_db", use_container_width=True, disabled=not _has_plan):
+        st.switch_page("pages/2_Dashboard.py")
+with _pn[2]:
+    if st.button("⚡ Workout",  key="pn_wp", use_container_width=True, disabled=not _has_plan):
+        st.switch_page("pages/3_Workout_Plan.py")
+with _pn[3]:
+    if st.button("🥗 Diet",     key="pn_dp", use_container_width=True, disabled=not _has_plan):
+        try: st.switch_page("pages/4_Diet_Plan.py")
+        except Exception: pass
+with _pn[4]:
+    if st.button("🍽️ Meals",   key="pn_mp", use_container_width=True):
+        try: st.switch_page("pages/11_meal_planner.py")
+        except Exception: pass
+with _pn[5]:
+    if st.button("🤖 AI Coach", key="pn_ai", use_container_width=True):
+        try: st.switch_page("pages/5_ai_coach.py")
+        except Exception: pass
+with _pn[6]:
+    if st.button("🏆 Records",  key="pn_rc", use_container_width=True):
+        try: st.switch_page("pages/6_records.py")
+        except Exception: pass
+with _pn[7]:
+    if st.button("📸 Photos",   key="pn_ph", use_container_width=True):
+        try: st.switch_page("pages/7_progress_photos.py")
+        except Exception: pass
+with _pn[8]:
+    if st.button("● 👤 Profile", key="pn_pr", use_container_width=True):
+        st.rerun()
+with _pn[9]:
+    if st.button("🚪 Sign Out", key="pn_so", use_container_width=True):
         logout(uname)
         for k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration","plan_for",
