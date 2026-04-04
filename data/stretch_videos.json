@@ -3,34 +3,34 @@
     {
       "name": "Full Body Warm-Up",
       "duration": "5 min",
-      "url": "https://www.youtube.com/watch?v=UBMk30rjy0o"
+      "url": "https://www.youtube.com/embed/OcPs3x1vX1A"
     },
     {
       "name": "Dynamic Stretching Routine",
       "duration": "4 min",
-      "url": "https://www.youtube.com/watch?v=2L2lnxIcNmo"
+      "url": "https://www.youtube.com/embed/2L2lnxIcNmo"
     },
     {
       "name": "5-Minute Warm-Up",
       "duration": "5 min",
-      "url": "https://www.youtube.com/watch?v=R0mMyV5OtcM"
+      "url": "https://www.youtube.com/embed/R0mMyV5OtcM"
     }
   ],
   "post_workout": [
     {
       "name": "Cool Down Stretch",
       "duration": "5 min",
-      "url": "https://www.youtube.com/watch?v=v7AYKMP6rOE"
+      "url": "https://www.youtube.com/embed/v7AYKMP6rOE"
     },
     {
       "name": "Post Workout Stretch",
       "duration": "10 min",
-      "url": "https://www.youtube.com/watch?v=jeNwE4VXqgs"
+      "url": "https://www.youtube.com/embed/jeNwE4VXqgs"
     },
     {
-      "name": "Static Stretching",
+      "name": "Static Stretching Routine",
       "duration": "6 min",
-      "url": "https://www.youtube.com/watch?v=sTANio_2E0Q"
+      "url": "https://www.youtube.com/embed/sTANio_2E0Q"
     }
   ]
 }
