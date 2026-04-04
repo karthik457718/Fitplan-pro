@@ -420,3 +420,42 @@ def logout(username):
         return True
     except Exception:
         return False
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PASSWORD RESET (OTP-based)
+# ══════════════════════════════════════════════════════════════════════════════
+def reset_password_request(email_or_username: str):
+    """Step 1: look up user, send OTP for password reset."""
+    email_or_username = email_or_username.strip().lower()
+    user = _get_user(email_or_username)
+    if not user:
+        # Don't reveal whether user exists — return generic success-looking message
+        return False, "No account found with that email or username."
+    email = user["email"]
+    if not BREVO_API_KEY or not EMAIL_SENDER:
+        # No email service — allow reset without OTP (dev mode)
+        return True, "__NO_OTP__"
+    otp = generate_otp()
+    ok, msg = send_otp_email(email, otp, purpose="reset")
+    if not ok:
+        return False, msg
+    store_otp(email, otp, purpose="reset")
+    return True, f"Reset code sent to {email}"
+
+
+def reset_password_confirm(email_or_username: str, otp_input: str, new_password: str):
+    """Step 2: verify OTP then update password."""
+    email_or_username = email_or_username.strip().lower()
+    user = _get_user(email_or_username)
+    if not user:
+        return False, "Account not found."
+    email = user["email"]
+    if new_password and len(new_password) < 6:
+        return False, "New password must be at least 6 characters."
+    # Dev mode: skip OTP if no email service configured
+    if BREVO_API_KEY and EMAIL_SENDER:
+        ok, msg = verify_otp(email, otp_input, purpose="reset")
+        if not ok:
+            return False, msg
+    _update_user(user["username"], {"password": hash_password(new_password)})
+    return True, "Password updated! You can now sign in."
