@@ -18,6 +18,8 @@ if "user_data" not in st.session_state:        st.switch_page("pages/1_Profile.p
 
 uname        = st.session_state.get("username", "Athlete")
 data         = st.session_state.user_data
+_dn          = data.get("display_name", "").strip() or data.get("name", "").strip() or uname
+_display     = _dn if "@" not in _dn else uname
 sdays        = st.session_state.get("structured_days", [])
 plan_id      = st.session_state.get("plan_id", "")
 today_str    = date.today().isoformat()
