@@ -785,106 +785,217 @@ setTimeout(function(){
 """, height=0)
 
 # ── MUSIC PLAYER ──────────────────────────────────────────────────────────────
-# Verified Spotify public playlist IDs — each genre uses a different real playlist
 _PLAYLISTS = {
-    "🔥 Beast Mode":     {"id": "37i9dQZF1DWUVpAXiEPK8P", "desc": "Hard-hitting gym tracks"},
-    "💪 Workout Hits":   {"id": "37i9dQZF1DXdxcBWuJkbcy", "desc": "Top workout bangers"},
-    "🎤 Hip-Hop":        {"id": "37i9dQZF1DX0XUsuxWHRQd", "desc": "Hip-hop motivation"},
-    "⚡ EDM":             {"id": "37i9dQZF1DX4dyzvuaRJ0n", "desc": "High energy EDM"},
-    "🎸 Rock":           {"id": "37i9dQZF1DWXRqgorJj26U", "desc": "Rock & metal energy"},
-    "🎵 Bollywood":      {"id": "37i9dQZF1DXbpvFHeiqN55", "desc": "Bollywood pump-up"},
-    "🎬 Hollywood":      {"id": "37i9dQZF1DX1lVhptIYRda", "desc": "Hollywood soundtracks"},
-    "🧘 Chill Recovery": {"id": "37i9dQZF1DX3Ynx9NaHOFK", "desc": "Calm down after workout"},
+    "🔥 Beast Mode":      {"id": "37i9dQZF1DWUVpAXiEPK8P", "desc": "Hard-hitting gym tracks",    "color": "#ff4500", "glow": "rgba(255,69,0,0.55)"},
+    "💪 Workout Hits":    {"id": "37i9dQZF1DXdxcBWuJkbcy", "desc": "Top workout bangers",         "color": "#E50914", "glow": "rgba(229,9,20,0.55)"},
+    "🎤 Hip-Hop":         {"id": "37i9dQZF1DX0XUsuxWHRQd", "desc": "Hip-hop motivation",          "color": "#a855f7", "glow": "rgba(168,85,247,0.50)"},
+    "⚡ EDM":              {"id": "37i9dQZF1DX4dyzvuaRJ0n", "desc": "High energy EDM",             "color": "#06b6d4", "glow": "rgba(6,182,212,0.50)"},
+    "🎸 Rock":            {"id": "37i9dQZF1DWXRqgorJj26U", "desc": "Rock & metal energy",         "color": "#f59e0b", "glow": "rgba(245,158,11,0.50)"},
+    "🎵 Bollywood":       {"id": "37i9dQZF1DXbpvFHeiqN55", "desc": "Bollywood pump-up",           "color": "#ec4899", "glow": "rgba(236,72,153,0.50)"},
+    "🎶 Tollywood":       {"id": "37i9dQZF1DX9sUBMxhFvh1", "desc": "Telugu beats & energy",      "color": "#f97316", "glow": "rgba(249,115,22,0.50)"},
+    "🎬 Hollywood":       {"id": "37i9dQZF1DX1lVhptIYRda", "desc": "Epic movie soundtracks",     "color": "#3b82f6", "glow": "rgba(59,130,246,0.50)"},
+    "🧘 Chill Recovery":  {"id": "37i9dQZF1DX3Ynx9NaHOFK", "desc": "Calm down & recover",       "color": "#22c55e", "glow": "rgba(34,197,94,0.50)"},
 }
 
 st.markdown("""
 <style>
-.music-card{
-  background:linear-gradient(135deg,rgba(18,6,2,0.95),rgba(10,4,8,0.90));
-  border:1.5px solid rgba(229,9,20,0.28);border-radius:18px;
-  padding:18px 22px;margin-bottom:12px;position:relative;overflow:hidden;}
-.music-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,#E50914,rgba(229,9,20,0.30),transparent);}
-.genre-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.10);border-radius:20px;padding:6px 14px;
-  font-size:0.80rem;color:rgba(255,255,255,0.65);cursor:pointer;
-  transition:all 0.18s;white-space:nowrap;font-family:DM Sans,sans-serif;}
-.genre-btn:hover,.genre-btn.active{
-  background:rgba(229,9,20,0.15);border-color:rgba(229,9,20,0.50);color:#fff;}
-@keyframes equalizer{
-  0%,100%{height:6px}25%{height:16px}50%{height:10px}75%{height:20px}}
-.eq-bar{width:3px;background:#E50914;border-radius:2px;display:inline-block;margin:0 1px;
-  animation:equalizer 0.8s ease-in-out infinite;}
+@keyframes eq1{0%,100%{height:5px}20%{height:22px}50%{height:12px}80%{height:18px}}
+@keyframes eq2{0%,100%{height:18px}25%{height:7px}60%{height:24px}85%{height:10px}}
+@keyframes eq3{0%,100%{height:12px}30%{height:26px}55%{height:8px}90%{height:20px}}
+@keyframes eq4{0%,100%{height:20px}15%{height:9px}50%{height:28px}75%{height:6px}}
+@keyframes eq5{0%,100%{height:8px}35%{height:20px}65%{height:14px}85%{height:24px}}
+@keyframes eq6{0%,100%{height:16px}20%{height:5px}55%{height:22px}80%{height:11px}}
+@keyframes eq7{0%,100%{height:10px}30%{height:24px}60%{height:7px}90%{height:19px}}
+@keyframes scanGlow{0%,100%{opacity:0}50%{opacity:1}}
+@keyframes cardFloat{0%,100%{transform:translateY(0px)}50%{transform:translateY(-3px)}}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(229,9,20,0)}50%{box-shadow:0 0 12px 3px rgba(229,9,20,0.4)}}
+
+.music-shell{
+  position:relative;border-radius:24px;overflow:hidden;
+  margin-bottom:16px;
+  background:linear-gradient(135deg,rgba(6,3,12,0.97) 0%,rgba(12,4,6,0.95) 50%,rgba(4,6,14,0.97) 100%);
+  border:1px solid rgba(255,255,255,0.07);
+  box-shadow:0 25px 80px rgba(0,0,0,0.85),0 0 0 1px rgba(255,255,255,0.04),inset 0 1px 0 rgba(255,255,255,0.06);
+  animation:cardFloat 6s ease-in-out infinite;
+}
+.music-shell::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(229,9,20,0.80) 30%,rgba(255,100,50,0.60) 50%,rgba(229,9,20,0.80) 70%,transparent 100%);
+  animation:scanGlow 3s ease-in-out infinite;
+}
+.music-shell::after{
+  content:"";position:absolute;top:-80px;right:-80px;
+  width:260px;height:260px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(229,9,20,0.12) 0%,transparent 70%);
+}
+.music-header{
+  padding:20px 24px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.music-logo-ring{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#E50914 0%,#7c000a 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;flex-shrink:0;
+  box-shadow:0 0 20px rgba(229,9,20,0.60),0 0 0 3px rgba(229,9,20,0.20);
+  animation:badgePulse 2.5s ease-in-out infinite;
+}
+.music-title-block{margin-left:12px;flex:1;}
+.music-title{font-size:0.80rem;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:#fff;}
+.music-sub{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;letter-spacing:0.5px;}
+.eq-viz{display:flex;align-items:flex-end;gap:3px;height:28px;}
+.eq-viz span{
+  display:block;width:4px;border-radius:3px;
+  background:linear-gradient(to top,#E50914,#ff6b35);
+  box-shadow:0 0 6px rgba(229,9,20,0.60);
+}
+.eq-viz span:nth-child(1){animation:eq1 0.7s ease-in-out infinite;}
+.eq-viz span:nth-child(2){animation:eq2 0.9s ease-in-out infinite 0.1s;}
+.eq-viz span:nth-child(3){animation:eq3 0.75s ease-in-out infinite 0.2s;}
+.eq-viz span:nth-child(4){animation:eq4 0.85s ease-in-out infinite 0.05s;}
+.eq-viz span:nth-child(5){animation:eq5 0.65s ease-in-out infinite 0.15s;}
+.eq-viz span:nth-child(6){animation:eq6 0.95s ease-in-out infinite 0.08s;}
+.eq-viz span:nth-child(7){animation:eq7 0.80s ease-in-out infinite 0.12s;}
+
+.genre-grid{
+  display:grid;
+  grid-template-columns:repeat(9,1fr);
+  gap:8px;padding:14px 20px 10px;
+}
+.genre-chip{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;padding:10px 6px;border-radius:14px;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,0.07);
+  background:rgba(255,255,255,0.03);
+  transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  text-align:center;
+}
+.genre-chip:hover{
+  background:rgba(229,9,20,0.12);
+  border-color:rgba(229,9,20,0.40);
+  transform:translateY(-3px) scale(1.05);
+}
+.genre-chip.active{
+  border-color:var(--gc,#E50914) !important;
+  background:rgba(229,9,20,0.15) !important;
+  box-shadow:0 0 18px var(--gc-glow,rgba(229,9,20,0.45)),0 6px 20px rgba(0,0,0,0.50) !important;
+  transform:translateY(-4px) scale(1.08) !important;
+}
+.genre-emoji{font-size:1.3rem;line-height:1;}
+.genre-label{font-size:0.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.50);white-space:nowrap;}
+.genre-chip.active .genre-label{color:#fff;}
+
+.now-playing-bar{
+  margin:0 20px 12px;padding:12px 16px;border-radius:14px;
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+}
+.np-dot{width:8px;height:8px;border-radius:50%;background:#E50914;flex-shrink:0;
+  box-shadow:0 0 8px rgba(229,9,20,0.80);animation:badgePulse 1.5s ease-in-out infinite;}
+.np-label{font-size:0.70rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40);}
+.np-name{font-size:0.88rem;font-weight:700;color:#fff;flex:1;}
+.np-desc{font-size:0.72rem;color:rgba(255,255,255,0.35);}
+
+.spotify-wrap{padding:0 20px 20px;}
+.spotify-wrap iframe{border-radius:16px;display:block;box-shadow:0 12px 48px rgba(0,0,0,0.70);}
+
+/* Hide the invisible button text, keep click area */
+div[data-testid="stHorizontalBlock"] div[data-testid="column"] div[data-testid="stButton"] button{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  opacity:0!important;cursor:pointer!important;z-index:10!important;
+  background:transparent!important;border:none!important;padding:0!important;
+  box-shadow:none!important;
+}
+div[data-testid="stHorizontalBlock"] div[data-testid="column"]{position:relative!important;}
 </style>
 """, unsafe_allow_html=True)
 
 _genre = st.session_state.get("music_genre_sel", "🔥 Beast Mode")
+_sel   = _PLAYLISTS.get(_genre, _PLAYLISTS["🔥 Beast Mode"])
+_pid   = _sel["id"]
+_desc  = _sel["desc"]
+_color = _sel["color"]
+_glow  = _sel["glow"]
 
+# ── Outer shell + header ──────────────────────────────────────────────────────
 st.markdown(
-    "<div class='music-card'>"
-    "<div style='display:flex;align-items:center;justify-content:space-between;margin-bottom:14px'>"
-    "<div style='display:flex;align-items:center;gap:10px'>"
-    "<div style='width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#E50914,#7c000a);"
-    "display:flex;align-items:center;justify-content:center;font-size:1rem'>"
-    "🎵</div>"
-    "<div>"
-    "<div style='font-size:0.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;"
-    "color:#fff'>Workout Music</div>"
-    "<div style='font-size:0.70rem;color:rgba(255,255,255,0.40)'>Spotify · Pick your vibe</div>"
-    "</div></div>"
-    "<div style='display:flex;align-items:flex-end;gap:2px;height:22px'>"
-    "<div class='eq-bar' style='animation-delay:0s;height:8px'></div>"
-    "<div class='eq-bar' style='animation-delay:0.15s;height:14px'></div>"
-    "<div class='eq-bar' style='animation-delay:0.3s;height:6px'></div>"
-    "<div class='eq-bar' style='animation-delay:0.45s;height:18px'></div>"
-    "<div class='eq-bar' style='animation-delay:0.1s;height:10px'></div>"
-    "</div></div>",
+    "<div class='music-shell'>"
+    "<div class='music-header'>"
+    "  <div class='music-logo-ring'>🎵</div>"
+    "  <div class='music-title-block'>"
+    "    <div class='music-title'>Workout Music</div>"
+    "    <div class='music-sub'>Spotify · Choose your vibe · Play directly below</div>"
+    "  </div>"
+    "  <div class='eq-viz'>"
+    "    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>"
+    "  </div>"
+    "</div>",
     unsafe_allow_html=True
 )
 
-# Genre pill buttons
-gcols = st.columns(len(_PLAYLISTS))
-for gi, (gname, gdata) in enumerate(_PLAYLISTS.items()):
+# ── Genre chips (custom HTML rendered via st.columns + buttons) ───────────────
+_genre_list = list(_PLAYLISTS.items())
+_ncols = len(_genre_list)
+gcols = st.columns(_ncols)
+for gi, (gname, gdata) in enumerate(_genre_list):
     with gcols[gi]:
         _is_active = (_genre == gname)
-        _btn_style = (
-            "background:rgba(229,9,20,0.20);border:1.5px solid rgba(229,9,20,0.55);"
-            "color:#fff;font-weight:700;" if _is_active else
-            "background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);"
-            "color:rgba(255,255,255,0.60);"
+        _gc     = gdata["color"]
+        _gc_rgb = _gc.lstrip("#")
+        r_val   = int(_gc_rgb[0:2], 16)
+        g_val   = int(_gc_rgb[2:4], 16)
+        b_val   = int(_gc_rgb[4:6], 16)
+        _glow_css = f"rgba({r_val},{g_val},{b_val},0.50)"
+        _parts  = gname.split(None, 1)
+        _emoji  = _parts[0]
+        _lbl    = _parts[1].upper() if len(_parts) > 1 else gname.upper()
+        _active_cls = "active" if _is_active else ""
+        _active_style = (
+            f"style='--gc:{_gc};--gc-glow:{_glow_css};'"
+            if _is_active else ""
         )
-        if st.button(gname, key=f"genre_btn_{gi}", use_container_width=True):
+        st.markdown(
+            f"<div class='genre-chip {_active_cls}' {_active_style}>"
+            f"<div class='genre-emoji'>{_emoji}</div>"
+            f"<div class='genre-label'>{_lbl}</div>"
+            f"</div>",
+            unsafe_allow_html=True
+        )
+        if st.button("​", key=f"genre_btn_{gi}", use_container_width=True,
+                     help=gname + " — " + gdata["desc"]):
             st.session_state["music_genre_sel"] = gname
             st.rerun()
 
-st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
-
-# Get selected playlist
-_sel = _PLAYLISTS.get(_genre, _PLAYLISTS["🔥 Beast Mode"])
-_pid = _sel["id"]
-_desc = _sel["desc"]
-
-# Show selected genre info
+# ── Now playing bar ───────────────────────────────────────────────────────────
+_parts2 = _genre.split(None, 1)
+_g_emoji = _parts2[0]
+_g_name  = _parts2[1] if len(_parts2) > 1 else _genre
 st.markdown(
-    f"<div style='display:flex;align-items:center;gap:8px;margin-bottom:10px'>"
-    f"<span style='font-size:1.1rem'>{_genre.split()[0]}</span>"
-    f"<span style='font-size:0.85rem;font-weight:600;color:#fff'>{_genre.split(None,1)[1] if len(_genre.split())>1 else _genre}</span>"
-    f"<span style='font-size:0.75rem;color:rgba(255,255,255,0.40)'>· {_desc}</span>"
+    f"<div class='now-playing-bar' style='border-color:{_color}22'>"
+    f"<div class='np-dot' style='background:{_color};box-shadow:0 0 10px {_glow}'></div>"
+    f"<div>"
+    f"<div class='np-label'>Now Playing</div>"
+    f"<div class='np-name'>{_g_emoji} {_g_name}</div>"
+    f"</div>"
+    f"<div class='np-desc'>{_desc}</div>"
     f"</div>",
     unsafe_allow_html=True
 )
 
-# Full-height Spotify embed — plays directly in page
+# ── Spotify embed ─────────────────────────────────────────────────────────────
 st.markdown(
+    f"<div class='spotify-wrap'>"
     f"<iframe src='https://open.spotify.com/embed/playlist/{_pid}?"
     f"utm_source=generator&theme=0' "
-    f"width='100%' height='352' frameBorder='0' allowfullscreen='' "
+    f"width='100%' height='380' frameBorder='0' allowfullscreen='' "
     f"allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' "
-    f"loading='lazy' style='border-radius:14px'></iframe>",
+    f"loading='lazy'></iframe>"
+    f"</div>"
+    f"</div>",
     unsafe_allow_html=True
 )
 
-st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
 # ── DAY TABS ──────────────────────────────────────────────────────────────────
