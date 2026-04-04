@@ -98,14 +98,14 @@ def _repair_json(text):
 # ══════════════════════════════════════════════════════════════════════════════
 
 _PRE_VIDEOS = [
-    "https://www.youtube.com/embed/HDiHMHBpHBQ",
-    "https://www.youtube.com/embed/nHHiMrYHmmE",
-    "https://www.youtube.com/embed/R0mMyV5OtcM",
+    "https://www.youtube.com/embed/2pLT-olgUJs",   # Dynamic Warm Up - 5 min
+    "https://www.youtube.com/embed/UBMk30rjy0o",   # Full Body Warm Up
+    "https://www.youtube.com/embed/1f8yoFFdkcY",   # Pre Workout Activation
 ]
 _POST_VIDEOS = [
-    "https://www.youtube.com/embed/R56k41NLIoI",
-    "https://www.youtube.com/embed/R56k41NLIoI",
-    "https://www.youtube.com/embed/R56k41NLIoI",
+    "https://www.youtube.com/embed/v7AYKMP6rOE",   # Cool Down Stretch
+    "https://www.youtube.com/embed/jeNwE4VXqgs",   # Post Workout Stretch
+    "https://www.youtube.com/embed/sTANio_2E0Q",   # Static Stretching
 ]
 
 def _default_dietary(dtype):
@@ -338,7 +338,7 @@ Days: {", ".join(day_specs)}
 REST days: is_rest_day=true, empty workout array but include dietary plan.{injury_oneliner}{allergy_oneliner}{cuisine_oneliner}
 
 Return a JSON array of exactly {total_days} objects. Each object:
-{{"day":N,"is_rest_day":false,"muscle_group":"...","workout":[{{"name":"ExerciseName","sets":3,"reps":"12","rest":"60s","timer":60,"notes":"form tip"}},...5 exercises],"dietary":{{"breakfast":"food+qty","lunch":"food+qty","dinner":"food+qty","snacks":"food"}},"pre_stretch":[{{"name":"stretch","duration":"30s","video_url":"https://www.youtube.com/embed/R0mMyV5OtcM"}}],"post_stretch":[{{"name":"stretch","duration":"40s","video_url":"https://www.youtube.com/embed/R56k41NLIoI"}}]}}
+{{"day":N,"is_rest_day":false,"muscle_group":"...","workout":[{{"name":"ExerciseName","sets":3,"reps":"12","rest":"60s","timer":60,"notes":"form tip"}},...5 exercises],"dietary":{{"breakfast":"food+qty","lunch":"food+qty","dinner":"food+qty","snacks":"food"}},"pre_stretch":[{{"name":"stretch","duration":"30s","video_url":"https://www.youtube.com/embed/2pLT-olgUJs"}}],"post_stretch":[{{"name":"stretch","duration":"40s","video_url":"https://www.youtube.com/embed/v7AYKMP6rOE"}}]}}
 
 Rules:
 - Use ONLY equipment: {eq_str}
