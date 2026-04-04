@@ -69,7 +69,7 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 </style>""", unsafe_allow_html=True)
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
-_n = st.columns([1.5,1,1,1,1,1,1,1.2])
+_n = st.columns([1.5,1,1,1,1,1,1,1,1.2])
 with _n[0]: st.markdown("<div class='nav-logo'>&#9889; FITPLAN PRO</div>", unsafe_allow_html=True)
 with _n[1]:
     if st.button("🏠 Home",     key="hi_db", use_container_width=True): st.switch_page("pages/2_Dashboard.py")
@@ -78,12 +78,16 @@ with _n[2]:
 with _n[3]:
     if st.button("🥗 Diet",     key="hi_dp", use_container_width=True): st.switch_page("pages/4_Diet_Plan.py")
 with _n[4]:
-    if st.button("🤖 AI Coach", key="hi_ai", use_container_width=True): st.switch_page("pages/5_ai_coach.py")
+    if st.button("🍽️ Meals",   key="hi_mp", use_container_width=True):
+        try: st.switch_page("pages/11_meal_planner.py")
+        except Exception: pass
 with _n[5]:
-    if st.button("🏆 Records",  key="hi_rc", use_container_width=True): st.switch_page("pages/6_records.py")
+    if st.button("🤖 AI Coach", key="hi_ai", use_container_width=True): st.switch_page("pages/5_ai_coach.py")
 with _n[6]:
-    if st.button("● 📅 History",key="hi_hi", use_container_width=True): st.switch_page("pages/9_history.py")
+    if st.button("🏆 Records",  key="hi_rc", use_container_width=True): st.switch_page("pages/6_records.py")
 with _n[7]:
+    if st.button("● 📅 History",key="hi_hi", use_container_width=True): st.switch_page("pages/9_history.py")
+with _n[8]:
     if st.button("🚪 Sign Out", key="hi_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
