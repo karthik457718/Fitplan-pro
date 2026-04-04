@@ -248,6 +248,9 @@ if st.session_state.get("_auto_redirect"):
 ud        = st.session_state.get("user_data", {})
 edit_mode = st.session_state.get("edit_profile_mode", False)
 has_plan  = bool(st.session_state.get("structured_days"))
+# Use display_name if set, otherwise fall back to username
+_display  = ud.get("display_name", "").strip() or ud.get("name", "").strip() or uname
+_display  = _display if "@" not in _display else uname  # don't show email as name
 
 INJURY_OPTIONS = [
     "knee", "shoulder", "back", "wrist", "ankle", "elbow",
@@ -268,13 +271,26 @@ if not ud or edit_mode:
         f"color:rgba(229,9,20,0.80);margin-bottom:6px'>Welcome Back</div>"
         f"<div style='font-family:Bebas Neue,sans-serif;font-size:2.6rem;letter-spacing:3px;"
         f"color:#fff;line-height:1;text-shadow:0 0 30px rgba(229,9,20,0.30)'>"
-        f"WELCOME, <span style='color:#E50914'>{uname.upper()}!</span></div>"
+        f"WELCOME, <span style='color:#E50914'>{_display.upper()}!</span></div>"
         f"<div style='font-size:1.00rem;color:rgba(255,255,255,0.90);margin-top:8px'>"
         f"Fill in your body details to generate your personalised AI fitness plan.</div></div>",
         unsafe_allow_html=True
     )
 
     with st.form("profile_form"):
+        # ── Display Name ──────────────────────────────────────────────────────
+        st.markdown("""<div style='font-size:0.75rem;font-weight:700;letter-spacing:2px;
+          text-transform:uppercase;color:rgba(229,9,20,0.70);margin-bottom:6px;'>
+          👤 Your Display Name</div>""", unsafe_allow_html=True)
+        display_name = st.text_input(
+            "Display Name",
+            value=ud.get("display_name", "") or "",
+            placeholder="Enter your name e.g. Karthik, Mounika...",
+            label_visibility="collapsed",
+            key="display_name_input"
+        )
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
         c1, c2 = st.columns(2)
         with c1:
             age    = st.number_input("Age", min_value=10, max_value=100, value=int(ud.get("age", 25)))
@@ -383,8 +399,10 @@ if not ud or edit_mode:
     if submitted:
         total_days = dpw * 4 * months
         equipment  = [] if no_eq else list(set(home_eq + gym_eq))
+        _dname = display_name.strip() if display_name.strip() else uname
         profile = {
-            "name":         uname,
+            "name":         _dname,
+            "display_name": _dname,
             "age":          age,
             "gender":       gender,
             "height":       height,
@@ -438,7 +456,7 @@ else:
         f"color:rgba(229,9,20,0.80);margin-bottom:6px'>Your Profile</div>"
         f"<div style='font-family:Bebas Neue,sans-serif;font-size:2.6rem;letter-spacing:3px;"
         f"color:#fff;line-height:1;text-shadow:0 0 30px rgba(229,9,20,0.30)'>"
-        f"WELCOME, <span style='color:#E50914'>{uname.upper()}!</span></div>"
+        f"WELCOME, <span style='color:#E50914'>{_display.upper()}!</span></div>"
         f"<div style='font-size:1.00rem;color:rgba(255,255,255,0.90);margin-top:8px'>"
         f"Here's your body stats and active plan summary.</div></div>",
         unsafe_allow_html=True
