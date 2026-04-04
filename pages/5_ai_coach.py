@@ -20,14 +20,18 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
-/* ── SOLID DARK BACKGROUND — no photo bleed ── */
-[data-testid="stAppViewContainer"]::before{display:none!important;}
+/* ── GYM BACKGROUND ── */
+[data-testid="stAppViewContainer"]::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=85&auto=format&fit=crop&crop=center')
+    center/cover no-repeat;
+  filter:blur(2px) brightness(0.22) saturate(1.20);transform:scale(1.04);}
 [data-testid="stAppViewContainer"]{
   background:
-    radial-gradient(ellipse at 15% 20%,rgba(99,60,220,0.12) 0%,transparent 55%),
-    radial-gradient(ellipse at 85% 80%,rgba(59,130,246,0.08) 0%,transparent 50%),
-    radial-gradient(ellipse at 50% 50%,rgba(20,10,40,0.60) 0%,transparent 80%),
-    linear-gradient(160deg,#06040f 0%,#08051a 40%,#050310 100%)!important;
+    radial-gradient(ellipse at 15% 20%,rgba(99,60,220,0.16) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(59,130,246,0.10) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(10,5,25,0.55) 0%,transparent 80%),
+    linear-gradient(160deg,rgba(4,2,12,0.90) 0%,rgba(6,3,16,0.85) 40%,rgba(3,2,10,0.92) 100%)!important;
   position:relative;}
 [data-testid="stAppViewContainer"]>section>div.block-container{
   position:relative;z-index:2;max-width:940px!important;
@@ -36,7 +40,7 @@ st.markdown("""
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stDecoration"],
 [data-testid="stSidebarNav"],[data-testid="collapsedControl"],
 section[data-testid="stSidebar"],button[kind="header"]{display:none!important;}
-html,body,.stApp{background:#06040f!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
+html,body,.stApp{background:#04020c!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
 
 /* ── NAV BUTTONS ── */
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button{
@@ -90,17 +94,18 @@ input:-webkit-autofill,input:-webkit-autofill:focus{
 
 /* ── QUICK ASK BUTTONS ── */
 .quick-btn .stButton>button{
-  background:rgba(12,8,28,0.96)!important;
+  background:rgba(8,5,20,0.75)!important;
   border:1px solid rgba(99,60,220,0.35)!important;
-  color:rgba(255,255,255,0.82)!important;font-size:0.82rem!important;font-weight:500!important;
+  color:rgba(255,255,255,0.85)!important;font-size:0.82rem!important;font-weight:500!important;
   text-transform:none!important;border-radius:22px!important;padding:8px 16px!important;
   height:auto!important;min-height:auto!important;font-style:normal!important;
   box-shadow:0 2px 12px rgba(0,0,0,0.50)!important;
+  backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;
   letter-spacing:0!important;animation:none!important;transition:all 0.18s ease!important;}
 .quick-btn .stButton>button:hover{
-  background:rgba(99,60,220,0.20)!important;border-color:rgba(99,60,220,0.70)!important;
+  background:rgba(99,60,220,0.25)!important;border-color:rgba(99,60,220,0.70)!important;
   color:#fff!important;transform:translateY(-2px)!important;
-  box-shadow:0 4px 16px rgba(99,60,220,0.25)!important;}
+  box-shadow:0 4px 16px rgba(99,60,220,0.30)!important;}
 
 html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:none!important;}
 [data-testid="stWidgetLabel"],[data-testid="stWidgetLabel"] p{color:#fff!important;font-weight:600!important;}
@@ -176,10 +181,11 @@ system_prompt = (
 # ── HERO ──────────────────────────────────────────────────────────────────────
 st.markdown(
     "<div style='position:relative;overflow:hidden;border-radius:22px;margin-bottom:16px;"
-    "background:linear-gradient(135deg,rgba(10,6,28,0.99) 0%,rgba(8,5,22,0.98) 60%,rgba(10,6,28,0.99) 100%);"
+    "background:linear-gradient(135deg,rgba(10,6,28,0.88) 0%,rgba(8,5,22,0.85) 60%,rgba(10,6,28,0.88) 100%);"
     "border:1.5px solid rgba(99,60,220,0.45);animation:borderPulse 4s ease-in-out infinite;"
     "padding:20px 26px;box-shadow:0 8px 40px rgba(0,0,0,0.90),0 0 0 1px rgba(99,60,220,0.12),"
-    "inset 0 1px 0 rgba(255,255,255,0.06);'>"
+    "inset 0 1px 0 rgba(255,255,255,0.06);"
+    "backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);'>"
     # Scan line
     "<div style='position:absolute;left:0;right:0;height:1px;"
     "background:linear-gradient(90deg,transparent,rgba(99,60,220,0.50),transparent);"
