@@ -721,7 +721,7 @@ for tab, day_data in zip(tabs, sdays):
                                 f"<div style='font-size:1.05rem;font-weight:600'>{s.get('name','Stretch')}</div>"
                                 f"<div style='font-size:0.85rem;color:rgba(255,255,255,0.90)'>⏱ {s.get('duration','30s')}</div></div></div>",
                                 unsafe_allow_html=True)
-                vurl = pre[0].get("video_url", "https://www.youtube.com/embed/R0mMyV5OtcM") if pre else "https://www.youtube.com/embed/R0mMyV5OtcM"
+                vurl = pre[0].get("video_url", "https://www.youtube.com/embed/2pLT-olgUJs") if pre else "https://www.youtube.com/embed/2pLT-olgUJs"
                 st.markdown(f"<div style='position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;margin-top:8px'>"
                             f"<iframe src='{vurl}' style='position:absolute;top:0;left:0;width:100%;height:100%;border:none' allowfullscreen></iframe></div>",
                             unsafe_allow_html=True)
@@ -873,7 +873,7 @@ for tab, day_data in zip(tabs, sdays):
                                 f"<div style='font-size:1.05rem;font-weight:600'>{s.get('name','Stretch')}</div>"
                                 f"<div style='font-size:0.85rem;color:rgba(255,255,255,0.90)'>⏱ {s.get('duration','40s')}</div></div></div>",
                                 unsafe_allow_html=True)
-                vurl2 = post[0].get("video_url", "https://www.youtube.com/embed/R56k41NLIoI") if post else "https://www.youtube.com/embed/R56k41NLIoI"
+                vurl2 = post[0].get("video_url", "https://www.youtube.com/embed/v7AYKMP6rOE") if post else "https://www.youtube.com/embed/v7AYKMP6rOE"
                 st.markdown(f"<div style='position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;margin-top:8px'>"
                             f"<iframe src='{vurl2}' style='position:absolute;top:0;left:0;width:100%;height:100%;border:none' allowfullscreen></iframe></div>",
                             unsafe_allow_html=True)
