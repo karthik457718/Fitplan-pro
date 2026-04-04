@@ -663,6 +663,149 @@ with st.expander("🎉 Share Your Progress", expanded=False):
 </div>""", unsafe_allow_html=True)
     st.caption("Screenshot this and share on WhatsApp or Instagram! 📱")
 
+# ── WATER INTAKE TRACKER ──────────────────────────────────────────────────────
+_water_date  = date.today().isoformat()
+_water_goal  = 8   # glasses per day
+_water_key   = f"water_glasses_{_water_date}"
+
+# Load from DB once per day
+if _water_key not in st.session_state:
+    try:
+        from utils.db import get_water
+        st.session_state[_water_key] = int(get_water(uname, _water_date) or 0)
+    except Exception:
+        st.session_state[_water_key] = 0
+
+_glasses = st.session_state.get(_water_key, 0)
+_pct     = min(100, int(_glasses / _water_goal * 100))
+
+# SVG ring constants
+_R       = 54
+_CIRC    = round(3.14159 * 2 * _R, 1)
+_DASH    = round(_CIRC * _pct / 100, 1)
+_GAP     = round(_CIRC - _DASH, 1)
+
+# Color: blue → green as you fill up
+_ring_color = (
+    "#22c55e" if _glasses >= _water_goal else
+    "#06b6d4" if _glasses >= 5 else
+    "#3b82f6"
+)
+
+_water_msg = (
+    "🎉 Goal reached! Great job staying hydrated!" if _glasses >= _water_goal else
+    f"💧 {_water_goal - _glasses} more glass{'es' if _water_goal - _glasses > 1 else ''} to go!" if _glasses > 0 else
+    "💧 Start hydrating — drink your first glass!"
+)
+
+st.markdown(f"""
+<style>
+@keyframes wring{{from{{stroke-dashoffset:{_CIRC}}}to{{stroke-dashoffset:{_CIRC - _DASH}}}}}
+@keyframes wdrop{{0%{{transform:translateY(-8px);opacity:0}}60%{{transform:translateY(2px);opacity:1}}100%{{transform:translateY(0);opacity:1}}}}
+.water-card{{
+  background:linear-gradient(135deg,rgba(3,12,22,0.96),rgba(2,8,18,0.94));
+  border:1.5px solid rgba(6,182,212,0.22);border-radius:20px;
+  padding:20px 24px;margin-bottom:14px;position:relative;overflow:hidden;
+}}
+.water-card::before{{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(6,182,212,0.70),rgba(34,197,94,0.50),rgba(6,182,212,0.70),transparent);}}
+.water-inner{{display:flex;align-items:center;gap:24px;}}
+.water-ring-wrap{{position:relative;width:130px;height:130px;flex-shrink:0;}}
+.water-ring-wrap svg{{transform:rotate(-90deg);}}
+.ring-track{{fill:none;stroke:rgba(6,182,212,0.12);stroke-width:9;}}
+.ring-fill{{fill:none;stroke-width:9;stroke-linecap:round;
+  stroke-dasharray:{_DASH} {_GAP};
+  stroke-dashoffset:0;
+  animation:wring 1.0s cubic-bezier(0.34,1.56,0.64,1) both;}}
+.ring-center{{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;}}
+.ring-num{{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:#fff;line-height:1;}}
+.ring-sub{{font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);margin-top:1px;}}
+.water-info{{flex:1;}}
+.water-title{{font-size:0.78rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:{_ring_color};margin-bottom:4px;}}
+.water-msg{{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-bottom:14px;line-height:1.4;}}
+.water-glasses{{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}}
+.wg{{width:30px;height:38px;border-radius:4px 4px 6px 6px;cursor:default;
+  display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+  border:1.5px solid rgba(6,182,212,0.18);background:rgba(6,182,212,0.05);
+  transition:all 0.18s;}}
+.wg.done{{background:rgba(6,182,212,0.22);border-color:{_ring_color};
+  animation:wdrop 0.35s ease;}}
+.wg.goal-done{{background:rgba(34,197,94,0.20);border-color:#22c55e;}}
+.water-btns{{display:flex;gap:8px;}}
+</style>
+<div class='water-card'>
+  <div class='water-inner'>
+    <div class='water-ring-wrap'>
+      <svg width='130' height='130' viewBox='0 0 130 130'>
+        <circle class='ring-track' cx='65' cy='65' r='{_R}'/>
+        <circle class='ring-fill' cx='65' cy='65' r='{_R}' stroke='{_ring_color}'/>
+      </svg>
+      <div class='ring-center'>
+        <div class='ring-num'>{_glasses}</div>
+        <div class='ring-sub'>of {_water_goal}</div>
+      </div>
+    </div>
+    <div class='water-info'>
+      <div class='water-title'>💧 Water Intake</div>
+      <div class='water-msg'>{_water_msg}</div>
+      <div class='water-glasses'>
+        {''.join([
+            f"<div class='wg {'goal-done' if i < _glasses and _glasses >= _water_goal else 'done' if i < _glasses else ''}'>"
+            f"{'💧' if i < _glasses else '○'}</div>"
+            for i in range(_water_goal)
+        ])}
+      </div>
+    </div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Buttons row — add / remove / reset
+_wb1, _wb2, _wb3, _wb4 = st.columns([2, 2, 2, 4])
+with _wb1:
+    if st.button("＋ Add Glass", key="water_add", use_container_width=True,
+                 disabled=(_glasses >= 12)):
+        st.session_state[_water_key] = min(12, _glasses + 1)
+        try:
+            from utils.db import save_water
+            save_water(uname, _water_date, st.session_state[_water_key])
+        except Exception:
+            pass
+        st.rerun()
+with _wb2:
+    if st.button("－ Remove", key="water_remove", use_container_width=True,
+                 disabled=(_glasses <= 0)):
+        st.session_state[_water_key] = max(0, _glasses - 1)
+        try:
+            from utils.db import save_water
+            save_water(uname, _water_date, st.session_state[_water_key])
+        except Exception:
+            pass
+        st.rerun()
+with _wb3:
+    if st.button("↺ Reset", key="water_reset", use_container_width=True,
+                 disabled=(_glasses == 0)):
+        st.session_state[_water_key] = 0
+        try:
+            from utils.db import save_water
+            save_water(uname, _water_date, 0)
+        except Exception:
+            pass
+        st.rerun()
+with _wb4:
+    _pct_txt = f"{_pct}% of daily goal"
+    st.markdown(
+        f"<div style='display:flex;align-items:center;height:38px;"
+        f"font-size:0.80rem;color:rgba(255,255,255,0.35);padding-left:8px'>"
+        f"🗓️ Today · {_pct_txt}</div>",
+        unsafe_allow_html=True
+    )
+
+st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
+
 # ── PRE-LOAD WORKOUT NOTES ────────────────────────────────────────────────────
 if not st.session_state.get("_notes_loaded") and plan_id:
     try:
