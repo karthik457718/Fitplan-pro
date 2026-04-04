@@ -20,14 +20,14 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
-[data-testid="stAppViewContainer"]::before{
-  content:'';position:fixed;inset:0;z-index:0;
-  background:url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?fm=jpg&w=1920&q=80&fit=crop') center/cover no-repeat;
-  filter:blur(12px) brightness(0.15) saturate(0.35);transform:scale(1.10);}
+/* ── SOLID DARK BACKGROUND — no photo bleed ── */
+[data-testid="stAppViewContainer"]::before{display:none!important;}
 [data-testid="stAppViewContainer"]{
-  background:radial-gradient(ellipse at 20% 50%,rgba(229,9,20,0.08) 0%,transparent 60%),
-             radial-gradient(ellipse at 80% 20%,rgba(99,60,220,0.06) 0%,transparent 50%),
-             linear-gradient(160deg,rgba(2,2,8,0.97) 0%,rgba(5,3,12,0.95) 100%)!important;
+  background:
+    radial-gradient(ellipse at 15% 20%,rgba(99,60,220,0.12) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(59,130,246,0.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(20,10,40,0.60) 0%,transparent 80%),
+    linear-gradient(160deg,#06040f 0%,#08051a 40%,#050310 100%)!important;
   position:relative;}
 [data-testid="stAppViewContainer"]>section>div.block-container{
   position:relative;z-index:2;max-width:940px!important;
@@ -36,85 +36,88 @@ st.markdown("""
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stDecoration"],
 [data-testid="stSidebarNav"],[data-testid="collapsedControl"],
 section[data-testid="stSidebar"],button[kind="header"]{display:none!important;}
-html,body,.stApp{background:#020208!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
+html,body,.stApp{background:#06040f!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
 
+/* ── NAV BUTTONS ── */
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button{
-  background:rgba(8,6,18,0.80)!important;border:1px solid rgba(229,9,20,0.28)!important;
-  color:rgba(255,255,255,0.70)!important;border-radius:8px!important;
+  background:rgba(10,8,24,0.95)!important;border:1px solid rgba(99,60,220,0.30)!important;
+  color:rgba(255,255,255,0.75)!important;border-radius:8px!important;
   font-size:0.80rem!important;font-weight:600!important;height:30px!important;
-  min-height:30px!important;white-space:nowrap!important;transition:all 0.16s!important;}
+  min-height:30px!important;white-space:nowrap!important;transition:all 0.16s!important;
+  box-shadow:none!important;}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button:hover{
-  background:rgba(229,9,20,0.18)!important;border-color:rgba(229,9,20,0.60)!important;color:#fff!important;}
+  background:rgba(99,60,220,0.18)!important;border-color:rgba(99,60,220,0.70)!important;
+  color:#fff!important;transform:none!important;}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]:last-child>button{
-  background:rgba(229,9,20,0.22)!important;border-color:rgba(229,9,20,0.50)!important;}
+  background:rgba(229,9,20,0.18)!important;border-color:rgba(229,9,20,0.45)!important;}
 
+/* ── SEND BUTTON ── */
 .stButton>button{
-  background:linear-gradient(135deg,#E50914 0%,#b0000a 100%)!important;
+  background:linear-gradient(135deg,#6b3bdc 0%,#3b82f6 100%)!important;
   border:none!important;color:#fff!important;border-radius:12px!important;
   font-family:'DM Sans',sans-serif!important;font-size:1rem!important;font-weight:700!important;
-  box-shadow:0 4px 20px rgba(229,9,20,0.48),0 0 0 1px rgba(229,9,20,0.18)!important;
+  box-shadow:0 4px 20px rgba(99,60,220,0.45),0 0 0 1px rgba(99,60,220,0.20)!important;
   transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1)!important;}
 .stButton>button:hover{
-  transform:translateY(-3px) scale(1.03)!important;
-  box-shadow:0 10px 32px rgba(229,9,20,0.70),0 0 50px rgba(229,9,20,0.22)!important;}
+  transform:translateY(-2px) scale(1.02)!important;
+  box-shadow:0 8px 28px rgba(99,60,220,0.65)!important;}
 
+/* ── FORM ── */
 [data-testid="stForm"]{background:transparent!important;border:none!important;}
 [data-testid="stFormSubmitButton"] button,.stFormSubmitButton>button{
-  background:linear-gradient(135deg,#E50914,#8b0000)!important;border:none!important;
+  background:linear-gradient(135deg,#6b3bdc,#3b82f6)!important;border:none!important;
   color:#fff!important;border-radius:14px!important;font-weight:800!important;
   font-size:1rem!important;letter-spacing:1px!important;height:56px!important;
-  box-shadow:0 6px 24px rgba(229,9,20,0.55),0 0 50px rgba(229,9,20,0.12)!important;}
+  box-shadow:0 6px 24px rgba(99,60,220,0.55)!important;}
 
+/* ── INPUT ── */
 input,textarea,.stTextInput>div>div>input,
 [data-baseweb="input"] input,[data-testid="stTextInput"] input{
-  background:#0a0814!important;background-color:#0a0814!important;
-  border:1.5px solid rgba(229,9,20,0.28)!important;color:#fff!important;
+  background:#0d0a1e!important;background-color:#0d0a1e!important;
+  border:1.5px solid rgba(99,60,220,0.35)!important;color:#fff!important;
   border-radius:14px!important;font-family:'DM Sans',sans-serif!important;font-size:1rem!important;
-  box-shadow:inset 0 0 0 9999px #0a0814!important;
-  -webkit-box-shadow:inset 0 0 0 9999px #0a0814!important;
-  caret-color:#E50914!important;transition:border-color 0.25s!important;}
+  box-shadow:inset 0 0 0 9999px #0d0a1e!important;
+  -webkit-box-shadow:inset 0 0 0 9999px #0d0a1e!important;
+  caret-color:#6b3bdc!important;transition:border-color 0.25s!important;}
 input:focus,[data-baseweb="input"] input:focus{
-  border-color:rgba(229,9,20,0.72)!important;
-  box-shadow:inset 0 0 0 9999px #0a0814,0 0 0 3px rgba(229,9,20,0.14)!important;
-  -webkit-box-shadow:inset 0 0 0 9999px #0a0814!important;outline:none!important;}
-[data-baseweb="input"]{background:#0a0814!important;background-color:#0a0814!important;
-  border:1.5px solid rgba(229,9,20,0.28)!important;border-radius:14px!important;}
+  border-color:rgba(99,60,220,0.80)!important;
+  box-shadow:inset 0 0 0 9999px #0d0a1e,0 0 0 3px rgba(99,60,220,0.18)!important;
+  -webkit-box-shadow:inset 0 0 0 9999px #0d0a1e!important;outline:none!important;}
+[data-baseweb="input"]{background:#0d0a1e!important;background-color:#0d0a1e!important;
+  border:1.5px solid rgba(99,60,220,0.35)!important;border-radius:14px!important;}
 input:-webkit-autofill,input:-webkit-autofill:focus{
-  -webkit-box-shadow:0 0 0 9999px #0a0814 inset!important;-webkit-text-fill-color:#fff!important;}
+  -webkit-box-shadow:0 0 0 9999px #0d0a1e inset!important;-webkit-text-fill-color:#fff!important;}
 
+/* ── QUICK ASK BUTTONS ── */
 .quick-btn .stButton>button{
-  background:rgba(20,6,6,0.92)!important;border:1.5px solid rgba(229,9,20,0.35)!important;
-  color:rgba(255,255,255,0.88)!important;font-size:0.82rem!important;font-weight:600!important;
+  background:rgba(12,8,28,0.96)!important;
+  border:1px solid rgba(99,60,220,0.35)!important;
+  color:rgba(255,255,255,0.82)!important;font-size:0.82rem!important;font-weight:500!important;
   text-transform:none!important;border-radius:22px!important;padding:8px 16px!important;
-  height:auto!important;min-height:auto!important;
-  box-shadow:0 4px 16px rgba(0,0,0,0.60),inset 0 1px 0 rgba(255,255,255,0.06)!important;
-  letter-spacing:0!important;font-style:italic!important;animation:none!important;
-  transition:all 0.18s ease!important;}
+  height:auto!important;min-height:auto!important;font-style:normal!important;
+  box-shadow:0 2px 12px rgba(0,0,0,0.50)!important;
+  letter-spacing:0!important;animation:none!important;transition:all 0.18s ease!important;}
 .quick-btn .stButton>button:hover{
-  background:rgba(229,9,20,0.22)!important;border-color:rgba(229,9,20,0.70)!important;
+  background:rgba(99,60,220,0.20)!important;border-color:rgba(99,60,220,0.70)!important;
   color:#fff!important;transform:translateY(-2px)!important;
-  box-shadow:0 6px 20px rgba(229,9,20,0.30)!important;}
+  box-shadow:0 4px 16px rgba(99,60,220,0.25)!important;}
 
-html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 1px 4px rgba(0,0,0,0.95)!important;}
+html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:none!important;}
 [data-testid="stWidgetLabel"],[data-testid="stWidgetLabel"] p{color:#fff!important;font-weight:600!important;}
-.stMarkdown p,.stMarkdown li{color:#fff!important;line-height:1.75!important;}
+.stMarkdown p,.stMarkdown li{color:rgba(255,255,255,0.85)!important;line-height:1.75!important;}
 
+/* ── ANIMATIONS ── */
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeSlideRight{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
 @keyframes fadeSlideLeft{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
 @keyframes pulseRing{0%{transform:scale(1);opacity:0.70}100%{transform:scale(1.80);opacity:0}}
 @keyframes onlineBlink{0%,100%{opacity:1;box-shadow:0 0 8px #22c55e}50%{opacity:0.35;box-shadow:0 0 3px #22c55e}}
-@keyframes typing{0%,100%{transform:translateY(0);opacity:0.90}50%{transform:translateY(-5px);opacity:0.40}}
-@keyframes borderPulse{0%,100%{box-shadow:0 0 0 1px rgba(229,9,20,0.18),0 8px 32px rgba(0,0,0,0.60)}
-  50%{box-shadow:0 0 0 1px rgba(229,9,20,0.42),0 8px 40px rgba(229,9,20,0.10)}}
+@keyframes borderPulse{0%,100%{box-shadow:0 0 0 1px rgba(99,60,220,0.20),0 8px 32px rgba(0,0,0,0.70)}
+  50%{box-shadow:0 0 0 1px rgba(99,60,220,0.55),0 8px 40px rgba(99,60,220,0.12)}}
 @keyframes scanLine{0%{top:-2px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:102%;opacity:0}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
 </style>
 """, unsafe_allow_html=True)
-
-apply_bg(
-    "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?fm=jpg&w=1920&q=80&fit=crop",
-    overlay="rgba(2,2,10,0.92)"
-)
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
 st.markdown("<div style='padding:6px 0;margin-bottom:12px'>", unsafe_allow_html=True)
@@ -173,35 +176,36 @@ system_prompt = (
 # ── HERO ──────────────────────────────────────────────────────────────────────
 st.markdown(
     "<div style='position:relative;overflow:hidden;border-radius:22px;margin-bottom:16px;"
-    "background:linear-gradient(135deg,rgba(10,3,3,0.98) 0%,rgba(5,2,14,0.96) 60%,rgba(10,3,3,0.98) 100%);"
-    "border:1.5px solid rgba(229,9,20,0.40);animation:borderPulse 4s ease-in-out infinite;"
-    "padding:20px 26px;box-shadow:0 8px 40px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,255,255,0.06);'>"
+    "background:linear-gradient(135deg,rgba(10,6,28,0.99) 0%,rgba(8,5,22,0.98) 60%,rgba(10,6,28,0.99) 100%);"
+    "border:1.5px solid rgba(99,60,220,0.45);animation:borderPulse 4s ease-in-out infinite;"
+    "padding:20px 26px;box-shadow:0 8px 40px rgba(0,0,0,0.90),0 0 0 1px rgba(99,60,220,0.12),"
+    "inset 0 1px 0 rgba(255,255,255,0.06);'>"
     # Scan line
     "<div style='position:absolute;left:0;right:0;height:1px;"
-    "background:linear-gradient(90deg,transparent,rgba(229,9,20,0.35),transparent);"
+    "background:linear-gradient(90deg,transparent,rgba(99,60,220,0.50),transparent);"
     "animation:scanLine 4s linear infinite;pointer-events:none;z-index:1'></div>"
     # Top line
     "<div style='position:absolute;top:0;left:0;right:0;height:2px;"
-    "background:linear-gradient(90deg,transparent,#E50914 35%,rgba(229,9,20,0.35) 65%,transparent)'></div>"
+    "background:linear-gradient(90deg,transparent,#6b3bdc 35%,#3b82f6 65%,transparent)'></div>"
     # Glow orb
     "<div style='position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;"
-    "background:radial-gradient(circle,rgba(229,9,20,0.16) 0%,transparent 70%);pointer-events:none'></div>"
+    "background:radial-gradient(circle,rgba(99,60,220,0.18) 0%,transparent 70%);pointer-events:none'></div>"
     "<div style='display:flex;align-items:center;gap:18px;position:relative;z-index:2'>"
     # Avatar
     "<div style='position:relative;flex-shrink:0;width:60px;height:60px'>"
     "<div style='width:60px;height:60px;border-radius:50%;"
-    "background:linear-gradient(135deg,#E50914 0%,#5c000a 100%);"
+    "background:linear-gradient(135deg,#6b3bdc 0%,#3b82f6 100%);"
     "display:flex;align-items:center;justify-content:center;font-size:1.7rem;"
-    "box-shadow:0 0 0 3px rgba(229,9,20,0.28),0 0 28px rgba(229,9,20,0.42)'>🤖</div>"
+    "box-shadow:0 0 0 3px rgba(99,60,220,0.30),0 0 28px rgba(99,60,220,0.50)'>🤖</div>"
     "<div style='position:absolute;inset:-6px;border-radius:50%;"
-    "border:2px solid rgba(229,9,20,0.45);animation:pulseRing 2s ease-out infinite'></div>"
+    "border:2px solid rgba(99,60,220,0.50);animation:pulseRing 2s ease-out infinite'></div>"
     "<div style='position:absolute;inset:-12px;border-radius:50%;"
-    "border:1px solid rgba(229,9,20,0.20);animation:pulseRing 2s ease-out infinite 0.6s'></div>"
+    "border:1px solid rgba(59,130,246,0.25);animation:pulseRing 2s ease-out infinite 0.6s'></div>"
     "</div>"
     # Title
     "<div style='flex:1'>"
     "<div style='font-family:Syne,sans-serif;font-size:1.55rem;font-weight:800;"
-    "background:linear-gradient(90deg,#ffffff 55%,rgba(229,9,20,0.85));background-size:200% auto;"
+    "background:linear-gradient(90deg,#ffffff 40%,#a78bfa 70%,#60a5fa);background-size:200% auto;"
     "-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"
     "line-height:1.1;margin-bottom:6px'>ATLAS &mdash; Your AI Fitness Coach</div>"
     "<div style='display:flex;flex-wrap:wrap;gap:6px;align-items:center'>"
@@ -239,11 +243,10 @@ if "chat_messages" not in st.session_state:
 # ── QUICK QUESTIONS ───────────────────────────────────────────────────────────
 st.markdown(
     "<div style='font-size:0.70rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;"
-    "color:rgba(229,9,20,0.85);margin-bottom:10px;display:flex;align-items:center;gap:8px;"
-    "text-shadow:0 0 12px rgba(229,9,20,0.40);'>"
-    "<span style='width:16px;height:1.5px;background:#E50914;display:block;box-shadow:0 0 6px rgba(229,9,20,0.60);'></span>"
+    "color:rgba(167,139,250,0.90);margin-bottom:10px;display:flex;align-items:center;gap:8px;'>"
+    "<span style='width:16px;height:1.5px;background:linear-gradient(90deg,#6b3bdc,#3b82f6);display:block;'></span>"
     "⚡ Quick Ask"
-    "<span style='flex:1;height:1px;background:linear-gradient(90deg,rgba(229,9,20,0.30),transparent);display:block;'></span>"
+    "<span style='flex:1;height:1px;background:linear-gradient(90deg,rgba(99,60,220,0.40),transparent);display:block;'></span>"
     "</div>",
     unsafe_allow_html=True)
 quick_qs = [("💪","Best post-workout meal?"),("🔥","How to lose fat faster?"),
@@ -265,24 +268,28 @@ st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 if not st.session_state.chat_messages:
     st.markdown(
         f"<div style='text-align:center;padding:52px 20px;animation:fadeSlideUp 0.6s ease both'>"
-        f"<div style='font-size:3.8rem;margin-bottom:14px;"
-        f"filter:drop-shadow(0 0 24px rgba(229,9,20,0.65))'>🤖</div>"
-        f"<div style='font-family:Syne,sans-serif;font-size:1.9rem;font-weight:800;"
-        f"color:#fff;text-shadow:0 2px 20px rgba(229,9,20,0.50);"
-        f"letter-spacing:0.5px;margin-bottom:10px'>"
-        f"Hey <span style='color:#E50914'>{_display}</span>, I'm ATLAS 👋</div>"
-        f"<div style='font-size:0.95rem;color:rgba(255,255,255,0.75);max-width:420px;"
-        f"margin:0 auto;line-height:1.75;background:rgba(0,0,0,0.45);border-radius:12px;"
-        f"padding:12px 18px;border:1px solid rgba(255,255,255,0.07);'>"
+        f"<div style='margin-bottom:18px;'>"
+        f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+        f"background:linear-gradient(135deg,#6b3bdc,#3b82f6);border-radius:50%;"
+        f"width:84px;height:84px;font-size:2.4rem;"
+        f"box-shadow:0 0 50px rgba(99,60,220,0.55),0 0 0 4px rgba(99,60,220,0.20);'>🤖</span></div>"
+        f"<div style='font-family:Syne,sans-serif;font-size:2.1rem;font-weight:800;"
+        f"color:#fff;letter-spacing:0.5px;margin-bottom:12px;'>"
+        f"Hey <span style='background:linear-gradient(90deg,#a78bfa,#60a5fa);"
+        f"-webkit-background-clip:text;-webkit-text-fill-color:transparent;"
+        f"background-clip:text;'>{_display}</span>, I'm ATLAS 👋</div>"
+        f"<div style='font-size:0.95rem;color:rgba(255,255,255,0.75);max-width:440px;"
+        f"margin:0 auto;line-height:1.75;background:rgba(99,60,220,0.08);"
+        f"border:1px solid rgba(99,60,220,0.22);border-radius:14px;padding:14px 22px;'>"
         f"Your personal AI fitness coach. Ask me anything about workouts, "
         f"nutrition, recovery — I know your full {len(sdays)}-day plan.</div>"
         f"<div style='margin-top:22px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap'>"
-        f"<div style='background:rgba(229,9,20,0.12);border:1px solid rgba(229,9,20,0.30);"
-        f"border-radius:20px;padding:5px 14px;font-size:0.78rem;color:rgba(255,255,255,0.75)'>💬 Ongoing conversations</div>"
-        f"<div style='background:rgba(229,9,20,0.12);border:1px solid rgba(229,9,20,0.30);"
-        f"border-radius:20px;padding:5px 14px;font-size:0.78rem;color:rgba(255,255,255,0.75)'>🧠 Knows your full plan</div>"
-        f"<div style='background:rgba(229,9,20,0.12);border:1px solid rgba(229,9,20,0.30);"
-        f"border-radius:20px;padding:5px 14px;font-size:0.78rem;color:rgba(255,255,255,0.75)'>⚡ Instant answers</div>"
+        f"<div style='background:rgba(99,60,220,0.12);border:1px solid rgba(99,60,220,0.28);"
+        f"border-radius:20px;padding:6px 16px;font-size:0.78rem;color:rgba(167,139,250,0.92);'>💬 Ongoing conversations</div>"
+        f"<div style='background:rgba(59,130,246,0.10);border:1px solid rgba(59,130,246,0.25);"
+        f"border-radius:20px;padding:6px 16px;font-size:0.78rem;color:rgba(147,197,253,0.92);'>🧠 Knows your full plan</div>"
+        f"<div style='background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.22);"
+        f"border-radius:20px;padding:6px 16px;font-size:0.78rem;color:rgba(134,239,172,0.92);'>⚡ Instant answers</div>"
         f"</div></div>",
         unsafe_allow_html=True)
 else:
@@ -294,14 +301,14 @@ else:
                 f"animation:fadeSlideLeft 0.32s ease {delay} both'>"
                 f"<div style='max-width:76%'>"
                 f"<div style='text-align:right;font-size:0.60rem;font-weight:700;letter-spacing:2px;"
-                f"text-transform:uppercase;color:rgba(229,9,20,0.60);margin-bottom:4px;padding-right:6px'>YOU</div>"
+                f"text-transform:uppercase;color:rgba(167,139,250,0.70);margin-bottom:4px;padding-right:6px'>YOU</div>"
                 f"<div style='background:linear-gradient(135deg,rgba(229,9,20,0.22),rgba(140,0,8,0.16));"
                 f"border:1.5px solid rgba(229,9,20,0.35);border-radius:18px 18px 4px 18px;"
                 f"padding:13px 17px;box-shadow:0 4px 20px rgba(229,9,20,0.16)'>"
                 f"<div style='font-size:0.95rem;color:#fff;line-height:1.65'>{msg['content']}</div>"
                 f"</div></div>"
                 f"<div style='width:34px;height:34px;border-radius:50%;"
-                f"background:rgba(229,9,20,0.14);border:1.5px solid rgba(229,9,20,0.32);"
+                f"background:rgba(99,60,220,0.14);border:1.5px solid rgba(99,60,220,0.32);"
                 f"display:flex;align-items:center;justify-content:center;"
                 f"margin-left:9px;flex-shrink:0;align-self:flex-end;font-size:1rem'>👤</div>"
                 f"</div>",
