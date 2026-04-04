@@ -83,16 +83,17 @@ input:-webkit-autofill,input:-webkit-autofill:focus{
   -webkit-box-shadow:0 0 0 9999px #0a0814 inset!important;-webkit-text-fill-color:#fff!important;}
 
 .quick-btn .stButton>button{
-  background:rgba(255,255,255,0.03)!important;border:1px solid rgba(255,255,255,0.09)!important;
-  color:rgba(255,255,255,0.62)!important;font-size:0.80rem!important;font-weight:500!important;
-  text-transform:none!important;border-radius:22px!important;padding:6px 14px!important;
-  height:auto!important;min-height:auto!important;box-shadow:none!important;
+  background:rgba(20,6,6,0.92)!important;border:1.5px solid rgba(229,9,20,0.35)!important;
+  color:rgba(255,255,255,0.88)!important;font-size:0.82rem!important;font-weight:600!important;
+  text-transform:none!important;border-radius:22px!important;padding:8px 16px!important;
+  height:auto!important;min-height:auto!important;
+  box-shadow:0 4px 16px rgba(0,0,0,0.60),inset 0 1px 0 rgba(255,255,255,0.06)!important;
   letter-spacing:0!important;font-style:italic!important;animation:none!important;
   transition:all 0.18s ease!important;}
 .quick-btn .stButton>button:hover{
-  background:rgba(229,9,20,0.12)!important;border-color:rgba(229,9,20,0.42)!important;
+  background:rgba(229,9,20,0.22)!important;border-color:rgba(229,9,20,0.70)!important;
   color:#fff!important;transform:translateY(-2px)!important;
-  box-shadow:0 4px 14px rgba(229,9,20,0.18)!important;}
+  box-shadow:0 6px 20px rgba(229,9,20,0.30)!important;}
 
 html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 1px 4px rgba(0,0,0,0.95)!important;}
 [data-testid="stWidgetLabel"],[data-testid="stWidgetLabel"] p{color:#fff!important;font-weight:600!important;}
@@ -112,7 +113,7 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 1px 4px rgba(0,0,0,0
 
 apply_bg(
     "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?fm=jpg&w=1920&q=80&fit=crop",
-    overlay="rgba(2,2,10,0.85)"
+    overlay="rgba(2,2,10,0.92)"
 )
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
@@ -172,9 +173,9 @@ system_prompt = (
 # ── HERO ──────────────────────────────────────────────────────────────────────
 st.markdown(
     "<div style='position:relative;overflow:hidden;border-radius:22px;margin-bottom:16px;"
-    "background:linear-gradient(135deg,rgba(18,6,6,0.94) 0%,rgba(8,4,20,0.90) 60%,rgba(18,6,6,0.94) 100%);"
-    "border:1px solid rgba(229,9,20,0.22);animation:borderPulse 4s ease-in-out infinite;"
-    "padding:20px 26px'>"
+    "background:linear-gradient(135deg,rgba(10,3,3,0.98) 0%,rgba(5,2,14,0.96) 60%,rgba(10,3,3,0.98) 100%);"
+    "border:1.5px solid rgba(229,9,20,0.40);animation:borderPulse 4s ease-in-out infinite;"
+    "padding:20px 26px;box-shadow:0 8px 40px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,255,255,0.06);'>"
     # Scan line
     "<div style='position:absolute;left:0;right:0;height:1px;"
     "background:linear-gradient(90deg,transparent,rgba(229,9,20,0.35),transparent);"
@@ -205,8 +206,8 @@ st.markdown(
     "line-height:1.1;margin-bottom:6px'>ATLAS &mdash; Your AI Fitness Coach</div>"
     "<div style='display:flex;flex-wrap:wrap;gap:6px;align-items:center'>"
     + " ".join([
-        f"<span style='font-size:0.76rem;color:rgba(255,255,255,0.40)'>{t}</span>"
-        + (f"<span style='color:rgba(229,9,20,0.40);font-size:0.76rem'>&middot;</span>" if i<3 else "")
+        f"<span style='font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.75)'>{t}</span>"
+        + (f"<span style='color:rgba(229,9,20,0.60);font-size:0.76rem'>&middot;</span>" if i<3 else "")
         for i,t in enumerate([
             f"Trained on your profile",
             f"{len(sdays)}-day plan",
@@ -237,9 +238,13 @@ if "chat_messages" not in st.session_state:
 
 # ── QUICK QUESTIONS ───────────────────────────────────────────────────────────
 st.markdown(
-    "<div style='font-size:0.66rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;"
-    "color:rgba(229,9,20,0.58);margin-bottom:7px;display:flex;align-items:center;gap:8px'>"
-    "<span style='width:12px;height:1px;background:#E50914;display:block'></span>Quick Ask</div>",
+    "<div style='font-size:0.70rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;"
+    "color:rgba(229,9,20,0.85);margin-bottom:10px;display:flex;align-items:center;gap:8px;"
+    "text-shadow:0 0 12px rgba(229,9,20,0.40);'>"
+    "<span style='width:16px;height:1.5px;background:#E50914;display:block;box-shadow:0 0 6px rgba(229,9,20,0.60);'></span>"
+    "⚡ Quick Ask"
+    "<span style='flex:1;height:1px;background:linear-gradient(90deg,rgba(229,9,20,0.30),transparent);display:block;'></span>"
+    "</div>",
     unsafe_allow_html=True)
 quick_qs = [("💪","Best post-workout meal?"),("🔥","How to lose fat faster?"),
             ("😴","How much sleep do I need?"),("🥩","Daily protein target?"),
@@ -262,22 +267,22 @@ if not st.session_state.chat_messages:
         f"<div style='text-align:center;padding:52px 20px;animation:fadeSlideUp 0.6s ease both'>"
         f"<div style='font-size:3.8rem;margin-bottom:14px;"
         f"filter:drop-shadow(0 0 24px rgba(229,9,20,0.65))'>🤖</div>"
-        f"<div style='font-family:Syne,sans-serif;font-size:1.5rem;font-weight:800;"
-        f"background:linear-gradient(135deg,#fff 40%,#E50914);"
-        f"-webkit-background-clip:text;-webkit-text-fill-color:transparent;"
-        f"background-clip:text;letter-spacing:0.5px;margin-bottom:10px'>"
-        f"Hey {uname}, I'm ATLAS</div>"
-        f"<div style='font-size:0.92rem;color:rgba(255,255,255,0.42);max-width:420px;"
-        f"margin:0 auto;line-height:1.75'>"
+        f"<div style='font-family:Syne,sans-serif;font-size:1.9rem;font-weight:800;"
+        f"color:#fff;text-shadow:0 2px 20px rgba(229,9,20,0.50);"
+        f"letter-spacing:0.5px;margin-bottom:10px'>"
+        f"Hey <span style='color:#E50914'>{_display}</span>, I'm ATLAS 👋</div>"
+        f"<div style='font-size:0.95rem;color:rgba(255,255,255,0.75);max-width:420px;"
+        f"margin:0 auto;line-height:1.75;background:rgba(0,0,0,0.45);border-radius:12px;"
+        f"padding:12px 18px;border:1px solid rgba(255,255,255,0.07);'>"
         f"Your personal AI fitness coach. Ask me anything about workouts, "
         f"nutrition, recovery — I know your full {len(sdays)}-day plan.</div>"
         f"<div style='margin-top:22px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap'>"
-        f"<div style='background:rgba(229,9,20,0.09);border:1px solid rgba(229,9,20,0.22);"
-        f"border-radius:20px;padding:5px 14px;font-size:0.76rem;color:rgba(255,255,255,0.50)'>💬 Ongoing conversations</div>"
-        f"<div style='background:rgba(229,9,20,0.09);border:1px solid rgba(229,9,20,0.22);"
-        f"border-radius:20px;padding:5px 14px;font-size:0.76rem;color:rgba(255,255,255,0.50)'>🧠 Knows your full plan</div>"
-        f"<div style='background:rgba(229,9,20,0.09);border:1px solid rgba(229,9,20,0.22);"
-        f"border-radius:20px;padding:5px 14px;font-size:0.76rem;color:rgba(255,255,255,0.50)'>⚡ Instant answers</div>"
+        f"<div style='background:rgba(229,9,20,0.12);border:1px solid rgba(229,9,20,0.30);"
+        f"border-radius:20px;padding:5px 14px;font-size:0.78rem;color:rgba(255,255,255,0.75)'>💬 Ongoing conversations</div>"
+        f"<div style='background:rgba(229,9,20,0.12);border:1px solid rgba(229,9,20,0.30);"
+        f"border-radius:20px;padding:5px 14px;font-size:0.78rem;color:rgba(255,255,255,0.75)'>🧠 Knows your full plan</div>"
+        f"<div style='background:rgba(229,9,20,0.12);border:1px solid rgba(229,9,20,0.30);"
+        f"border-radius:20px;padding:5px 14px;font-size:0.78rem;color:rgba(255,255,255,0.75)'>⚡ Instant answers</div>"
         f"</div></div>",
         unsafe_allow_html=True)
 else:
