@@ -13,6 +13,8 @@ if "user_data" not in st.session_state:   st.switch_page("pages/1_Profile.py")
 
 uname = st.session_state.get("username", "Athlete")
 data  = st.session_state.user_data
+_display = (data.get("display_name","").strip() or data.get("name","").strip() or uname)
+_display = _display if "@" not in _display else uname
 
 st.markdown("""
 <style>
