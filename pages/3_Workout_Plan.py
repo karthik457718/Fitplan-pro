@@ -14,6 +14,8 @@ if "user_data" not in st.session_state:
 
 uname   = st.session_state.get("username", "Athlete")
 data    = st.session_state.user_data
+_display = (data.get("display_name","").strip() or data.get("name","").strip() or uname)
+_display = _display if "@" not in _display else uname
 plan_id = st.session_state.get("plan_id", "")
 
 # ── CSS ────────────────────────────────────────────────────────────────────────
@@ -1394,4 +1396,4 @@ for tab, day_data in zip(tabs, sdays):
             st.markdown("</div>", unsafe_allow_html=True)
 
 if st.session_state.pop("_needs_rerun", False):
-    st.rerun() 
+    st.rerun()
