@@ -721,9 +721,14 @@ for tab, day_data in zip(tabs, sdays):
                                 f"<div style='font-size:1.05rem;font-weight:600'>{s.get('name','Stretch')}</div>"
                                 f"<div style='font-size:0.85rem;color:rgba(255,255,255,0.90)'>⏱ {s.get('duration','30s')}</div></div></div>",
                                 unsafe_allow_html=True)
-                vurl = pre[0].get("video_url", "https://www.youtube.com/embed/2pLT-olgUJs") if pre else "https://www.youtube.com/embed/2pLT-olgUJs"
+                _pre_urls = [
+                    "https://www.youtube.com/embed/2pLT-olgUJs",
+                    "https://www.youtube.com/embed/UBMk30rjy0o",
+                    "https://www.youtube.com/embed/1f8yoFFdkcY",
+                ]
+                vurl = _pre_urls[(dn - 1) % len(_pre_urls)]
                 st.markdown(f"<div style='position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;margin-top:8px'>"
-                            f"<iframe src='{vurl}' style='position:absolute;top:0;left:0;width:100%;height:100%;border:none' allowfullscreen></iframe></div>",
+                            f"<iframe src='{vurl}?rel=0&modestbranding=1' style='position:absolute;top:0;left:0;width:100%;height:100%;border:none' allowfullscreen></iframe></div>",
                             unsafe_allow_html=True)
 
             st.markdown(f"<div class='sec-title'>💪 Day {dn} — {mg}</div>", unsafe_allow_html=True)
@@ -873,9 +878,14 @@ for tab, day_data in zip(tabs, sdays):
                                 f"<div style='font-size:1.05rem;font-weight:600'>{s.get('name','Stretch')}</div>"
                                 f"<div style='font-size:0.85rem;color:rgba(255,255,255,0.90)'>⏱ {s.get('duration','40s')}</div></div></div>",
                                 unsafe_allow_html=True)
-                vurl2 = post[0].get("video_url", "https://www.youtube.com/embed/v7AYKMP6rOE") if post else "https://www.youtube.com/embed/v7AYKMP6rOE"
+                _post_urls = [
+                    "https://www.youtube.com/embed/v7AYKMP6rOE",
+                    "https://www.youtube.com/embed/jeNwE4VXqgs",
+                    "https://www.youtube.com/embed/sTANio_2E0Q",
+                ]
+                vurl2 = _post_urls[(dn - 1) % len(_post_urls)]
                 st.markdown(f"<div style='position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;margin-top:8px'>"
-                            f"<iframe src='{vurl2}' style='position:absolute;top:0;left:0;width:100%;height:100%;border:none' allowfullscreen></iframe></div>",
+                            f"<iframe src='{vurl2}?rel=0&modestbranding=1' style='position:absolute;top:0;left:0;width:100%;height:100%;border:none' allowfullscreen></iframe></div>",
                             unsafe_allow_html=True)
 
         with right_col:
