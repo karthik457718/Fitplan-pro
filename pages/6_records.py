@@ -149,7 +149,7 @@ apply_bg(
 st.markdown("<div style='background:rgba(5,2,1,0.97);backdrop-filter:blur(20px);"
             "border-bottom:1.5px solid rgba(229,9,20,0.22);padding:5px 0;margin-bottom:16px'>",
             unsafe_allow_html=True)
-_n = st.columns([1.8,1,1,1,1,1,1,1.3])
+_n = st.columns([1.8,1,1,1,1,1,1,1,1.3])
 with _n[0]: st.markdown("<div class='nav-logo'>FitPlan Pro</div>", unsafe_allow_html=True)
 with _n[1]:
     if st.button("Home",     key="rc_db", use_container_width=True): st.switch_page("pages/2_Dashboard.py")
@@ -158,16 +158,20 @@ with _n[2]:
 with _n[3]:
     if st.button("Diet",     key="rc_dp", use_container_width=True): st.switch_page("pages/4_Diet_Plan.py")
 with _n[4]:
+    if st.button("🍽️ Meals", key="rc_mp", use_container_width=True):
+        try: st.switch_page("pages/11_meal_planner.py")
+        except Exception: pass
+with _n[5]:
     if st.button("AI Coach", key="rc_ai", use_container_width=True):
         try: st.switch_page("pages/5_ai_coach.py")
         except Exception as e: st.warning(str(e))
-with _n[5]:
-    if st.button("Records",  key="rc_rc", use_container_width=True): st.switch_page("pages/6_records.py")
 with _n[6]:
+    if st.button("Records",  key="rc_rc", use_container_width=True): st.switch_page("pages/6_records.py")
+with _n[7]:
     if st.button("Photos",   key="rc_ph", use_container_width=True):
         try: st.switch_page("pages/7_progress_photos.py")
         except Exception as e: st.warning(str(e))
-with _n[7]:
+with _n[8]:
     if st.button("Sign Out", key="rc_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan",
