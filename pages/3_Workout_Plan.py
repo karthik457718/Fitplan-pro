@@ -1394,4 +1394,4 @@ for tab, day_data in zip(tabs, sdays):
             st.markdown("</div>", unsafe_allow_html=True)
 
 if st.session_state.pop("_needs_rerun", False):
-    st.rerun()
+    st.rerun() 
