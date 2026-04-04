@@ -543,21 +543,128 @@ else:
                     if st.button("❌ Cancel", use_container_width=True, key="regen_no"):
                         st.session_state._regen_confirm = False
                         st.rerun()
-    else:
+
+# ── DAILY REMINDER SETTINGS ──────────────────────────────────────────────────
+_show_reminder_section = True
+if _show_reminder_section:
+    from datetime import datetime as _dt
+    st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+    st.markdown(
+        "<div style='background:rgba(8,4,2,0.85);border:1.5px solid rgba(229,9,20,0.22);"
+        "border-radius:18px;padding:22px 26px;margin-bottom:16px;position:relative;overflow:hidden'>"
+        "<div style='position:absolute;top:0;left:0;right:0;height:2px;"
+        "background:linear-gradient(90deg,transparent,#E50914,transparent)'></div>"
+        "<div style='font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;"
+        "color:rgba(229,9,20,0.75);margin-bottom:8px;display:flex;align-items:center;gap:8px'>"
+        "<span style='width:14px;height:1.5px;background:#E50914;display:block'></span>"
+        "⏰ Daily Reminder Email</div>"
+        "<div style='font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:16px'>"
+        "Get a motivational workout reminder email at your chosen time every day via Brevo.</div>",
+        unsafe_allow_html=True
+    )
+    try:
+        from utils.db import get_user_setting as _gus, save_user_setting as _sus
+        _rem_enabled = _gus(uname, "reminder_enabled") or "0"
+        _rem_time_str = _gus(uname, "reminder_time") or "08:00"
+        _rem_last_sent = _gus(uname, "reminder_last_sent") or "Never"
+    except Exception:
+        _rem_enabled   = "0"
+        _rem_time_str  = "08:00"
+        _rem_last_sent = "Never"
+
+    try:
+        _rem_time_val = _dt.strptime(_rem_time_str, "%H:%M").time()
+    except Exception:
+        import datetime as _dtt
+        _rem_time_val = _dtt.time(8, 0)
+
+    rc1, rc2, rc3 = st.columns([2, 3, 2])
+    with rc1:
+        rem_on = st.toggle(
+            "Enable Reminders",
+            value=(_rem_enabled == "1"),
+            key="rem_toggle",
+            help="Sends a daily email to remind you to work out"
+        )
+    with rc2:
+        import datetime as _dtt2
+        rem_time = st.time_input(
+            "Reminder Time",
+            value=_rem_time_val,
+            key="rem_time_inp",
+            help="What time to send your daily reminder (server time, UTC on HuggingFace)"
+        )
+    with rc3:
+        st.markdown("<div style='padding-top:26px'>", unsafe_allow_html=True)
+        if st.button("💾 Save", key="save_reminder", use_container_width=True):
+            try:
+                _sus(uname, "reminder_enabled", "1" if rem_on else "0")
+                _sus(uname, "reminder_time", rem_time.strftime("%H:%M"))
+                st.toast("✅ Reminder settings saved!", icon="⏰")
+                st.rerun()
+            except Exception as _e:
+                st.error("Save failed: " + str(_e))
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # Status + test send
+    if _rem_enabled == "1":
         st.markdown(
-            "<div style='background:rgba(229,9,20,0.07);border:1px solid rgba(229,9,20,0.22);"
-            "border-radius:14px;padding:16px 22px;margin-bottom:14px;text-align:center;"
-            "font-size:1.00rem;color:rgba(255,255,255,0.90)'>"
-            "No active plan yet. Generate your personalised AI plan below.</div>",
+            f"<div style='background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.22);"
+            f"border-radius:10px;padding:10px 14px;margin-top:8px;"
+            f"display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px'>"
+            f"<div style='font-size:0.80rem;color:rgba(255,255,255,0.55)'>"
+            f"📧 Active · Sends at <b style='color:rgba(34,197,94,0.80)'>{_rem_time_str}</b> daily"
+            f" &nbsp;·&nbsp; Last sent: <b>{_rem_last_sent}</b></div>"
+            f"</div>",
             unsafe_allow_html=True
         )
-        b1, b2 = st.columns(2)
-        with b1:
-            st.markdown("<div class='gen-btn'>", unsafe_allow_html=True)
-            if st.button("⚡ GENERATE PLAN", use_container_width=True, key="pdisp_gen"):
-                st.switch_page("pages/3_Workout_Plan.py")
-            st.markdown("</div>", unsafe_allow_html=True)
-        with b2:
-            if st.button("✏️ Edit Profile", use_container_width=True, key="pdisp_edit2"):
-                st.session_state.edit_profile_mode = True
-                st.rerun()
+    else:
+        st.markdown(
+            "<div style='font-size:0.78rem;color:rgba(255,255,255,0.30);margin-top:8px'>"
+            "⭕ Reminders disabled — toggle on to activate.</div>",
+            unsafe_allow_html=True
+        )
+
+    # Manual test button
+    tc1, tc2 = st.columns([3, 2])
+    with tc2:
+        if st.button("📧 Send Test Reminder", key="test_reminder", use_container_width=True):
+            try:
+                from daily_reminder import send_daily_reminder
+                _user_email = ""
+                try:
+                    from utils.db import get_user_setting as _g2
+                    from auth_token import _get_user_by_username
+                    _u = _get_user_by_username(uname)
+                    _user_email = _u["email"] if _u else ""
+                except Exception: pass
+                _udata = dict(st.session_state.get("user_data", {}))
+                _udata["email"] = _user_email
+                _ok, _msg = send_daily_reminder(uname, _udata, st.session_state)
+                if _ok:
+                    st.toast("✅ Test reminder sent!", icon="📧")
+                else:
+                    st.error("Failed: " + _msg)
+            except Exception as _ex:
+                st.error("Error: " + str(_ex))
+
+    st.markdown("</div>", unsafe_allow_html=True)  # close reminder card
+
+else:
+    st.markdown(
+        "<div style='background:rgba(229,9,20,0.07);border:1px solid rgba(229,9,20,0.22);"
+        "border-radius:14px;padding:16px 22px;margin-bottom:14px;text-align:center;"
+        "font-size:1.00rem;color:rgba(255,255,255,0.90)'>"
+        "No active plan yet. Generate your personalised AI plan below.</div>",
+        unsafe_allow_html=True
+    )
+    b1, b2 = st.columns(2)
+    with b1:
+        st.markdown("<div class='gen-btn'>", unsafe_allow_html=True)
+        if st.button("⚡ GENERATE PLAN", use_container_width=True, key="pdisp_gen"):
+            st.switch_page("pages/3_Workout_Plan.py")
+        st.markdown("</div>", unsafe_allow_html=True)
+    with b2:
+        if st.button("✏️ Edit Profile", use_container_width=True, key="pdisp_edit2"):
+            st.session_state.edit_profile_mode = True
+            st.rerun()
