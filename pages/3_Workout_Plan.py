@@ -130,7 +130,7 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 
 # ── NAV ────────────────────────────────────────────────────────────────────────
 st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
-_n = st.columns([1.8,1,1,1,1,1,1,1.3])
+_n = st.columns([1.8,1,1,1,1,1,1,1,1.3])
 with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
 with _n[1]:
     if st.button("🏠 Home", key="nb_db", use_container_width=True):
@@ -142,18 +142,22 @@ with _n[3]:
     if st.button("🥗 Diet", key="nb_dp", use_container_width=True):
         st.switch_page("pages/4_Diet_Plan.py")
 with _n[4]:
+    if st.button("🍽️ Meals", key="nb_mp", use_container_width=True):
+        try: st.switch_page("pages/11_meal_planner.py")
+        except Exception as e: st.warning(f"Upload 11_meal_planner.py: {e}")
+with _n[5]:
     if st.button("🤖 AI Coach", key="nb_ai", use_container_width=True):
         try: st.switch_page("pages/5_ai_coach.py")
         except Exception as e: st.warning(f"Upload 5_AI_Coach.py: {e}")
-with _n[5]:
+with _n[6]:
     if st.button("🏆 Records", key="nb_rc", use_container_width=True):
         try: st.switch_page("pages/6_records.py")
         except Exception as e: st.warning(f"Upload 6_Records.py: {e}")
-with _n[6]:
+with _n[7]:
     if st.button("📸 Photos", key="nb_ph", use_container_width=True):
         try: st.switch_page("pages/7_progress_photos.py")
         except Exception as e: st.warning(f"Upload 7_Progress_Photos.py: {e}")
-with _n[7]:
+with _n[8]:
     if st.button("🚪 Sign Out", key="nb_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan",
