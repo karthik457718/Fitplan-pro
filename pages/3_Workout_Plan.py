@@ -639,6 +639,51 @@ if not st.session_state.get("_notes_loaded") and plan_id:
         st.session_state._notes_loaded = True
     except Exception: pass
 
+
+# ── MUSIC PLAYER ──────────────────────────────────────────────────────────────
+st.markdown(
+    "<div style='font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;"
+    "color:rgba(229,9,20,0.75);margin-bottom:10px;display:flex;align-items:center;gap:8px'>"
+    "<span style='width:14px;height:1.5px;background:#E50914;display:block'></span>"
+    "🎵 Workout Music</div>",
+    unsafe_allow_html=True
+)
+
+_PLAYLISTS = {
+    "🎤 Hip-Hop":      "37i9dQZF1DX0XUsuxWHRQd",
+    "⚡ EDM":           "37i9dQZF1DX4dyzvuaRJ0n",
+    "🎸 Rock":          "37i9dQZF1DWXRqgorJj26U",
+    "🎬 Hollywood":     "37i9dQZF1DX1lVhptIYRda",
+    "🎵 Bollywood":     "37i9dQZF1DX0XUsuxWHRQd",
+    "🎶 Tollywood":     "37i9dQZF1DX4dyzvuaRJ0n",
+    "💪 Workout Hits":  "37i9dQZF1DXdxcBWuJkbcy",
+    "🔥 Beast Mode":    "37i9dQZF1DWUVpAXiEPK8P",
+}
+
+_music_col1, _music_col2 = st.columns([2, 5])
+with _music_col1:
+    _genre = st.selectbox(
+        "Genre", list(_PLAYLISTS.keys()),
+        key="music_genre", label_visibility="collapsed"
+    )
+    _playlist_id = _PLAYLISTS[_genre]
+    st.markdown(
+        f"<div style='font-size:0.75rem;color:rgba(255,255,255,0.45);margin-top:6px;line-height:1.5'>"
+        f"🎵 {_genre} playlist<br>via Spotify</div>",
+        unsafe_allow_html=True
+    )
+
+with _music_col2:
+    st.markdown(
+        f"<iframe src='https://open.spotify.com/embed/playlist/{_playlist_id}?utm_source=generator&theme=0' "
+        f"width='100%' height='80' frameBorder='0' allowfullscreen='' "
+        f"allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' "
+        f"loading='lazy' style='border-radius:12px'></iframe>",
+        unsafe_allow_html=True
+    )
+
+st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
 # ── DAY TABS ──────────────────────────────────────────────────────────────────
 tab_labels = [f"Day {d.get('day',i+1)}" + (" 😴" if d.get("is_rest_day") else "")
               for i, d in enumerate(sdays)]
@@ -671,25 +716,94 @@ for tab, day_data in zip(tabs, sdays):
         if is_rest:
             prev_day = next((x for x in sdays if x.get("day") == dn-1), {})
             prev_mg  = prev_day.get("muscle_group", "")
-            st.markdown(f"""
-            <div class='rest-day'>
-              <div style='font-size:3rem;margin-bottom:12px'>😴</div>
-              <div style='font-family:Bebas Neue,sans-serif;font-size:2rem;letter-spacing:3px;color:#E50914'>Day {dn} — Rest Day</div>
-              <div style='font-size:1.05rem;color:rgba(255,255,255,0.90);margin-top:8px'>Rest and recover. Light stretching, hydration and sleep.</div>
-            </div>""", unsafe_allow_html=True)
+
+            # ── REST DAY HERO ─────────────────────────────────────────────
+            st.markdown(
+                f"<div style='background:linear-gradient(135deg,rgba(34,197,94,0.10),rgba(6,30,15,0.80));"
+                f"border:1.5px solid rgba(34,197,94,0.28);border-radius:20px;padding:28px 36px;margin-bottom:20px;"
+                f"position:relative;overflow:hidden'>"
+                f"<div style='position:absolute;top:0;left:0;right:0;height:2px;"
+                f"background:linear-gradient(90deg,transparent,#22c55e,transparent)'></div>"
+                f"<div style='font-size:2.5rem;margin-bottom:10px'>😴</div>"
+                f"<div style='font-family:Bebas Neue,sans-serif;font-size:2.2rem;letter-spacing:3px;"
+                f"color:#22c55e;margin-bottom:8px'>Day {dn} — Rest &amp; Recovery</div>"
+                f"<div style='font-size:0.95rem;color:rgba(255,255,255,0.65);max-width:500px;line-height:1.6'>"
+                f"Your muscles grow during rest, not during training. Make today count.</div>"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+            # ── REST DAY ACTIVITIES GRID ──────────────────────────────────
+            _rest_activities = [
+                {"icon":"🧘","title":"Yoga","desc":"Improve flexibility & calm the mind","duration":"20–30 min",
+                 "video":"https://www.youtube.com/embed/v7AYKMP6rOE","color":"34,197,94"},
+                {"icon":"🚶","title":"Walking","desc":"Low-impact cardio, boosts recovery","duration":"20–45 min",
+                 "video":"https://www.youtube.com/embed/jeNwE4VXqgs","color":"96,165,250"},
+                {"icon":"🧘","title":"Meditation","desc":"Reduce cortisol, improve sleep","duration":"10–15 min",
+                 "video":"https://www.youtube.com/embed/sTANio_2E0Q","color":"251,191,36"},
+                {"icon":"🌊","title":"Foam Rolling","desc":"Release tight muscles & knots","duration":"10–15 min",
+                 "video":"https://www.youtube.com/embed/2pLT-olgUJs","color":"249,115,22"},
+            ]
+
+            st.markdown(
+                "<div style='font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;"
+                "color:rgba(34,197,94,0.75);margin-bottom:12px;display:flex;align-items:center;gap:8px'>"
+                "<span style='width:14px;height:1.5px;background:#22c55e;display:block'></span>"
+                "Today's Recovery Activities</div>",
+                unsafe_allow_html=True
+            )
+
+            act_cols = st.columns(4)
+            for _ai, _act in enumerate(_rest_activities):
+                with act_cols[_ai]:
+                    _vid_key = f"rest_vid_d{dn}_{_ai}"
+                    _showing = st.session_state.get(_vid_key, False)
+                    st.markdown(
+                        f"<div style='background:rgba(8,4,2,0.80);"
+                        f"border:1.5px solid rgba({_act['color']},0.28);"
+                        f"border-radius:14px;padding:14px;text-align:center;margin-bottom:8px'>"
+                        f"<div style='font-size:2rem;margin-bottom:6px'>{_act['icon']}</div>"
+                        f"<div style='font-size:0.90rem;font-weight:700;color:#fff;margin-bottom:4px'>{_act['title']}</div>"
+                        f"<div style='font-size:0.72rem;color:rgba(255,255,255,0.50);margin-bottom:6px;line-height:1.4'>{_act['desc']}</div>"
+                        f"<div style='font-size:0.70rem;color:rgba({_act['color']},0.80);font-weight:700'>"
+                        f"⏱ {_act['duration']}</div></div>",
+                        unsafe_allow_html=True
+                    )
+                    if st.button(
+                        "▶ Watch" if not _showing else "✕ Hide",
+                        key=f"rest_vid_btn_d{dn}_{_ai}",
+                        use_container_width=True
+                    ):
+                        st.session_state[_vid_key] = not _showing
+                        st.rerun()
+                    if _showing:
+                        st.markdown(
+                            f"<div style='position:relative;padding-bottom:56.25%;height:0;"
+                            f"overflow:hidden;border-radius:10px;margin-top:6px'>"
+                            f"<iframe src='{_act['video']}?rel=0&modestbranding=1' "
+                            f"style='position:absolute;top:0;left:0;width:100%;height:100%;border:none' "
+                            f"allowfullscreen></iframe></div>",
+                            unsafe_allow_html=True
+                        )
+
+            # ── AI REST DAY SUGGESTIONS ───────────────────────────────────
+            st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
             rest_sugg_key = f"rest_sugg_d{dn}"
             if not st.session_state.get(rest_sugg_key):
-                if st.button(f"💡 Get AI Rest Day Activities", key=f"rest_btn_{dn}"):
-                    with st.spinner("Getting suggestions..."):
+                if st.button(f"🤖 Get Personalised AI Recovery Plan", key=f"rest_btn_{dn}", use_container_width=False):
+                    with st.spinner("Getting personalised suggestions..."):
                         try:
                             from model_api import query_model
-                            rp = (f"Give 4 light rest day activities for a {data.get('level','Beginner')} "
-                                  f"person, goal: {data.get('goal','Fitness')}."
-                                  + (f" Previous workout: {prev_mg}." if prev_mg else "")
-                                  + " Format: ACTIVITY: duration — benefit. One per line.")
-                            st.session_state[rest_sugg_key] = query_model(rp, max_tokens=200).strip()
+                            rp = (
+                                f"Give 4 personalised rest day recovery activities for a "
+                                f"{data.get('level','Beginner')} person, goal: {data.get('goal','Fitness')}."
+                                + (f" They just trained: {prev_mg}." if prev_mg else "")
+                                + " Include nutrition tip too. Format: ACTIVITY: duration — benefit. One per line."
+                            )
+                            st.session_state[rest_sugg_key] = query_model(rp, max_tokens=220).strip()
                             st.rerun()
-                        except Exception as e: st.error(str(e))
+                        except Exception as e:
+                            st.error(str(e))
             else:
                 html_r = ""
                 for line in st.session_state[rest_sugg_key].splitlines():
@@ -697,16 +811,26 @@ for tab, day_data in zip(tabs, sdays):
                     if not line: continue
                     if ":" in line:
                         p = line.split(":", 1)
-                        html_r += (f"<div style='padding:6px 0;border-bottom:1px solid rgba(229,9,20,0.10)'>"
-                                   f"<b style='color:#E50914'>{p[0].strip()}</b>"
-                                   f"<span style='color:rgba(255,255,255,0.90)'>: {p[1].strip()}</span></div>")
+                        html_r += (
+                            f"<div style='display:flex;align-items:flex-start;gap:10px;"
+                            f"padding:8px 0;border-bottom:1px solid rgba(34,197,94,0.10)'>"
+                            f"<span style='color:#22c55e;flex-shrink:0'>▶</span>"
+                            f"<div><b style='color:#22c55e'>{p[0].strip()}</b>"
+                            f"<span style='color:rgba(255,255,255,0.70)'> {p[1].strip()}</span></div></div>"
+                        )
                     else:
-                        html_r += f"<div style='font-size:0.80rem;color:rgba(255,255,255,0.90)'>{line}</div>"
-                st.markdown(f"<div style='background:rgba(229,9,20,0.06);border:1px solid rgba(229,9,20,0.18);"
-                            f"border-radius:12px;padding:14px 16px;margin-top:10px'>"
-                            f"<div style='font-size:0.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;"
-                            f"color:rgba(229,9,20,0.75);margin-bottom:10px'>💡 AI REST DAY SUGGESTIONS</div>"
-                            f"{html_r}</div>", unsafe_allow_html=True)
+                        html_r += f"<div style='font-size:0.82rem;color:rgba(255,255,255,0.55);padding:4px 0'>{line}</div>"
+                st.markdown(
+                    f"<div style='background:rgba(34,197,94,0.06);border:1.5px solid rgba(34,197,94,0.22);"
+                    f"border-radius:14px;padding:16px 20px;margin-top:4px'>"
+                    f"<div style='font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;"
+                    f"color:rgba(34,197,94,0.75);margin-bottom:10px'>🤖 YOUR PERSONALISED RECOVERY PLAN</div>"
+                    f"{html_r}</div>",
+                    unsafe_allow_html=True
+                )
+                if st.button("↻ Refresh", key=f"rest_refresh_{dn}"):
+                    st.session_state.pop(rest_sugg_key, None)
+                    st.rerun()
             continue
 
         left_col, right_col = st.columns([3, 2])
@@ -763,6 +887,50 @@ for tab, day_data in zip(tabs, sdays):
                               </div>
                               <a href='{yt_url}' target='_blank' style='display:inline-block;margin-top:10px;font-size:0.85rem;font-weight:700;color:#ff6b6b;text-decoration:none;border:1px solid rgba(255,107,107,0.30);border-radius:6px;padding:3px 10px;background:rgba(255,107,107,0.08)'>▶ Watch Demo</a>
                             </div>""", unsafe_allow_html=True)
+
+                        # ── EXERCISE SWAP ───────────────────────────────────
+                        _swap_key = f"swap_ex_d{dn}_{idx}"
+                        _swap_res = st.session_state.get(_swap_key)
+                        sc1, sc2 = st.columns([1,1])
+                        with sc1:
+                            if st.button("🔄 Can't do this? Get Alternative", key=f"swap_btn_d{dn}_{idx}", use_container_width=True):
+                                with st.spinner("Finding alternative..."):
+                                    try:
+                                        from model_api import query_model
+                                        _eq = ", ".join(data.get("equipment",[])) or "bodyweight only"
+                                        _inj = ", ".join(data.get("injuries",[])) or "none"
+                                        _swap_prompt = (
+                                            f"Suggest 1 alternative exercise to replace '{name_}' "
+                                            f"for a {data.get('level','Beginner')} person. "
+                                            f"Available equipment: {_eq}. Injuries: {_inj}. "
+                                            f"Muscle group: {mg}. Same sets/reps: {sets_}x{reps_}. "
+                                            "Give: EXERCISE NAME | why it works | form tip. One line only."
+                                        )
+                                        _swap_result = query_model(_swap_prompt, max_tokens=100).strip()
+                                        st.session_state[_swap_key] = _swap_result
+                                        st.rerun()
+                                    except Exception as e:
+                                        st.error("Swap failed: " + str(e))
+                        if _swap_res:
+                            with sc2:
+                                if st.button("✕ Dismiss", key=f"dismiss_swap_d{dn}_{idx}", use_container_width=True):
+                                    st.session_state.pop(_swap_key, None)
+                                    st.rerun()
+                            # Parse result
+                            _parts = _swap_res.split("|") if "|" in _swap_res else [_swap_res, "", ""]
+                            _alt_name = _parts[0].strip() if len(_parts)>0 else _swap_res
+                            _alt_why  = _parts[1].strip() if len(_parts)>1 else ""
+                            _alt_tip  = _parts[2].strip() if len(_parts)>2 else ""
+                            st.markdown(
+                                f"<div style='background:rgba(34,197,94,0.08);border:1.5px solid rgba(34,197,94,0.30);"
+                                f"border-radius:12px;padding:12px 16px;margin-top:8px'>"
+                                f"<div style='font-size:0.70rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;"
+                                f"color:rgba(34,197,94,0.80);margin-bottom:6px'>🔄 AI Alternative Exercise</div>"
+                                f"<div style='font-size:1.00rem;font-weight:700;color:#22c55e;margin-bottom:4px'>{_alt_name}</div>"
+                                + (f"<div style='font-size:0.82rem;color:rgba(255,255,255,0.65);margin-bottom:3px'>✅ {_alt_why}</div>" if _alt_why else "") +
+                                (f"<div style='font-size:0.80rem;color:rgba(255,255,255,0.50)'>💡 {_alt_tip}</div>" if _alt_tip else "") +
+                                f"</div>", unsafe_allow_html=True
+                            )
 
                         with ec2:
                             tid = f"d{dn}_e{idx}"
