@@ -24,21 +24,29 @@ st.markdown("""
 <style>
 [data-testid="stAppViewContainer"]::before {
   content:'';position:fixed;inset:0;z-index:-1;
-  background:url('https://images.unsplash.com/photo-1547592180-85f173990554?w=1920&q=80&auto=format&fit=crop')
-    center center/cover no-repeat;
-  filter:blur(3px) brightness(0.35) saturate(1.20);
-  transform:scale(1.05);
+  background:
+    radial-gradient(ellipse at 12%  8%,  rgba(251,191,36,0.28) 0%, transparent 35%),
+    radial-gradient(ellipse at 88%  10%, rgba(249,115,22,0.22) 0%, transparent 32%),
+    radial-gradient(ellipse at 95%  55%, rgba(34,197,94,0.20)  0%, transparent 38%),
+    radial-gradient(ellipse at 5%   60%, rgba(16,185,129,0.18) 0%, transparent 35%),
+    radial-gradient(ellipse at 50%  90%, rgba(251,191,36,0.16) 0%, transparent 40%),
+    radial-gradient(ellipse at 30%  45%, rgba(34,197,94,0.10)  0%, transparent 50%),
+    radial-gradient(ellipse at 70%  60%, rgba(249,115,22,0.10) 0%, transparent 45%),
+    linear-gradient(160deg,#040e03 0%,#071a04 25%,#051506 50%,#031008 75%,#050e04 100%);
+}
+[data-testid="stAppViewContainer"]::after {
+  content:'';position:fixed;inset:0;z-index:-1;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(34,197,94,0.06) 1px, transparent 0);
+  background-size:32px 32px;
 }
 [data-testid="stAppViewContainer"] {
-  background:
-    radial-gradient(ellipse at 20% 0%,rgba(34,197,94,0.14) 0%,transparent 50%),
-    radial-gradient(ellipse at 80% 100%,rgba(16,120,50,0.10) 0%,transparent 50%),
-    linear-gradient(180deg,rgba(2,10,4,0.82) 0%,rgba(1,8,3,0.72) 50%,rgba(2,10,4,0.88) 100%)!important;
+  background:transparent!important;
 }
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stDecoration"],
 [data-testid="stSidebarNav"],section[data-testid="stSidebar"]{display:none!important;}
-html,body,.stApp{background:#020a04!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
+html,body,.stApp{background:#020e05!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
 [data-testid="stAppViewContainer"]>section>div.block-container{
   max-width:1100px!important;margin:0 auto!important;padding:0 24px 100px!important;}
 
@@ -100,9 +108,10 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
   background:linear-gradient(90deg,transparent,rgba(34,197,94,0.50),transparent);}
 .macro-chip{display:inline-flex;flex-direction:column;align-items:center;
   padding:10px 16px;border-radius:12px;min-width:80px;text-align:center;}
-.plan-header{background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(16,80,32,0.10));
+.plan-header{background:linear-gradient(135deg,rgba(34,197,94,0.10),rgba(16,80,32,0.07));
   border:1.5px solid rgba(34,197,94,0.35);border-radius:16px;padding:20px 26px;
-  margin-bottom:20px;position:relative;overflow:hidden;}
+  margin-bottom:20px;position:relative;overflow:hidden;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);}
 .plan-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,#22c55e,rgba(34,197,94,0.40),#22c55e,transparent);}
 .tip-box{background:rgba(6,182,212,0.07);border:1px solid rgba(6,182,212,0.22);
@@ -151,18 +160,24 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # ── HERO ──────────────────────────────────────────────────────────────────────
 st.markdown("""
-<div style='background:linear-gradient(135deg,rgba(34,197,94,0.14),rgba(16,80,32,0.08) 50%,rgba(4,14,8,0.60));
-  border:2px solid rgba(34,197,94,0.38);border-radius:18px;padding:28px 36px;margin:12px 0 24px;
-  position:relative;overflow:hidden;'>
+<div style='background:linear-gradient(135deg,rgba(34,197,94,0.12),rgba(16,80,32,0.07) 50%,rgba(4,14,8,0.50));
+  border:2px solid rgba(34,197,94,0.40);border-radius:18px;padding:28px 36px;margin:12px 0 24px;
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 8px 40px rgba(0,0,0,0.60),inset 0 1px 0 rgba(255,255,255,0.06);'>
   <div style='position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent,#22c55e,transparent);'></div>
-  <div style='font-size:0.80rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;
-    color:rgba(34,197,94,0.80);margin-bottom:8px;'>🍽️ AI Meal Planner</div>
-  <div style='font-family:Barlow Condensed,sans-serif;font-size:clamp(1.8rem,4vw,3rem);
-    font-weight:900;text-transform:uppercase;color:#fff;line-height:1;margin-bottom:8px;'>
-    Your Perfect Day of <span style='color:#22c55e;'>Eating</span>
+    background:linear-gradient(90deg,transparent,#22c55e 30%,rgba(251,191,36,0.60) 60%,#22c55e 80%,transparent);'></div>
+  <div style='position:absolute;bottom:-30px;right:-30px;width:160px;height:160px;border-radius:50%;
+    background:radial-gradient(circle,rgba(251,191,36,0.12) 0%,transparent 70%);pointer-events:none;'></div>
+  <div style='font-size:0.78rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;
+    color:rgba(34,197,94,0.85);margin-bottom:10px;'>🍽️ AI Meal Planner</div>
+  <div style='font-family:Barlow Condensed,sans-serif;font-size:clamp(1.8rem,4vw,3.2rem);
+    font-weight:900;text-transform:uppercase;color:#fff;line-height:1;margin-bottom:10px;
+    text-shadow:0 2px 20px rgba(34,197,94,0.30);'>
+    Your Perfect Day of <span style='color:#22c55e;
+      text-shadow:0 0 30px rgba(34,197,94,0.60);'>Eating</span>
   </div>
-  <div style='font-size:0.95rem;color:rgba(255,255,255,0.60);max-width:560px;'>
+  <div style='font-size:0.95rem;color:rgba(255,255,255,0.70);max-width:560px;line-height:1.6;'>
     Pick your cuisine, dietary preference and calorie goal — AI generates a personalised
     full-day meal plan with exact macros in seconds.
   </div>
