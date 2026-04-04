@@ -229,7 +229,7 @@ except ImportError:
 # ══════════════════════════════════════════════════════════════════════════════
 # HERO
 # ══════════════════════════════════════════════════════════════════════════════
-uname_up   = uname.upper()
+uname_up   = _display.upper() if '@' not in _display else uname.upper()
 diet_icons = {"veg":"&#127807;","nonveg":"&#127829;","both":"&#127807;&#127829;"}
 d_icon     = diet_icons.get(dietary_type, "&#127807;")
 
