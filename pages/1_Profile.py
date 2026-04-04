@@ -132,47 +132,68 @@ div[data-baseweb="select"] div div{background:transparent!important;color:#fff!i
 """, unsafe_allow_html=True)
 
 # ── NAV ──────────────────────────────────────────────────────────────────────
+st.markdown("""
+<style>
+div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"] > button{
+  background:rgba(18,4,4,0.82)!important;border:1.5px solid rgba(229,9,20,0.55)!important;
+  color:rgba(255,255,255,0.92)!important;border-radius:8px!important;
+  font-family:'DM Sans',sans-serif!important;font-size:0.75rem!important;font-weight:700!important;
+  padding:4px 4px!important;height:30px!important;min-height:30px!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  letter-spacing:0.5px!important;text-transform:none!important;
+  box-shadow:none!important;transition:all 0.15s!important;}
+div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"] > button:hover{
+  background:rgba(229,9,20,0.22)!important;border-color:rgba(229,9,20,0.85)!important;
+  color:#fff!important;transform:none!important;}
+div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]:last-child > button{
+  background:linear-gradient(135deg,#c0000c,#8b0000)!important;border-color:rgba(229,9,20,0.80)!important;}
+div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"] > button[disabled]{
+  opacity:0.35!important;cursor:not-allowed!important;}
+</style>
+""", unsafe_allow_html=True)
+
 _has_plan = bool(st.session_state.get("structured_days"))
-_pn = st.columns([1.8,1,1,1,1,1,1,1,1,1.3])
+_pn = st.columns([1.6, 0.8, 0.8, 0.8, 0.8, 0.9, 0.9, 0.8, 0.85, 0.95])
 with _pn[0]:
-    st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
+    st.markdown("<div class='nav-logo' style='font-size:1.1rem;letter-spacing:3px;'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
 with _pn[1]:
-    if st.button("🏠 Home",     key="pn_db", use_container_width=True, disabled=not _has_plan):
+    if st.button("🏠 Home",    key="pn_db", use_container_width=True, disabled=not _has_plan):
         st.switch_page("pages/2_Dashboard.py")
 with _pn[2]:
-    if st.button("⚡ Workout",  key="pn_wp", use_container_width=True, disabled=not _has_plan):
+    if st.button("⚡ Workout", key="pn_wp", use_container_width=True, disabled=not _has_plan):
         st.switch_page("pages/3_Workout_Plan.py")
 with _pn[3]:
-    if st.button("🥗 Diet",     key="pn_dp", use_container_width=True, disabled=not _has_plan):
+    if st.button("🥗 Diet",    key="pn_dp", use_container_width=True, disabled=not _has_plan):
         try: st.switch_page("pages/4_Diet_Plan.py")
         except Exception: pass
 with _pn[4]:
-    if st.button("🍽️ Meals",   key="pn_mp", use_container_width=True):
+    if st.button("🍽️ Meals",  key="pn_mp", use_container_width=True):
         try: st.switch_page("pages/11_meal_planner.py")
         except Exception: pass
 with _pn[5]:
-    if st.button("🤖 AI Coach", key="pn_ai", use_container_width=True):
+    if st.button("🤖 AI Coach",key="pn_ai", use_container_width=True):
         try: st.switch_page("pages/5_ai_coach.py")
         except Exception: pass
 with _pn[6]:
-    if st.button("🏆 Records",  key="pn_rc", use_container_width=True):
+    if st.button("🏆 Records", key="pn_rc", use_container_width=True):
         try: st.switch_page("pages/6_records.py")
         except Exception: pass
 with _pn[7]:
-    if st.button("📸 Photos",   key="pn_ph", use_container_width=True):
+    if st.button("📸 Photos",  key="pn_ph", use_container_width=True):
         try: st.switch_page("pages/7_progress_photos.py")
         except Exception: pass
 with _pn[8]:
-    if st.button("● 👤 Profile", key="pn_pr", use_container_width=True):
+    if st.button("● Profile",  key="pn_pr", use_container_width=True):
         st.rerun()
 with _pn[9]:
-    if st.button("🚪 Sign Out", key="pn_so", use_container_width=True):
+    if st.button("🚪 Sign Out",key="pn_so", use_container_width=True):
         logout(uname)
         for k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration","plan_for",
                   "force_regen","tracking","_plan_checked","_db_loaded_dash","_auto_redirect",
                   "_diet_chosen","_needs_rerun","_db_streak","edit_profile_mode","_login_db_err"]:
             st.session_state.pop(k, None)
+        st.switch_page("app.py")
         st.switch_page("app.py")
 
 st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
