@@ -610,8 +610,8 @@ with fe2:
                             raw = "Could not generate guide in correct format. Please try again."
                         else:
                             _slines = [l for l in raw.splitlines()
-                                       if not re.match(r'^\s*[{\[\]}\]],?\s*$', l)
-                                       and not re.match(r'^\s*"[^"]+"\s*:\s*', l)]
+                                       if not _re2.match(r'^[{\[\]},]+$', l.strip())
+                                       and not _re2.match(r'^"[^"]+"\s*:', l.strip())]
                             raw = "\n".join(_slines).strip()
                         st.session_state[supp_key] = raw
                         try:
@@ -619,8 +619,8 @@ with fe2:
                             save_user_setting(uname, "supplement_guide", raw)
                         except Exception: pass
                         st.rerun()
-                    except Exception:
-                        st.error("Could not generate guide. Try again.")
+                    except Exception as _supp_err:
+                        st.error(f"Could not generate guide: {_supp_err}")
         else:
             raw_supp = st.session_state[supp_key]
             lines = []
