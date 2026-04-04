@@ -22,31 +22,28 @@ data  = st.session_state.user_data
 # ── CSS ───────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-[data-testid="stAppViewContainer"]::before {
-  content:'';position:fixed;inset:0;z-index:-1;
-  background:
-    radial-gradient(ellipse at 12%  8%,  rgba(251,191,36,0.28) 0%, transparent 35%),
-    radial-gradient(ellipse at 88%  10%, rgba(249,115,22,0.22) 0%, transparent 32%),
-    radial-gradient(ellipse at 95%  55%, rgba(34,197,94,0.20)  0%, transparent 38%),
-    radial-gradient(ellipse at 5%   60%, rgba(16,185,129,0.18) 0%, transparent 35%),
-    radial-gradient(ellipse at 50%  90%, rgba(251,191,36,0.16) 0%, transparent 40%),
-    radial-gradient(ellipse at 30%  45%, rgba(34,197,94,0.10)  0%, transparent 50%),
-    radial-gradient(ellipse at 70%  60%, rgba(249,115,22,0.10) 0%, transparent 45%),
-    linear-gradient(160deg,#040e03 0%,#071a04 25%,#051506 50%,#031008 75%,#050e04 100%);
-}
-[data-testid="stAppViewContainer"]::after {
-  content:'';position:fixed;inset:0;z-index:-1;
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(34,197,94,0.06) 1px, transparent 0);
-  background-size:32px 32px;
-}
+/* Remove pseudo-element approach — use direct background on the app */
+[data-testid="stAppViewContainer"]::before,
+[data-testid="stAppViewContainer"]::after { display:none!important; }
+
+html, body, .stApp,
 [data-testid="stAppViewContainer"] {
-  background:transparent!important;
+  background:
+    radial-gradient(ellipse at 10%  5%,  rgba(251,191,36,0.35) 0%, transparent 30%),
+    radial-gradient(ellipse at 90%  8%,  rgba(249,115,22,0.28) 0%, transparent 28%),
+    radial-gradient(ellipse at 92%  55%, rgba(34,197,94,0.24)  0%, transparent 32%),
+    radial-gradient(ellipse at 5%   65%, rgba(16,185,129,0.22) 0%, transparent 30%),
+    radial-gradient(ellipse at 50%  95%, rgba(251,191,36,0.20) 0%, transparent 35%),
+    radial-gradient(ellipse at 35%  50%, rgba(34,197,94,0.08)  0%, transparent 45%),
+    radial-gradient(ellipse at 65%  55%, rgba(249,115,22,0.08) 0%, transparent 40%),
+    linear-gradient(150deg,#040f03 0%,#082006 20%,#061a05 45%,#041208 70%,#060f04 100%)
+    !important;
+  color:#fff!important;
+  font-family:'DM Sans',sans-serif!important;
 }
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stDecoration"],
 [data-testid="stSidebarNav"],section[data-testid="stSidebar"]{display:none!important;}
-html,body,.stApp{background:#020e05!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
 [data-testid="stAppViewContainer"]>section>div.block-container{
   max-width:1100px!important;margin:0 auto!important;padding:0 24px 100px!important;}
 
