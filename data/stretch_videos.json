@@ -1,21 +1,20 @@
-{
-  "pre_workout": [
-    {
-      "name": "Full Body Warm-Up",
-      "duration": "5 min",
-      "url": "https://www.youtube.com/embed/UBMk30rjy0o"
-    },
-    {
-      "name": "Dynamic Stretching Routine",
-      "duration": "4 min",
-      "url": "https://www.youtube.com/embed/2L2lnxIcNmo"
-    },
-    {
-      "name": "Quick Warm-Up Routine",
-      "duration": "5 min",
-      "url": "https://www.youtube.com/embed/1f8yoFFdkcY"
-    }
-  ],
+"pre_workout": [
+  {
+    "name": "Full Body Warm-Up",
+    "duration": "5 min",
+    "url": "https://www.youtube.com/embed/1f8yoFFdkcY"
+  },
+  {
+    "name": "Dynamic Stretching Routine",
+    "duration": "4 min",
+    "url": "https://www.youtube.com/embed/2pLT-olgUJs"
+  },
+  {
+    "name": "Quick Warm-Up Routine",
+    "duration": "5 min",
+    "url": "https://www.youtube.com/embed/UBMk30rjy0o"
+  }
+],
   "post_workout": [
     {
       "name": "Cool Down Stretch",
