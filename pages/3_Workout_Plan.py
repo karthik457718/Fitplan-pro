@@ -641,47 +641,106 @@ if not st.session_state.get("_notes_loaded") and plan_id:
 
 
 # ── MUSIC PLAYER ──────────────────────────────────────────────────────────────
+# Verified Spotify public playlist IDs — each genre uses a different real playlist
+_PLAYLISTS = {
+    "🔥 Beast Mode":     {"id": "37i9dQZF1DWUVpAXiEPK8P", "desc": "Hard-hitting gym tracks"},
+    "💪 Workout Hits":   {"id": "37i9dQZF1DXdxcBWuJkbcy", "desc": "Top workout bangers"},
+    "🎤 Hip-Hop":        {"id": "37i9dQZF1DX0XUsuxWHRQd", "desc": "Hip-hop motivation"},
+    "⚡ EDM":             {"id": "37i9dQZF1DX4dyzvuaRJ0n", "desc": "High energy EDM"},
+    "🎸 Rock":           {"id": "37i9dQZF1DWXRqgorJj26U", "desc": "Rock & metal energy"},
+    "🎵 Bollywood":      {"id": "37i9dQZF1DXbpvFHeiqN55", "desc": "Bollywood pump-up"},
+    "🎬 Hollywood":      {"id": "37i9dQZF1DX1lVhptIYRda", "desc": "Hollywood soundtracks"},
+    "🧘 Chill Recovery": {"id": "37i9dQZF1DX3Ynx9NaHOFK", "desc": "Calm down after workout"},
+}
+
+st.markdown("""
+<style>
+.music-card{
+  background:linear-gradient(135deg,rgba(18,6,2,0.95),rgba(10,4,8,0.90));
+  border:1.5px solid rgba(229,9,20,0.28);border-radius:18px;
+  padding:18px 22px;margin-bottom:12px;position:relative;overflow:hidden;}
+.music-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#E50914,rgba(229,9,20,0.30),transparent);}
+.genre-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.10);border-radius:20px;padding:6px 14px;
+  font-size:0.80rem;color:rgba(255,255,255,0.65);cursor:pointer;
+  transition:all 0.18s;white-space:nowrap;font-family:DM Sans,sans-serif;}
+.genre-btn:hover,.genre-btn.active{
+  background:rgba(229,9,20,0.15);border-color:rgba(229,9,20,0.50);color:#fff;}
+@keyframes equalizer{
+  0%,100%{height:6px}25%{height:16px}50%{height:10px}75%{height:20px}}
+.eq-bar{width:3px;background:#E50914;border-radius:2px;display:inline-block;margin:0 1px;
+  animation:equalizer 0.8s ease-in-out infinite;}
+</style>
+""", unsafe_allow_html=True)
+
+_genre = st.session_state.get("music_genre_sel", "🔥 Beast Mode")
+
 st.markdown(
-    "<div style='font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;"
-    "color:rgba(229,9,20,0.75);margin-bottom:10px;display:flex;align-items:center;gap:8px'>"
-    "<span style='width:14px;height:1.5px;background:#E50914;display:block'></span>"
-    "🎵 Workout Music</div>",
+    "<div class='music-card'>"
+    "<div style='display:flex;align-items:center;justify-content:space-between;margin-bottom:14px'>"
+    "<div style='display:flex;align-items:center;gap:10px'>"
+    "<div style='width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#E50914,#7c000a);"
+    "display:flex;align-items:center;justify-content:center;font-size:1rem'>"
+    "🎵</div>"
+    "<div>"
+    "<div style='font-size:0.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;"
+    "color:#fff'>Workout Music</div>"
+    "<div style='font-size:0.70rem;color:rgba(255,255,255,0.40)'>Spotify · Pick your vibe</div>"
+    "</div></div>"
+    "<div style='display:flex;align-items:flex-end;gap:2px;height:22px'>"
+    "<div class='eq-bar' style='animation-delay:0s;height:8px'></div>"
+    "<div class='eq-bar' style='animation-delay:0.15s;height:14px'></div>"
+    "<div class='eq-bar' style='animation-delay:0.3s;height:6px'></div>"
+    "<div class='eq-bar' style='animation-delay:0.45s;height:18px'></div>"
+    "<div class='eq-bar' style='animation-delay:0.1s;height:10px'></div>"
+    "</div></div>",
     unsafe_allow_html=True
 )
 
-_PLAYLISTS = {
-    "🎤 Hip-Hop":      "37i9dQZF1DX0XUsuxWHRQd",
-    "⚡ EDM":           "37i9dQZF1DX4dyzvuaRJ0n",
-    "🎸 Rock":          "37i9dQZF1DWXRqgorJj26U",
-    "🎬 Hollywood":     "37i9dQZF1DX1lVhptIYRda",
-    "🎵 Bollywood":     "37i9dQZF1DX0XUsuxWHRQd",
-    "🎶 Tollywood":     "37i9dQZF1DX4dyzvuaRJ0n",
-    "💪 Workout Hits":  "37i9dQZF1DXdxcBWuJkbcy",
-    "🔥 Beast Mode":    "37i9dQZF1DWUVpAXiEPK8P",
-}
+# Genre pill buttons
+gcols = st.columns(len(_PLAYLISTS))
+for gi, (gname, gdata) in enumerate(_PLAYLISTS.items()):
+    with gcols[gi]:
+        _is_active = (_genre == gname)
+        _btn_style = (
+            "background:rgba(229,9,20,0.20);border:1.5px solid rgba(229,9,20,0.55);"
+            "color:#fff;font-weight:700;" if _is_active else
+            "background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);"
+            "color:rgba(255,255,255,0.60);"
+        )
+        if st.button(gname, key=f"genre_btn_{gi}", use_container_width=True):
+            st.session_state["music_genre_sel"] = gname
+            st.rerun()
 
-_music_col1, _music_col2 = st.columns([2, 5])
-with _music_col1:
-    _genre = st.selectbox(
-        "Genre", list(_PLAYLISTS.keys()),
-        key="music_genre", label_visibility="collapsed"
-    )
-    _playlist_id = _PLAYLISTS[_genre]
-    st.markdown(
-        f"<div style='font-size:0.75rem;color:rgba(255,255,255,0.45);margin-top:6px;line-height:1.5'>"
-        f"🎵 {_genre} playlist<br>via Spotify</div>",
-        unsafe_allow_html=True
-    )
+st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
 
-with _music_col2:
-    st.markdown(
-        f"<iframe src='https://open.spotify.com/embed/playlist/{_playlist_id}?utm_source=generator&theme=0' "
-        f"width='100%' height='80' frameBorder='0' allowfullscreen='' "
-        f"allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' "
-        f"loading='lazy' style='border-radius:12px'></iframe>",
-        unsafe_allow_html=True
-    )
+# Get selected playlist
+_sel = _PLAYLISTS.get(_genre, _PLAYLISTS["🔥 Beast Mode"])
+_pid = _sel["id"]
+_desc = _sel["desc"]
 
+# Show selected genre info
+st.markdown(
+    f"<div style='display:flex;align-items:center;gap:8px;margin-bottom:10px'>"
+    f"<span style='font-size:1.1rem'>{_genre.split()[0]}</span>"
+    f"<span style='font-size:0.85rem;font-weight:600;color:#fff'>{_genre.split(None,1)[1] if len(_genre.split())>1 else _genre}</span>"
+    f"<span style='font-size:0.75rem;color:rgba(255,255,255,0.40)'>· {_desc}</span>"
+    f"</div>",
+    unsafe_allow_html=True
+)
+
+# Full-height Spotify embed — plays directly in page
+st.markdown(
+    f"<iframe src='https://open.spotify.com/embed/playlist/{_pid}?"
+    f"utm_source=generator&theme=0' "
+    f"width='100%' height='352' frameBorder='0' allowfullscreen='' "
+    f"allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture' "
+    f"loading='lazy' style='border-radius:14px'></iframe>",
+    unsafe_allow_html=True
+)
+
+st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
 # ── DAY TABS ──────────────────────────────────────────────────────────────────
