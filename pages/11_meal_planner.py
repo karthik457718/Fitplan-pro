@@ -24,10 +24,10 @@ st.markdown("""
 <style>
 [data-testid="stAppViewContainer"]::before {
   content:'';position:fixed;inset:0;z-index:-1;
-  background:url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1920&q=85&auto=format&fit=crop')
+  background:url('https://images.unsplash.com/photo-1547592180-85f173990554?w=1920&q=80&auto=format&fit=crop')
     center center/cover no-repeat;
-  filter:blur(3px) brightness(0.38) saturate(1.10);
-  transform:scale(1.04);
+  filter:blur(3px) brightness(0.35) saturate(1.20);
+  transform:scale(1.05);
 }
 [data-testid="stAppViewContainer"] {
   background:
