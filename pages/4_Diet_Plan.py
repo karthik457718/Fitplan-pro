@@ -596,11 +596,23 @@ with fe2:
                     try:
                         from model_api import query_model
                         prompt = (
-                            f"List 5 supplements for a {data.get('level','Beginner')} person, "
-                            f"goal: {data.get('goal','Fitness')}, diet: {cfg['label']}. "
-                            "Format: NAME: dosage — benefit. Plain text only."
+                            f"You are a fitness nutritionist. List exactly 5 supplements for a "
+                            f"{data.get('level','Beginner')} {cfg['label']} person whose goal is {data.get('goal','Fitness')}. "
+                            "STRICT FORMAT — use exactly this pattern for each line:\n"
+                            "SUPPLEMENT NAME: dosage — one sentence benefit\n"
+                            "Example: Creatine Monohydrate: 5g daily — boosts strength and muscle recovery.\n"
+                            "Rules: plain text only, no JSON, no curly braces, no markdown, no numbering, no extra commentary."
                         )
-                        raw = query_model(prompt, max_tokens=250).strip()
+                        raw = query_model(prompt, max_tokens=300).strip()
+                        # Strip any JSON that slips through
+                        import re as _re2
+                        if raw.strip().startswith(("{","[")):
+                            raw = "Could not generate guide in correct format. Please try again."
+                        else:
+                            _slines = [l for l in raw.splitlines()
+                                       if not re.match(r'^\s*[{\[\]}\]],?\s*$', l)
+                                       and not re.match(r'^\s*"[^"]+"\s*:\s*', l)]
+                            raw = "\n".join(_slines).strip()
                         st.session_state[supp_key] = raw
                         try:
                             from utils.db import save_user_setting
@@ -735,12 +747,20 @@ for tab, day_data in zip(tabs, sdays):
                                     from model_api import query_model
                                     d_label = {"veg":"Vegetarian","nonveg":"Non-Vegetarian","both":"Flexible"}.get(dietary_type,"")
                                     prompt = (
-                                        f"Suggest 1 alternative {meal} meal for a {d_label} person "
-                                        f"(goal: {data.get('goal','Fitness')}). "
-                                        f"Current meal: {str(desc)}. "
-                                        "Give only the meal name and key ingredients in 1-2 lines. No JSON."
+                                        f"You are a diet coach. Suggest 1 alternative {meal} meal for a "
+                                        f"{d_label} person (goal: {data.get('goal','Fitness')}). "
+                                        f"Current meal: {str(desc)[:80]}. "
+                                        "Reply in ONE plain English sentence only. "
+                                        "Format: Meal name — key ingredients. "
+                                        "Example: Masala Oats — rolled oats, tomato, onion, spices. "
+                                        "NEVER use JSON, curly braces, brackets, or markdown. Plain text only."
                                     )
                                     result = query_model(prompt, max_tokens=80)
+                                    import re as _re3
+                                    result = result.strip()
+                                    if result.startswith(("{","[")):
+                                        result = "Please try again for a meal suggestion."
+                                    result = _re3.sub(r"[{}\[\]]", "", result).strip()
                                     st.session_state[f"swap_result_{dn}_{meal}"] = result.strip()
                                     st.rerun()
                                 except Exception:
