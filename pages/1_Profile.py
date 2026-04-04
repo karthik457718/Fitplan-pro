@@ -467,6 +467,70 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
+    # ── QUICK NAVIGATION BANNER ───────────────────────────────────────────────
+    if has_plan:
+        plan_days = len(st.session_state.structured_days)
+        st.markdown(f"""
+<div style='background:linear-gradient(135deg,rgba(229,9,20,0.18),rgba(120,0,8,0.10) 50%,rgba(10,5,3,0.60));
+  border:2px solid rgba(229,9,20,0.55);border-radius:18px;padding:22px 28px;margin:16px 0;
+  position:relative;overflow:hidden;'>
+  <div style='position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,#E50914,rgba(255,80,80,0.50),#E50914,transparent);'></div>
+  <div style='display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;'>
+    <div>
+      <div style='font-size:0.70rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+        color:rgba(229,9,20,0.75);margin-bottom:4px;'>✅ Active Plan Ready</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:1.6rem;letter-spacing:2px;
+        color:#fff;line-height:1;'>Your {plan_days}-Day Fitness Plan is waiting!</div>
+      <div style='font-size:0.80rem;color:rgba(255,255,255,0.50);margin-top:4px;'>
+        Jump straight into your workout, diet, or dashboard below 👇</div>
+    </div>
+    <div style='display:flex;gap:8px;flex-wrap:wrap;'>
+      <div style='font-size:2rem;'>🏋️</div>
+      <div style='font-size:2rem;'>🥗</div>
+      <div style='font-size:2rem;'>📊</div>
+    </div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
+        _qa, _qb, _qc, _qd = st.columns(4)
+        with _qa:
+            if st.button("📊 Dashboard", key="qa_dash", use_container_width=True):
+                st.switch_page("pages/2_Dashboard.py")
+        with _qb:
+            if st.button("⚡ Workout Plan", key="qa_wp", use_container_width=True):
+                st.switch_page("pages/3_Workout_Plan.py")
+        with _qc:
+            if st.button("🥗 Diet Plan", key="qa_diet", use_container_width=True):
+                try: st.switch_page("pages/4_Diet_Plan.py")
+                except Exception: pass
+        with _qd:
+            if st.button("🍽️ Meal Planner", key="qa_meals", use_container_width=True):
+                try: st.switch_page("pages/11_meal_planner.py")
+                except Exception: pass
+
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
+    else:
+        # No plan yet — prompt to generate
+        st.markdown("""
+<div style='background:linear-gradient(135deg,rgba(34,197,94,0.12),rgba(10,60,20,0.08));
+  border:2px solid rgba(34,197,94,0.40);border-radius:18px;padding:22px 28px;margin:16px 0;
+  position:relative;overflow:hidden;text-align:center;'>
+  <div style='position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,#22c55e,transparent);'></div>
+  <div style='font-size:2rem;margin-bottom:10px;'>🚀</div>
+  <div style='font-family:Bebas Neue,sans-serif;font-size:1.5rem;letter-spacing:2px;color:#fff;margin-bottom:6px;'>
+    Ready to Start Your Fitness Journey?</div>
+  <div style='font-size:0.85rem;color:rgba(255,255,255,0.55);margin-bottom:16px;'>
+    Generate your personalised AI workout + diet plan in seconds.</div>
+</div>
+""", unsafe_allow_html=True)
+        if st.button("⚡ GENERATE MY PLAN NOW", key="qa_gen", use_container_width=True):
+            st.switch_page("pages/3_Workout_Plan.py")
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
     # ── Injuries ──────────────────────────────────────────────────────────────
     saved_injuries = ud.get("injuries", [])
     if saved_injuries:
