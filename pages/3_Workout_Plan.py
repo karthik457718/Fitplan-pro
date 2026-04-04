@@ -1165,6 +1165,7 @@ for tab, day_data in zip(tabs, sdays):
                                 with st.spinner("Finding alternative..."):
                                     try:
                                         from model_api import query_model
+                                        import json as _jmod, re as _re
                                         _eq  = ", ".join(data.get("equipment", [])) or "bodyweight only"
                                         _inj = ", ".join(data.get("injuries",  [])) or "none"
                                         _swap_prompt = (
@@ -1172,26 +1173,39 @@ for tab, day_data in zip(tabs, sdays):
                                             f"to replace '{name_}' for a {data.get('level','Beginner')} person. "
                                             f"Equipment available: {_eq}. Injuries/limitations: {_inj}. "
                                             f"Muscle group: {mg}. Keep same sets and reps: {sets_} sets x {reps_} reps. "
-                                            f"IMPORTANT: Reply in this exact format on one single line — no JSON, no bullets, no extra text:\n"
+                                            f"YOU MUST reply in this EXACT format — one single line, nothing else:\n"
                                             f"EXERCISE NAME | Why it works | Form tip\n"
-                                            f"Example: Dumbbell Press | Targets chest with less shoulder strain | Keep elbows at 45 degrees"
+                                            f"Example: Dumbbell Press | Targets chest with less shoulder strain | Keep elbows at 45 degrees\n"
+                                            f"NEVER use JSON, curly braces {{}}, square brackets, markdown, or numbered lists."
                                         )
                                         _swap_raw = query_model(_swap_prompt, max_tokens=120).strip()
-                                        # Robust parser: handles JSON fallback gracefully
-                                        import json as _jmod, re as _re
+
+                                        # If full JSON object, extract fields
                                         _swap_result = _swap_raw
-                                        # If AI returned JSON, extract fields
-                                        if _swap_raw.startswith("[") or _swap_raw.startswith("{"):
+                                        _stripped = _swap_raw.strip()
+                                        if _stripped.startswith(("{", "[")):
                                             try:
-                                                _jdata = _jmod.loads(_swap_raw)
+                                                _jdata = _jmod.loads(_stripped)
                                                 if isinstance(_jdata, list): _jdata = _jdata[0]
                                                 _jname = _jdata.get("EXERCISE NAME") or _jdata.get("name") or _jdata.get("exercise") or ""
                                                 _jwhy  = _jdata.get("why it works") or _jdata.get("why") or _jdata.get("reason") or ""
                                                 _jtip  = _jdata.get("form tip") or _jdata.get("tip") or _jdata.get("form") or ""
                                                 _swap_result = f"{_jname} | {_jwhy} | {_jtip}"
                                             except Exception:
-                                                # Strip JSON brackets and use as name
                                                 _swap_result = _re.sub(r'[{}\[\]"\':]', ' ', _swap_raw).strip()
+                                        else:
+                                            # Strip any embedded JSON lines
+                                            _clean = []
+                                            for _ln in _swap_raw.splitlines():
+                                                _lt = _ln.strip()
+                                                if _re.match(r'^"[^"]+"\s*:', _lt): continue
+                                                if _re.match(r'^[{}\[\]],?$', _lt): continue
+                                                _clean.append(_ln)
+                                            _swap_result = " ".join(_clean).strip()
+                                            # Ensure pipe format
+                                            if "|" not in _swap_result:
+                                                _swap_result = _swap_result + " | Great alternative | Focus on controlled movement"
+
                                         st.session_state[_swap_key] = _swap_result
                                         st.rerun()
                                     except Exception as e:
