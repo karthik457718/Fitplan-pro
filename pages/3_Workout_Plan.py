@@ -784,158 +784,25 @@ setTimeout(function(){
 </script>
 """, height=0)
 
-# ── MUSIC PLAYER ──────────────────────────────────────────────────────────────
+# ── MUSIC PLAYER ──────────────────────────────────────────────────────────────────────────────
+# Genre switching is 100% in-iframe JS — no Streamlit rerun, no white boxes.
+# The Spotify embed src is swapped directly by JS when user clicks a chip.
 import streamlit.components.v1 as _cmp
 import json as _json
 
-_PLAYLISTS = {
-    "\U0001f525 Beast Mode":     {"id": "37i9dQZF1DWUVpAXiEPK8P", "desc": "Hard-hitting gym tracks",  "color": "#ff4500"},
-    "\U0001f4aa Workout Hits":   {"id": "37i9dQZF1DXdxcBWuJkbcy", "desc": "Top workout bangers",       "color": "#E50914"},
-    "\U0001f3a4 Hip-Hop":        {"id": "37i9dQZF1DX0XUsuxWHRQd", "desc": "Hip-hop motivation",        "color": "#a855f7"},
-    "\u26a1 EDM":                {"id": "37i9dQZF1DX4dyzvuaRJ0n", "desc": "High energy EDM",           "color": "#06b6d4"},
-    "\U0001f3b8 Rock":           {"id": "37i9dQZF1DWXRqgorJj26U", "desc": "Rock & metal energy",       "color": "#f59e0b"},
-    "\U0001f3b5 Bollywood":      {"id": "37i9dQZF1DXbpvFHeiqN55", "desc": "Bollywood pump-up",         "color": "#ec4899"},
-    "\U0001f3b6 Tollywood":      {"id": "37i9dQZF1DX9sUBMxhFvh1", "desc": "Telugu beats & energy",    "color": "#f97316"},
-    "\U0001f3ac Hollywood":      {"id": "37i9dQZF1DX1lVhptIYRda", "desc": "Epic movie soundtracks",   "color": "#3b82f6"},
-    "\U0001f9d8 Chill Recovery": {"id": "37i9dQZF1DX3Ynx9NaHOFK", "desc": "Calm down & recover",     "color": "#22c55e"},
-}
+_PL_DATA = [{'key': '🔥 Beast Mode', 'id': '37i9dQZF1DWUVpAXiEPK8P', 'desc': 'Hard-hitting gym tracks', 'color': '#ff4500', 'emoji': '🔥', 'label': 'BEAST MODE'}, {'key': '💪 Workout Hits', 'id': '37i9dQZF1DXdxcBWuJkbcy', 'desc': 'Top workout bangers', 'color': '#E50914', 'emoji': '💪', 'label': 'WORKOUT HITS'}, {'key': '🎤 Hip-Hop', 'id': '37i9dQZF1DX0XUsuxWHRQd', 'desc': 'Hip-hop motivation', 'color': '#a855f7', 'emoji': '🎤', 'label': 'HIP-HOP'}, {'key': '⚡ EDM', 'id': '37i9dQZF1DX4dyzvuaRJ0n', 'desc': 'High energy EDM', 'color': '#06b6d4', 'emoji': '⚡', 'label': 'EDM'}, {'key': '🎸 Rock', 'id': '37i9dQZF1DWXRqgorJj26U', 'desc': 'Rock & metal energy', 'color': '#f59e0b', 'emoji': '🎸', 'label': 'ROCK'}, {'key': '🎵 Bollywood', 'id': '37i9dQZF1DXbpvFHeiqN55', 'desc': 'Bollywood pump-up', 'color': '#ec4899', 'emoji': '🎵', 'label': 'BOLLYWOOD'}, {'key': '🎶 Tollywood', 'id': '37i9dQZF1DX9sUBMxhFvh1', 'desc': 'Telugu beats & energy', 'color': '#f97316', 'emoji': '🎶', 'label': 'TOLLYWOOD'}, {'key': '🎬 Hollywood', 'id': '37i9dQZF1DX1lVhptIYRda', 'desc': 'Epic movie soundtracks', 'color': '#3b82f6', 'emoji': '🎬', 'label': 'HOLLYWOOD'}, {'key': '🧘 Chill Recovery', 'id': '37i9dQZF1DX3Ynx9NaHOFK', 'desc': 'Calm down & recover', 'color': '#22c55e', 'emoji': '🧘', 'label': 'CHILL RECOVERY'}]
 
-_qg = st.query_params.get("music_genre", "")
-if _qg and _qg in _PLAYLISTS:
-    st.session_state["music_genre_sel"] = _qg
-    st.query_params.pop("music_genre")
-    st.rerun()
+_genre     = st.session_state.get('music_genre_sel', _PL_DATA[0]['key'])
+# Bake current active genre into the HTML so chip renders correctly on load
+_pl_json   = _json.dumps(_PL_DATA)
+_genre_js  = _json.dumps(_genre)
 
-_genre      = st.session_state.get("music_genre_sel", "\U0001f525 Beast Mode")
-_active_sel = _PLAYLISTS.get(_genre, list(_PLAYLISTS.values())[0])
-_pid        = _active_sel["id"]
-_active_key = _genre
+_base_html = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\'UTF-8\'>\n<link href=\'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700;800&display=swap\' rel=\'stylesheet\'>\n<style>\n*{box-sizing:border-box;margin:0;padding:0;}\nbody{background:transparent;font-family:\'DM Sans\',sans-serif;}\n@keyframes eq1{0%,100%{height:5px}20%{height:22px}50%{height:12px}80%{height:18px}}\n@keyframes eq2{0%,100%{height:18px}25%{height:7px}60%{height:24px}85%{height:10px}}\n@keyframes eq3{0%,100%{height:12px}30%{height:26px}55%{height:8px}90%{height:20px}}\n@keyframes eq4{0%,100%{height:20px}15%{height:9px}50%{height:28px}75%{height:6px}}\n@keyframes eq5{0%,100%{height:8px}35%{height:20px}65%{height:14px}85%{height:24px}}\n@keyframes eq6{0%,100%{height:16px}20%{height:5px}55%{height:22px}80%{height:11px}}\n@keyframes eq7{0%,100%{height:10px}30%{height:24px}60%{height:7px}90%{height:19px}}\n@keyframes scanGlow{0%,100%{opacity:0}50%{opacity:1}}\n@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}\n@keyframes rp{0%,100%{box-shadow:0 0 0 0 rgba(229,9,20,0),0 0 20px rgba(229,9,20,0.55)}50%{box-shadow:0 0 0 6px rgba(229,9,20,0.10),0 0 32px rgba(229,9,20,0.75)}}\n@keyframes db{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(0.7);opacity:0.45}}\n@keyframes ci{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}\n.shell{border-radius:22px;overflow:hidden;position:relative;\n  background:linear-gradient(140deg,#06030c,#0d0408 55%,#040610);\n  border:1px solid rgba(255,255,255,0.08);\n  box-shadow:0 32px 100px rgba(0,0,0,0.92),inset 0 1px 0 rgba(255,255,255,0.06);\n  animation:float 6s ease-in-out infinite;}\n.shell::before{content:\'\';position:absolute;top:0;left:0;right:0;height:1.5px;z-index:2;\n  background:linear-gradient(90deg,transparent,#E50914 30%,rgba(255,120,50,0.7) 50%,#E50914 70%,transparent);\n  animation:scanGlow 3s ease-in-out infinite;}\n.orb{position:absolute;top:-90px;right:-90px;width:280px;height:280px;border-radius:50%;pointer-events:none;\n  background:radial-gradient(circle,rgba(229,9,20,0.11) 0%,transparent 70%);}\n.hdr{display:flex;align-items:center;padding:18px 22px 14px;border-bottom:1px solid rgba(255,255,255,0.05);}\n.ring{width:46px;height:46px;border-radius:50%;flex-shrink:0;font-size:1.25rem;\n  background:linear-gradient(135deg,#E50914,#7c000a);\n  display:flex;align-items:center;justify-content:center;animation:rp 2.5s ease-in-out infinite;}\n.ht{margin-left:13px;flex:1;}\n.h1{font-size:0.78rem;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:#fff;}\n.h2{font-size:0.65rem;color:rgba(255,255,255,0.28);margin-top:3px;}\n.eq{display:flex;align-items:flex-end;gap:3px;height:28px;}\n.eq span{display:block;width:4px;border-radius:3px;background:linear-gradient(to top,#E50914,#ff7043);box-shadow:0 0 8px rgba(229,9,20,0.65);}\n.eq span:nth-child(1){animation:eq1 0.70s ease-in-out infinite;}\n.eq span:nth-child(2){animation:eq2 0.90s ease-in-out infinite 0.10s;}\n.eq span:nth-child(3){animation:eq3 0.75s ease-in-out infinite 0.20s;}\n.eq span:nth-child(4){animation:eq4 0.85s ease-in-out infinite 0.05s;}\n.eq span:nth-child(5){animation:eq5 0.65s ease-in-out infinite 0.15s;}\n.eq span:nth-child(6){animation:eq6 0.95s ease-in-out infinite 0.08s;}\n.eq span:nth-child(7){animation:eq7 0.80s ease-in-out infinite 0.12s;}\n.chips{display:flex;flex-wrap:wrap;gap:8px;padding:16px 20px 8px;}\n.chip{flex:1;min-width:82px;display:flex;flex-direction:column;align-items:center;gap:5px;\n  padding:13px 8px 11px;border-radius:16px;cursor:pointer;\n  border:1.5px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);\n  transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);animation:ci 0.4s ease both;}\n.chip:hover{transform:translateY(-4px) scale(1.06);border-color:rgba(255,255,255,0.18);background:rgba(255,255,255,0.07);}\n.chip.on{transform:translateY(-5px) scale(1.10);}\n.cem{font-size:1.55rem;line-height:1;pointer-events:none;}\n.clb{font-size:0.57rem;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;\n  color:rgba(255,255,255,0.40);text-align:center;pointer-events:none;}\n.chip.on .clb{color:#fff;}\n.np{display:flex;align-items:center;gap:11px;margin:6px 20px 12px;padding:12px 16px;\n  border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);\n  transition:border-color 0.35s;}\n.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;animation:db 1.4s ease-in-out infinite;}\n.dv{width:1px;height:28px;background:rgba(255,255,255,0.09);flex-shrink:0;}\n.npi{flex:1;}\n.nll{font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.30);}\n.nn{font-size:0.90rem;font-weight:700;color:#fff;}\n.nd{font-size:0.68rem;color:rgba(255,255,255,0.28);margin-top:2px;}\n.bdg{font-size:0.60rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;\n  padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.06);\n  border:1px solid rgba(255,255,255,0.09);color:rgba(255,255,255,0.35);white-space:nowrap;}\n.spw{padding:0 20px 20px;}\n.spw iframe{border-radius:18px;display:block;box-shadow:0 16px 60px rgba(0,0,0,0.75);}\n</style>\n</head>\n<body>\n<div class=\'shell\'>\n  <div class=\'orb\'></div>\n  <div class=\'hdr\'>\n    <div class=\'ring\'>🎵</div>\n    <div class=\'ht\'>\n      <div class=\'h1\'>Workout Music</div>\n      <div class=\'h2\'>Spotify · Choose your vibe · Click any genre below</div>\n    </div>\n    <div class=\'eq\'><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>\n  </div>\n  <div class=\'chips\' id=\'chips\'></div>\n  <div class=\'np\' id=\'np\'>\n    <div class=\'dot\' id=\'dot\'></div>\n    <div class=\'dv\'></div>\n    <div class=\'npi\'>\n      <div class=\'nll\'>Now Playing</div>\n      <div class=\'nn\' id=\'nn\'></div>\n      <div class=\'nd\' id=\'nd\'></div>\n    </div>\n    <div class=\'bdg\'>Spotify</div>\n  </div>\n  <div class=\'spw\'>\n    <iframe id=\'sp\' width=\'100%\' height=\'380\' frameBorder=\'0\'\n      allow=\'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\'\n      loading=\'lazy\'></iframe>\n  </div>\n</div>\n<script>\nvar PL=[{"key": "\\ud83d\\udd25 Beast Mode", "id": "37i9dQZF1DWUVpAXiEPK8P", "desc": "Hard-hitting gym tracks", "color": "#ff4500", "emoji": "\\ud83d\\udd25", "label": "BEAST MODE"}, {"key": "\\ud83d\\udcaa Workout Hits", "id": "37i9dQZF1DXdxcBWuJkbcy", "desc": "Top workout bangers", "color": "#E50914", "emoji": "\\ud83d\\udcaa", "label": "WORKOUT HITS"}, {"key": "\\ud83c\\udfa4 Hip-Hop", "id": "37i9dQZF1DX0XUsuxWHRQd", "desc": "Hip-hop motivation", "color": "#a855f7", "emoji": "\\ud83c\\udfa4", "label": "HIP-HOP"}, {"key": "\\u26a1 EDM", "id": "37i9dQZF1DX4dyzvuaRJ0n", "desc": "High energy EDM", "color": "#06b6d4", "emoji": "\\u26a1", "label": "EDM"}, {"key": "\\ud83c\\udfb8 Rock", "id": "37i9dQZF1DWXRqgorJj26U", "desc": "Rock & metal energy", "color": "#f59e0b", "emoji": "\\ud83c\\udfb8", "label": "ROCK"}, {"key": "\\ud83c\\udfb5 Bollywood", "id": "37i9dQZF1DXbpvFHeiqN55", "desc": "Bollywood pump-up", "color": "#ec4899", "emoji": "\\ud83c\\udfb5", "label": "BOLLYWOOD"}, {"key": "\\ud83c\\udfb6 Tollywood", "id": "37i9dQZF1DX9sUBMxhFvh1", "desc": "Telugu beats & energy", "color": "#f97316", "emoji": "\\ud83c\\udfb6", "label": "TOLLYWOOD"}, {"key": "\\ud83c\\udfac Hollywood", "id": "37i9dQZF1DX1lVhptIYRda", "desc": "Epic movie soundtracks", "color": "#3b82f6", "emoji": "\\ud83c\\udfac", "label": "HOLLYWOOD"}, {"key": "\\ud83e\\uddd8 Chill Recovery", "id": "37i9dQZF1DX3Ynx9NaHOFK", "desc": "Calm down & recover", "color": "#22c55e", "emoji": "\\ud83e\\uddd8", "label": "CHILL RECOVERY"}];\nvar active="\\ud83d\\udd25 Beast Mode";\nfunction rgb(h){h=h.replace(\'#\',\'\');return parseInt(h.slice(0,2),16)+\',\'+parseInt(h.slice(2,4),16)+\',\'+parseInt(h.slice(4,6),16);}\nfunction pick(k){active=k;render();}\nfunction render(){\n  var pl=null;\n  for(var i=0;i<PL.length;i++){if(PL[i].key===active){pl=PL[i];break;}}\n  if(!pl)pl=PL[0];\n  var h=\'\';\n  PL.forEach(function(p,i){\n    var on=(p.key===active);\n    var r=rgb(p.color);\n    var s=on?\'border-color:\'+p.color+\';background:rgba(\'+r+\',0.14);box-shadow:0 0 22px rgba(\'+r+\',0.55),0 8px 24px rgba(0,0,0,0.55);\':\'\';\n    h+=\'<div class="chip\'+(on?\' on\':\'\')+\'" style="\'+s+\'animation-delay:\'+(i*0.04).toFixed(2)+\'s" data-key="\'+p.key.replace(/&/g,\'&amp;\').replace(/"/g,\'&quot;\')+\'">\'\n      +\'<div class="cem">\'+p.emoji+\'</div>\'\n      +\'<div class="clb">\'+p.label+\'</div></div>\';\n  });\n  document.getElementById(\'chips\').innerHTML=h;\n  document.querySelectorAll(\'.chip\').forEach(function(el){\n    el.addEventListener(\'click\',function(){pick(this.getAttribute(\'data-key\'));});\n  });\n  var r2=rgb(pl.color);\n  document.getElementById(\'dot\').style.cssText=\'background:\'+pl.color+\';box-shadow:0 0 12px rgba(\'+r2+\',0.80);\';\n  document.getElementById(\'np\').style.borderColor=pl.color+\'44\';\n  document.getElementById(\'nn\').textContent=pl.emoji+\' \'+(pl.key.split(\' \').slice(1).join(\' \')||pl.key);\n  document.getElementById(\'nd\').textContent=pl.desc;\n  var src=\'https://open.spotify.com/embed/playlist/\'+pl.id+\'?utm_source=generator&theme=0\';\n  var fr=document.getElementById(\'sp\');\n  if(fr.getAttribute(\'src\')!==src)fr.setAttribute(\'src\',src);\n}\nrender();\n</script>\n</body>\n</html>\n'
 
-_pl_js = _json.dumps([
-    {"key": k,
-     "id":  v["id"],
-     "emoji": k.split()[0],
-     "label": (k.split(None,1)[1] if len(k.split())>1 else k).upper(),
-     "desc":  v["desc"],
-     "color": v["color"]}
-    for k, v in _PLAYLISTS.items()
-])
+# Replace active key so the correct chip is highlighted on page load
+_final_html = _base_html.replace('__ACTIVE_KEY__', _genre_js).replace('__PL_DATA__', _pl_json)
 
-_active_js = _json.dumps(_active_key)
-
-_html = (
-    "<!DOCTYPE html><html><head><meta charset='UTF-8'>"
-    "<link href='https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700;800&display=swap' rel='stylesheet'>"
-    "<style>"
-    "*{box-sizing:border-box;margin:0;padding:0;}"
-    "body{background:transparent;font-family:'DM Sans',sans-serif;}"
-    "@keyframes eq1{0%,100%{height:5px}20%{height:22px}50%{height:12px}80%{height:18px}}"
-    "@keyframes eq2{0%,100%{height:18px}25%{height:7px}60%{height:24px}85%{height:10px}}"
-    "@keyframes eq3{0%,100%{height:12px}30%{height:26px}55%{height:8px}90%{height:20px}}"
-    "@keyframes eq4{0%,100%{height:20px}15%{height:9px}50%{height:28px}75%{height:6px}}"
-    "@keyframes eq5{0%,100%{height:8px}35%{height:20px}65%{height:14px}85%{height:24px}}"
-    "@keyframes eq6{0%,100%{height:16px}20%{height:5px}55%{height:22px}80%{height:11px}}"
-    "@keyframes eq7{0%,100%{height:10px}30%{height:24px}60%{height:7px}90%{height:19px}}"
-    "@keyframes scanGlow{0%,100%{opacity:0}50%{opacity:1}}"
-    "@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}"
-    "@keyframes rp{0%,100%{box-shadow:0 0 0 0 rgba(229,9,20,0),0 0 20px rgba(229,9,20,0.55)}50%{box-shadow:0 0 0 6px rgba(229,9,20,0.10),0 0 32px rgba(229,9,20,0.75)}}"
-    "@keyframes db{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(0.7);opacity:0.45}}"
-    "@keyframes ci{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}"
-    ".shell{border-radius:22px;overflow:hidden;position:relative;"
-    "background:linear-gradient(140deg,#06030c 0%,#0d0408 55%,#040610 100%);"
-    "border:1px solid rgba(255,255,255,0.08);"
-    "box-shadow:0 32px 100px rgba(0,0,0,0.92),inset 0 1px 0 rgba(255,255,255,0.06);"
-    "animation:float 6s ease-in-out infinite;}"
-    ".shell::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;z-index:2;"
-    "background:linear-gradient(90deg,transparent 0%,#E50914 30%,rgba(255,120,50,0.7) 50%,#E50914 70%,transparent 100%);"
-    "animation:scanGlow 3s ease-in-out infinite;}"
-    ".orb{position:absolute;top:-90px;right:-90px;width:280px;height:280px;border-radius:50%;pointer-events:none;"
-    "background:radial-gradient(circle,rgba(229,9,20,0.11) 0%,transparent 70%);}"
-    ".hdr{display:flex;align-items:center;padding:18px 22px 14px;border-bottom:1px solid rgba(255,255,255,0.05);}"
-    ".ring{width:46px;height:46px;border-radius:50%;flex-shrink:0;font-size:1.25rem;"
-    "background:linear-gradient(135deg,#E50914,#7c000a);"
-    "display:flex;align-items:center;justify-content:center;animation:rp 2.5s ease-in-out infinite;}"
-    ".ht{margin-left:13px;flex:1;}"
-    ".h1{font-size:0.78rem;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:#fff;}"
-    ".h2{font-size:0.65rem;color:rgba(255,255,255,0.28);margin-top:3px;}"
-    ".eq{display:flex;align-items:flex-end;gap:3px;height:28px;}"
-    ".eq span{display:block;width:4px;border-radius:3px;background:linear-gradient(to top,#E50914,#ff7043);box-shadow:0 0 8px rgba(229,9,20,0.65);}"
-    ".eq span:nth-child(1){animation:eq1 0.70s ease-in-out infinite;}"
-    ".eq span:nth-child(2){animation:eq2 0.90s ease-in-out infinite 0.10s;}"
-    ".eq span:nth-child(3){animation:eq3 0.75s ease-in-out infinite 0.20s;}"
-    ".eq span:nth-child(4){animation:eq4 0.85s ease-in-out infinite 0.05s;}"
-    ".eq span:nth-child(5){animation:eq5 0.65s ease-in-out infinite 0.15s;}"
-    ".eq span:nth-child(6){animation:eq6 0.95s ease-in-out infinite 0.08s;}"
-    ".eq span:nth-child(7){animation:eq7 0.80s ease-in-out infinite 0.12s;}"
-    ".chips{display:flex;flex-wrap:wrap;gap:8px;padding:16px 20px 8px;}"
-    ".chip{flex:1;min-width:85px;display:flex;flex-direction:column;align-items:center;gap:5px;"
-    "padding:13px 8px 11px;border-radius:16px;cursor:pointer;"
-    "border:1.5px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);"
-    "transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);animation:ci 0.4s ease both;}"
-    ".chip:hover{transform:translateY(-4px) scale(1.06);border-color:rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);}"
-    ".chip.active{transform:translateY(-5px) scale(1.10);}"
-    ".cem{font-size:1.55rem;line-height:1;}"
-    ".clb{font-size:0.57rem;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.40);text-align:center;}"
-    ".chip.active .clb{color:#fff;}"
-    ".np{display:flex;align-items:center;gap:11px;margin:6px 20px 12px;padding:12px 16px;"
-    "border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);transition:border-color 0.35s;}"
-    ".dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;animation:db 1.4s ease-in-out infinite;}"
-    ".divl{width:1px;height:28px;background:rgba(255,255,255,0.09);flex-shrink:0;}"
-    ".npi{flex:1;}"
-    ".nll{font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.30);}"
-    ".nn{font-size:0.90rem;font-weight:700;color:#fff;}"
-    ".nd{font-size:0.68rem;color:rgba(255,255,255,0.28);margin-top:2px;}"
-    ".bdg{font-size:0.60rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;"
-    "padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.06);"
-    "border:1px solid rgba(255,255,255,0.09);color:rgba(255,255,255,0.35);}"
-    ".spw{padding:0 20px 20px;}"
-    ".spw iframe{border-radius:18px;display:block;box-shadow:0 16px 60px rgba(0,0,0,0.75);}"
-    "</style></head><body>"
-    "<div class='shell'><div class='orb'></div>"
-    "<div class='hdr'><div class='ring'>\U0001f3b5</div>"
-    "<div class='ht'><div class='h1'>Workout Music</div>"
-    "<div class='h2'>Spotify &middot; Choose your vibe &middot; Click genre to switch</div></div>"
-    "<div class='eq'><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>"
-    "</div>"
-    "<div class='chips' id='chips'></div>"
-    "<div class='np' id='npBar'>"
-    "<div class='dot' id='dot'></div><div class='divl'></div>"
-    "<div class='npi'><div class='nll'>Now Playing</div>"
-    "<div class='nn' id='nn'></div><div class='nd' id='nd'></div></div>"
-    "<div class='bdg'>Spotify</div></div>"
-    "<div class='spw'><iframe id='sp' width='100%' height='380' frameBorder='0'"
-    " allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'"
-    " loading='lazy'></iframe></div></div>"
-    "<script>"
-    "var PL=" + _pl_js + ";"
-    "var active=" + _active_js + ";"
-    "function rgb(h){h=h.replace('#','');"
-    "return parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16);}"
-    "function pick(k){if(k===active)return;active=k;render();"
-    "try{var u=new URL(window.parent.location.href);"
-    "u.searchParams.set('music_genre',k);window.parent.location.href=u.toString();}"
-    "catch(e){window.location.href='?music_genre='+encodeURIComponent(k);}}"
-    "function render(){var pl=PL.find(function(p){return p.key===active;})||PL[0];"
-    "var h='';PL.forEach(function(p,i){"
-    "var on=(p.key===active);var r=rgb(p.color);"
-    "var as=on?'border-color:'+p.color+';background:rgba('+r+',0.14);box-shadow:0 0 22px rgba('+r+',0.55),0 8px 24px rgba(0,0,0,0.55);':'';"
-    "var dd=(i*0.04).toFixed(2)+'s';"
-    "h+='<div class=\"chip'+(on?' active':'')+'\" style=\"'+as+'animation-delay:'+dd+'\" onclick=\"pick('+JSON.stringify(p.key)+')\">';"
-    "h+='<div class=\"cem\">'+p.emoji+'</div>';"
-    "h+='<div class=\"clb\">'+p.label+'</div></div>';});"
-    "document.getElementById('chips').innerHTML=h;"
-    "document.getElementById('dot').style.background=pl.color;"
-    "document.getElementById('dot').style.boxShadow='0 0 10px rgba('+rgb(pl.color)+',0.70)';"
-    "document.getElementById('npBar').style.borderColor=pl.color+'33';"
-    "document.getElementById('nn').textContent=pl.emoji+' '+(pl.key.split(' ').slice(1).join(' ')||pl.key);"
-    "document.getElementById('nd').textContent=pl.desc;"
-    "var src='https://open.spotify.com/embed/playlist/'+pl.id+'?utm_source=generator&theme=0';"
-    "var fr=document.getElementById('sp');if(fr.src!==src)fr.src=src;}"
-    "render();</script></body></html>"
-)
-
-_cmp.html(_html, height=620, scrolling=False)
-
+_cmp.html(_final_html, height=620, scrolling=False)
 # ── DAY TABS ──────────────────────────────────────────────────────────────────
 tab_labels = [f"Day {d.get('day',i+1)}" + (" 😴" if d.get("is_rest_day") else "")
               for i, d in enumerate(sdays)]
