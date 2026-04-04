@@ -165,17 +165,24 @@ plan_ctx = (str(len(sdays)) + "-day fitness plan. Diet: " + diet_lbl + ". ") if 
 
 system_prompt = (
     "You are ATLAS, a professional AI fitness coach inside FitPlan Pro. "
-    "Warm, motivating, direct. Speak like a real coach. "
-    "User: " + uname + ", Age=" + str(data.get("age","?")) +
+    "Warm, motivating, direct. Speak like a real personal trainer talking to a client. "
+    "User: " + _display + ", Age=" + str(data.get("age","?")) +
     ", Weight=" + str(data.get("weight","?")) + "kg"
     ", Height=" + str(data.get("height","?")) + "cm"
     ", Goal=" + data.get("goal","Fitness") +
     ", Level=" + data.get("level","Beginner") +
     ", Equipment=" + (", ".join(data.get("equipment",[])) or "Bodyweight") + ". " + plan_ctx +
-    "RULES: Only answer fitness, gym, nutrition, body, health, lifestyle, motivation, sleep, recovery. "
-    "Redirect off-topic warmly. NO JSON/code blocks. Max 130 words. "
-    "Dash (-) for lists, max 4 items. Don't start with 'Assistant:' or 'ATLAS:'. "
-    "Reference earlier conversation. End with short motivational line when fitting."
+    "STRICT RULES — follow every one: "
+    "1. NEVER output JSON, code blocks, curly braces {}, square brackets [], or any structured data format. "
+    "2. NEVER use markdown code fences (``` or `). "
+    "3. Answer ONLY in plain conversational English sentences and short paragraphs. "
+    "4. Only answer fitness, gym, nutrition, body, health, lifestyle, motivation, sleep, recovery topics. "
+    "5. Redirect off-topic questions warmly. "
+    "6. Use dash (-) for lists, max 4 items per list. "
+    "7. Keep answers under 130 words. "
+    "8. Do NOT start your reply with 'Assistant:', 'ATLAS:', 'Coach:', or 'AI:'. "
+    "9. End with one short motivating sentence when appropriate. "
+    "10. Reference the user's name and goal naturally in conversation."
 )
 
 # ── HERO ──────────────────────────────────────────────────────────────────────
@@ -388,15 +395,44 @@ if _needs_ai:
         full_prompt = (system_prompt + "\n\nConversation:\n" + conv +
                        "\nUser: " + history[-1]["content"] + "\nCoach:")
         reply = query_model(full_prompt, max_tokens=320).strip()
-        for _pfx in ["Assistant:","ATLAS:","AI Coach:","Coach:"]:
-            if reply.startswith(_pfx): reply = reply[len(_pfx):].strip()
-        _clean = [ln for ln in reply.splitlines()
-                  if not (ln.strip().startswith("{") or ln.strip().startswith("[")
-                          or (ln.strip().startswith('"') and ln.strip().endswith('",')))]
-        reply = _re.sub(r"\{[^}]*\}","","\n".join(_clean))
-        reply = _re.sub(r"\[[^\]]*\]","",reply)
-        reply = _re.sub(r"\n{3,}","\n\n",reply).strip()
-        if not reply: reply = "Great question! Try asking me again."
+
+        # Strip prefixes
+        for _pfx in ["Assistant:","ATLAS:","AI Coach:","Coach:","AI:"]:
+            if reply.lower().startswith(_pfx.lower()): reply = reply[len(_pfx):].strip()
+
+        # Strip code fences
+        import re as _re
+        reply = _re.sub(r"```[a-z]*\n?", "", reply)
+
+        # If entire reply looks like JSON (starts with { or [), replace with fallback
+        _stripped = reply.strip()
+        if _stripped.startswith(("{","[")):
+            reply = "I have your full plan ready! Could you rephrase your question so I can give you the best advice?"
+        else:
+            # Remove any embedded JSON fragments line by line
+            _clean_lines = []
+            _in_json = False
+            for _ln in reply.splitlines():
+                _lt = _ln.strip()
+                if _lt.startswith(("{","[")):
+                    _in_json = True
+                if _in_json:
+                    # Count braces to detect end
+                    if any(c in _lt for c in ("}", "]")):
+                        _in_json = False
+                    continue
+                # Skip lines that look like JSON key-value pairs
+                if _re.match(r'^"[^"]+"\s*:', _lt):
+                    continue
+                if _re.match(r'^\},?\s*$', _lt) or _re.match(r'^\],?\s*$', _lt):
+                    continue
+                _clean_lines.append(_ln)
+            reply = "\n".join(_clean_lines)
+
+        # Clean up extra whitespace
+        reply = _re.sub(r"\n{3,}", "\n\n", reply).strip()
+        if not reply or len(reply) < 10:
+            reply = "I'm here to help! Ask me anything about your workout, nutrition, or recovery."
         st.session_state.chat_messages.append({"role":"assistant","content":reply})
         try:
             from utils.db import save_chat_history
