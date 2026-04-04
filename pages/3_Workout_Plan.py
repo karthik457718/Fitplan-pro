@@ -509,6 +509,43 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+
+# ── PLAN PROGRESS BAR ─────────────────────────────────────────────────────────
+try:
+    _plan_start_dt2 = date.fromisoformat(st.session_state.get("plan_start", date.today().isoformat()))
+    _day_offset2    = (date.today() - _plan_start_dt2).days + 1
+    _current_day    = max(1, min(_day_offset2, total_days))
+    _pct_done       = int(_current_day / max(total_days, 1) * 100)
+    _rest_count     = sum(1 for d in sdays if d.get("is_rest_day"))
+    _work_count     = total_days - _rest_count
+    _done_count     = sum(1 for d in sdays
+                          if st.session_state.get(f"ex_d{d.get('day',0)}_done_all", False)
+                          or st.session_state.get(f"day_done_{d.get('day',0)}", False))
+    _pbar_col = "#22c55e" if _pct_done >= 75 else "#fbbf24" if _pct_done >= 40 else "#E50914"
+    st.markdown(
+        f"<div style='background:rgba(8,4,2,0.82);border:1px solid rgba(255,255,255,0.08);"
+        f"border-radius:12px;padding:12px 18px;margin-bottom:12px'>"
+        f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:7px'>"
+        f"<div style='font-size:0.72rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;"
+        f"color:rgba(255,255,255,0.55)'>📅 Plan Progress</div>"
+        f"<div style='font-size:0.80rem;font-weight:700;color:{_pbar_col}'>"
+        f"Day {_current_day} of {total_days} &nbsp;·&nbsp; {_pct_done}% complete</div>"
+        f"</div>"
+        f"<div style='height:7px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden'>"
+        f"<div style='height:100%;width:{_pct_done}%;"
+        f"background:linear-gradient(90deg,#E50914,{_pbar_col});border-radius:4px;"
+        f"transition:width 0.5s ease'></div></div>"
+        f"<div style='display:flex;justify-content:space-between;margin-top:6px;"
+        f"font-size:0.68rem;color:rgba(255,255,255,0.35)'>"
+        f"<span>🏋️ {_work_count} workout days</span>"
+        f"<span>😴 {_rest_count} rest days</span>"
+        f"<span>✅ {total_days - _current_day} days remaining</span>"
+        f"</div></div>",
+        unsafe_allow_html=True
+    )
+except Exception:
+    pass
+
 # ── SAFETY + PDF ──────────────────────────────────────────────────────────────
 with st.expander("⚠️ Safety Cautions — Read Before Starting", expanded=False):
     st.markdown("""
@@ -639,6 +676,113 @@ if not st.session_state.get("_notes_loaded") and plan_id:
         st.session_state._notes_loaded = True
     except Exception: pass
 
+
+
+# ── WORKOUT COMPLETION CELEBRATION ────────────────────────────────────────────
+if st.session_state.get("_show_celebration"):
+    _celeb_dn = st.session_state.pop("_show_celebration")
+    # Custom full-screen confetti + trophy celebration using HTML component
+    import streamlit.components.v1 as _cv1
+    _cv1.html("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+#celeb-overlay{
+  position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;
+  background:rgba(0,0,0,0.88);display:flex;align-items:center;justify-content:center;
+  animation:fadeIn 0.35s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+#celeb-card{
+  background:linear-gradient(135deg,rgba(6,28,12,0.97),rgba(4,18,8,0.98));
+  border:2.5px solid rgba(34,197,94,0.60);border-radius:24px;
+  padding:40px 52px;text-align:center;max-width:480px;width:90%;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 80px rgba(34,197,94,0.30),0 30px 80px rgba(0,0,0,0.80);
+  animation:slideUp 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px) scale(0.90)}to{opacity:1;transform:translateY(0) scale(1)}}
+#celeb-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,#22c55e,#4ade80,#22c55e,transparent);}
+#celeb-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(34,197,94,0.40),transparent);}
+.trophy{font-size:5rem;animation:trophyBounce 0.7s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;}
+@keyframes trophyBounce{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0deg)}}
+.headline{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:4px;
+  color:#22c55e;margin:12px 0 6px;text-shadow:0 0 40px rgba(34,197,94,0.60);
+  animation:glowPulse 2s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{text-shadow:0 0 20px rgba(34,197,94,0.60)}50%{text-shadow:0 0 50px rgba(34,197,94,0.90),0 0 80px rgba(34,197,94,0.40)}}
+.subline{font-size:1.1rem;color:rgba(255,255,255,0.80);margin-bottom:6px;line-height:1.5;}
+.stats-row{display:flex;justify-content:center;gap:20px;margin:18px 0;flex-wrap:wrap;}
+.stat-chip{background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.30);
+  border-radius:20px;padding:6px 16px;font-size:0.85rem;color:rgba(34,197,94,0.90);}
+.dismiss-btn{
+  background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:#fff;
+  font-size:1rem;font-weight:700;padding:12px 32px;border-radius:12px;
+  cursor:pointer;margin-top:18px;letter-spacing:1px;
+  box-shadow:0 4px 20px rgba(34,197,94,0.40);
+  transition:all 0.20s;}
+.dismiss-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(34,197,94,0.60);}
+
+/* Confetti */
+.confetti-piece{position:fixed;width:10px;height:10px;top:-10px;animation:confettiFall linear infinite;}
+@keyframes confettiFall{
+  0%{top:-10px;transform:rotate(0deg) translateX(0);}
+  100%{top:110vh;transform:rotate(720deg) translateX(var(--drift));}}
+</style>
+<div id="celeb-overlay">
+  <div id="celeb-card">
+    <div class="trophy">🏆</div>
+    <div class="headline">DAY COMPLETE!</div>
+    <div class="subline">Every rep. Every set. <strong style="color:#4ade80">Absolutely crushed it.</strong></div>
+    <div class="subline" style="font-size:0.90rem;color:rgba(255,255,255,0.50);margin-top:4px">
+      Rest up and come back stronger tomorrow 💪
+    </div>
+    <div class="stats-row">
+      <div class="stat-chip">🔥 Workout Done</div>
+      <div class="stat-chip">⚡ Streak Active</div>
+      <div class="stat-chip">💎 Keep it up</div>
+    </div>
+    <button class="dismiss-btn" onclick="document.getElementById('celeb-overlay').style.display='none'">
+      🎯 Let's Go!
+    </button>
+  </div>
+</div>
+<script>
+// Confetti cannon
+var colors = ['#22c55e','#4ade80','#86efac','#fbbf24','#E50914','#fff','#60a5fa'];
+var container = document.body;
+for(var i=0;i<80;i++){
+  var piece = document.createElement('div');
+  piece.className = 'confetti-piece';
+  var left = Math.random()*100;
+  var size = 6 + Math.random()*10;
+  var delay = Math.random()*3;
+  var dur   = 2.5 + Math.random()*2;
+  var drift = (Math.random()-0.5)*200;
+  var color = colors[Math.floor(Math.random()*colors.length)];
+  var shape = Math.random()>0.5 ? '50%' : '0%';
+  piece.style.cssText = [
+    'left:'+left+'vw',
+    'width:'+size+'px','height:'+size+'px',
+    'animation-delay:'+delay+'s',
+    'animation-duration:'+dur+'s',
+    '--drift:'+drift+'px',
+    'background:'+color,
+    'border-radius:'+shape,
+    'opacity:'+(0.7+Math.random()*0.3),
+    'z-index:99998',
+  ].join(';');
+  document.body.appendChild(piece);
+}
+// Auto dismiss after 6 seconds
+setTimeout(function(){
+  var ov = document.getElementById('celeb-overlay');
+  if(ov) ov.style.display='none';
+  // Remove confetti
+  document.querySelectorAll('.confetti-piece').forEach(function(p){p.remove();});
+}, 6000);
+</script>
+""", height=0)
 
 # ── MUSIC PLAYER ──────────────────────────────────────────────────────────────
 # Verified Spotify public playlist IDs — each genre uses a different real playlist
@@ -1064,6 +1208,16 @@ for tab, day_data in zip(tabs, sdays):
                                     dc = {m: st.session_state.get(f"meal_d{dn}_{m}", False) for m in ["breakfast","lunch","dinner","snacks"]}
                                     save_progress(uname, plan_id, dn, wc, dc)
                                 except Exception: pass
+                            # ── CHECK IF ALL EXERCISES DONE FOR THIS DAY ──────
+                            _all_done_now = all(
+                                st.session_state.get(f"ex_d{dn}_{_ei}", False)
+                                for _ei in range(len(exercises))
+                            )
+                            if _all_done_now and _cb_new:
+                                _celeb_key = f"_celebrated_d{dn}"
+                                if not st.session_state.get(_celeb_key):
+                                    st.session_state[_celeb_key] = True
+                                    st.session_state["_show_celebration"] = dn
                             st.session_state["_needs_rerun"] = True
 
             rpe_key     = f"rpe_d{dn}"
