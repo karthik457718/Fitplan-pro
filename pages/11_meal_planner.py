@@ -24,16 +24,21 @@ st.markdown("""
 <style>
 [data-testid="stAppViewContainer"]::before {
   content:'';position:fixed;inset:0;z-index:-1;
-  background:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1800&q=80&auto=format&fit=crop')
+  background:url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1920&q=85&auto=format&fit=crop')
     center center/cover no-repeat;
-  filter:blur(7px) brightness(0.28) saturate(0.65);
-  transform:scale(1.06);
+  filter:blur(3px) brightness(0.38) saturate(1.10);
+  transform:scale(1.04);
 }
-[data-testid="stAppViewContainer"] { background:rgba(2,6,3,0.78)!important; }
+[data-testid="stAppViewContainer"] {
+  background:
+    radial-gradient(ellipse at 20% 0%,rgba(34,197,94,0.14) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 100%,rgba(16,120,50,0.10) 0%,transparent 50%),
+    linear-gradient(180deg,rgba(2,10,4,0.82) 0%,rgba(1,8,3,0.72) 50%,rgba(2,10,4,0.88) 100%)!important;
+}
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stDecoration"],
 [data-testid="stSidebarNav"],section[data-testid="stSidebar"]{display:none!important;}
-html,body,.stApp{background:#020802!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
+html,body,.stApp{background:#020a04!important;color:#fff!important;font-family:'DM Sans',sans-serif!important;}
 [data-testid="stAppViewContainer"]>section>div.block-container{
   max-width:1100px!important;margin:0 auto!important;padding:0 24px 100px!important;}
 
@@ -77,18 +82,20 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 
 /* Cards */
 .meal-card{
-  background:rgba(4,18,8,0.88);
+  background:rgba(4,18,8,0.82);
   border:1.5px solid rgba(34,197,94,0.22);
   border-radius:18px;padding:20px 24px;margin-bottom:12px;
   position:relative;overflow:hidden;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
 }
 .meal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
   background:linear-gradient(90deg,transparent,rgba(34,197,94,0.60),transparent);}
 .macro-bar-wrap{background:rgba(255,255,255,0.06);border-radius:6px;height:8px;
   overflow:hidden;margin-top:6px;}
 .macro-bar{height:100%;border-radius:6px;transition:width 1s ease;}
-.config-card{background:rgba(4,14,8,0.90);border:1.5px solid rgba(34,197,94,0.18);
-  border-radius:18px;padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden;}
+.config-card{background:rgba(4,14,8,0.82);border:1.5px solid rgba(34,197,94,0.18);
+  border-radius:18px;padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);}
 .config-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
   background:linear-gradient(90deg,transparent,rgba(34,197,94,0.50),transparent);}
 .macro-chip{display:inline-flex;flex-direction:column;align-items:center;
