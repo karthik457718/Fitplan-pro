@@ -1,32 +1,36 @@
-
-VIDEO_DATA = {
-    "pre_workout": [
-        {"name": "Full Body Warm-Up",          "duration": "5 min", "url": "https://www.youtube.com/embed/1f8yoFFdkcY"},
-        {"name": "Dynamic Stretching Routine", "duration": "4 min", "url": "https://www.youtube.com/embed/2pLT-olgUJs"},
-        {"name": "Quick Warm-Up Routine",      "duration": "5 min", "url": "https://www.youtube.com/embed/UBMk30rjy0o"},
-    ],
-    "post_workout": [
-        {"name": "Cool Down Stretch",         "duration": "5 min",  "url": "https://www.youtube.com/embed/v7AYKMP6rOE"},
-        {"name": "Post Workout Stretch",      "duration": "10 min", "url": "https://www.youtube.com/embed/jeNwE4VXqgs"},
-        {"name": "Static Stretching Routine", "duration": "6 min",  "url": "https://www.youtube.com/embed/sTANio_2E0Q"},
-    ],
+{
+  "pre_workout": [
+    {
+      "name": "Dynamic Full Body Warm-Up",
+      "duration": "5 min",
+      "url": "https://www.youtube.com/embed/2pLT-olgUJs"
+    },
+    {
+      "name": "Full Body Warm-Up Routine",
+      "duration": "5 min",
+      "url": "https://www.youtube.com/embed/UBMk30rjy0o"
+    },
+    {
+      "name": "Pre-Workout Activation",
+      "duration": "4 min",
+      "url": "https://www.youtube.com/embed/1f8yoFFdkcY"
+    }
+  ],
+  "post_workout": [
+    {
+      "name": "Cool Down Stretch",
+      "duration": "5 min",
+      "url": "https://www.youtube.com/embed/v7AYKMP6rOE"
+    },
+    {
+      "name": "Post Workout Full Body Stretch",
+      "duration": "10 min",
+      "url": "https://www.youtube.com/embed/jeNwE4VXqgs"
+    },
+    {
+      "name": "Static Stretching Routine",
+      "duration": "6 min",
+      "url": "https://www.youtube.com/embed/sTANio_2E0Q"
+    }
+  ]
 }
-
-def render_video_section(title, videos):
-    st.subheader(title)
-    for video in videos:
-        st.markdown(f"**{video['name']}** · {video['duration']}")
-        st.markdown(f"""
-        <iframe
-            width="100%" height="315"
-            src="{video['url']}?rel=0&modestbranding=1"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            referrerpolicy="strict-origin-when-cross-origin"
-            style="border:none; border-radius:8px;">
-        </iframe>
-        """, unsafe_allow_html=True)
-        st.markdown("---")
-
-render_video_section("🔥 Pre-Workout Warm-Up", VIDEO_DATA["pre_workout"])
-render_video_section("❄️ Post-Workout Cool-Down", VIDEO_DATA["post_workout"])
