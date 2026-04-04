@@ -1016,16 +1016,33 @@ for tab, day_data in zip(tabs, sdays):
                                 with st.spinner("Finding alternative..."):
                                     try:
                                         from model_api import query_model
-                                        _eq = ", ".join(data.get("equipment",[])) or "bodyweight only"
-                                        _inj = ", ".join(data.get("injuries",[])) or "none"
+                                        _eq  = ", ".join(data.get("equipment", [])) or "bodyweight only"
+                                        _inj = ", ".join(data.get("injuries",  [])) or "none"
                                         _swap_prompt = (
-                                            f"Suggest 1 alternative exercise to replace '{name_}' "
-                                            f"for a {data.get('level','Beginner')} person. "
-                                            f"Available equipment: {_eq}. Injuries: {_inj}. "
-                                            f"Muscle group: {mg}. Same sets/reps: {sets_}x{reps_}. "
-                                            "Give: EXERCISE NAME | why it works | form tip. One line only."
+                                            f"You are a fitness coach. Suggest exactly 1 alternative exercise "
+                                            f"to replace '{name_}' for a {data.get('level','Beginner')} person. "
+                                            f"Equipment available: {_eq}. Injuries/limitations: {_inj}. "
+                                            f"Muscle group: {mg}. Keep same sets and reps: {sets_} sets x {reps_} reps. "
+                                            f"IMPORTANT: Reply in this exact format on one single line — no JSON, no bullets, no extra text:\n"
+                                            f"EXERCISE NAME | Why it works | Form tip\n"
+                                            f"Example: Dumbbell Press | Targets chest with less shoulder strain | Keep elbows at 45 degrees"
                                         )
-                                        _swap_result = query_model(_swap_prompt, max_tokens=100).strip()
+                                        _swap_raw = query_model(_swap_prompt, max_tokens=120).strip()
+                                        # Robust parser: handles JSON fallback gracefully
+                                        import json as _jmod, re as _re
+                                        _swap_result = _swap_raw
+                                        # If AI returned JSON, extract fields
+                                        if _swap_raw.startswith("[") or _swap_raw.startswith("{"):
+                                            try:
+                                                _jdata = _jmod.loads(_swap_raw)
+                                                if isinstance(_jdata, list): _jdata = _jdata[0]
+                                                _jname = _jdata.get("EXERCISE NAME") or _jdata.get("name") or _jdata.get("exercise") or ""
+                                                _jwhy  = _jdata.get("why it works") or _jdata.get("why") or _jdata.get("reason") or ""
+                                                _jtip  = _jdata.get("form tip") or _jdata.get("tip") or _jdata.get("form") or ""
+                                                _swap_result = f"{_jname} | {_jwhy} | {_jtip}"
+                                            except Exception:
+                                                # Strip JSON brackets and use as name
+                                                _swap_result = _re.sub(r'[{}\[\]"\':]', ' ', _swap_raw).strip()
                                         st.session_state[_swap_key] = _swap_result
                                         st.rerun()
                                     except Exception as e:
@@ -1035,20 +1052,24 @@ for tab, day_data in zip(tabs, sdays):
                                 if st.button("✕ Dismiss", key=f"dismiss_swap_d{dn}_{idx}", use_container_width=True):
                                     st.session_state.pop(_swap_key, None)
                                     st.rerun()
-                            # Parse result
-                            _parts = _swap_res.split("|") if "|" in _swap_res else [_swap_res, "", ""]
-                            _alt_name = _parts[0].strip() if len(_parts)>0 else _swap_res
-                            _alt_why  = _parts[1].strip() if len(_parts)>1 else ""
-                            _alt_tip  = _parts[2].strip() if len(_parts)>2 else ""
+                            # Parse pipe-separated result
+                            _parts    = _swap_res.split("|") if "|" in _swap_res else [_swap_res, "", ""]
+                            _alt_name = _parts[0].strip() if len(_parts) > 0 else _swap_res
+                            _alt_why  = _parts[1].strip() if len(_parts) > 1 else ""
+                            _alt_tip  = _parts[2].strip() if len(_parts) > 2 else ""
                             st.markdown(
-                                f"<div style='background:rgba(34,197,94,0.08);border:1.5px solid rgba(34,197,94,0.30);"
-                                f"border-radius:12px;padding:12px 16px;margin-top:8px'>"
-                                f"<div style='font-size:0.70rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;"
-                                f"color:rgba(34,197,94,0.80);margin-bottom:6px'>🔄 AI Alternative Exercise</div>"
-                                f"<div style='font-size:1.00rem;font-weight:700;color:#22c55e;margin-bottom:4px'>{_alt_name}</div>"
-                                + (f"<div style='font-size:0.82rem;color:rgba(255,255,255,0.65);margin-bottom:3px'>✅ {_alt_why}</div>" if _alt_why else "") +
-                                (f"<div style='font-size:0.80rem;color:rgba(255,255,255,0.50)'>💡 {_alt_tip}</div>" if _alt_tip else "") +
-                                f"</div>", unsafe_allow_html=True
+                                f"<div style='background:rgba(34,197,94,0.07);border:1.5px solid rgba(34,197,94,0.35);"
+                                f"border-radius:14px;padding:14px 18px;margin-top:8px;position:relative;overflow:hidden'>"
+                                f"<div style='position:absolute;top:0;left:0;right:0;height:2px;"
+                                f"background:linear-gradient(90deg,transparent,rgba(34,197,94,0.60),transparent)'></div>"
+                                f"<div style='font-size:0.68rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;"
+                                f"color:rgba(34,197,94,0.70);margin-bottom:8px'>🔄 AI Alternative Exercise</div>"
+                                f"<div style='font-size:1.05rem;font-weight:800;color:#22c55e;margin-bottom:6px'>{_alt_name}</div>"
+                                + (f"<div style='font-size:0.82rem;color:rgba(255,255,255,0.65);margin-bottom:4px'>"
+                                   f"<span style='color:rgba(34,197,94,0.70);font-weight:700'>✅ Why it works:</span> {_alt_why}</div>" if _alt_why else "")
+                                + (f"<div style='font-size:0.80rem;color:rgba(255,255,255,0.50)'>"
+                                   f"<span style='color:rgba(34,197,94,0.60);font-weight:700'>💡 Form tip:</span> {_alt_tip}</div>" if _alt_tip else "")
+                                + f"</div>", unsafe_allow_html=True
                             )
 
                         with ec2:
