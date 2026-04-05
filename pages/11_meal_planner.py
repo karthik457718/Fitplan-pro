@@ -122,7 +122,7 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
 st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
-_n = st.columns([1.8,1,1,1,1,1,1,1.1,1.3])
+_n = st.columns([1.6,1,1,1,1,1,1,1,1,1.2])
 with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
 with _n[1]:
     if st.button("🏠 Home",     key="nm_db", use_container_width=True): st.switch_page("pages/2_Dashboard.py")
@@ -131,21 +131,24 @@ with _n[2]:
 with _n[3]:
     if st.button("🥗 Diet",     key="nm_dp", use_container_width=True): st.switch_page("pages/4_Diet_Plan.py")
 with _n[4]:
-    if st.button("🤖 AI Coach", key="nm_ai", use_container_width=True):
+    if st.button("● 🍽️ Meals", key="nm_mp", use_container_width=True): st.rerun()
+with _n[5]:
+    if st.button("😴 Sleep",    key="nm_sl", use_container_width=True):
+        try: st.switch_page("pages/12_sleep_tracker.py")
+        except Exception: pass
+with _n[6]:
+    if st.button("🏃 Cardio",   key="nm_ca", use_container_width=True):
+        try: st.switch_page("pages/13_cardio_tracker.py")
+        except Exception: pass
+with _n[7]:
+    if st.button("🤖 Coach",    key="nm_ai", use_container_width=True):
         try: st.switch_page("pages/5_ai_coach.py")
         except Exception: pass
-with _n[5]:
+with _n[8]:
     if st.button("🏆 Records",  key="nm_rc", use_container_width=True):
         try: st.switch_page("pages/6_records.py")
         except Exception: pass
-with _n[6]:
-    if st.button("● 🍽️ Meals", key="nm_mp", use_container_width=True):
-        st.rerun()
-with _n[7]:
-    if st.button("📅 History",  key="nm_hi", use_container_width=True):
-        try: st.switch_page("pages/9_history.py")
-        except Exception: pass
-with _n[8]:
+with _n[9]:
     if st.button("🚪 Sign Out", key="nm_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan",
@@ -155,7 +158,18 @@ with _n[8]:
         st.switch_page("app.py")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ── HERO ──────────────────────────────────────────────────────────────────────
+# ── LOAD HISTORY FROM DB ON FIRST VISIT ───────────────────────────────────────
+if "mp_history" not in st.session_state:
+    try:
+        from utils.db import get_user_setting
+        import json as _jload
+        _saved = get_user_setting(uname, "meal_planner_history")
+        if _saved:
+            st.session_state["mp_history"] = _jload.loads(_saved)
+        else:
+            st.session_state["mp_history"] = []
+    except Exception:
+        st.session_state["mp_history"] = []
 st.markdown("""
 <div style='background:linear-gradient(135deg,rgba(34,197,94,0.12),rgba(16,80,32,0.07) 50%,rgba(4,14,8,0.50));
   border:2px solid rgba(34,197,94,0.40);border-radius:18px;padding:28px 36px;margin:12px 0 24px;
@@ -624,7 +638,7 @@ if _generate:
             _plan = json.loads(_raw)
             st.session_state["mp_plan"] = _plan
 
-            # Save to history
+            # Save to history (session + DB)
             _history = st.session_state.get("mp_history", [])
             _history.insert(0, {
                 "cuisine":  _cuisine,
@@ -634,7 +648,14 @@ if _generate:
                 "title":    _plan.get("plan_title", f"{_cuisine} {_diet} Plan"),
                 "plan":     _plan,
             })
-            st.session_state["mp_history"] = _history[:6]   # keep last 6
+            _history = _history[:6]
+            st.session_state["mp_history"] = _history
+            # Persist to DB
+            try:
+                from utils.db import save_user_setting
+                save_user_setting(uname, "meal_planner_history", json.dumps(_history))
+            except Exception:
+                pass
             st.rerun()
 
         except json.JSONDecodeError:
@@ -645,6 +666,20 @@ if _generate:
                 if _start != -1 and _end > _start:
                     _plan = json.loads(_raw[_start:_end])
                     st.session_state["mp_plan"] = _plan
+                    _history = st.session_state.get("mp_history", [])
+                    _history.insert(0, {
+                        "cuisine": _cuisine, "diet": _diet, "goal": _goal,
+                        "calories": _calories,
+                        "title": _plan.get("plan_title", f"{_cuisine} {_diet} Plan"),
+                        "plan": _plan,
+                    })
+                    _history = _history[:6]
+                    st.session_state["mp_history"] = _history
+                    try:
+                        from utils.db import save_user_setting
+                        save_user_setting(uname, "meal_planner_history", json.dumps(_history))
+                    except Exception:
+                        pass
                     st.rerun()
                 else:
                     st.error("AI returned an unexpected format. Please try again.")
