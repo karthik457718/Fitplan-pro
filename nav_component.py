@@ -1,19 +1,25 @@
 """
 nav_component.py — Single shared navigation bar for FitPlan Pro.
-Import and call render_nav(current_page) from every page.
-current_page: 'dashboard' | 'workout' | 'diet' | 'ai_coach' | 'records' | 'photos' | 'history' | 'profile'
+Import and call render_nav(current_page, username) from every page.
+
+current_page keys:
+  'dashboard' | 'workout' | 'diet' | 'meals' | 'sleep' | 'cardio' |
+  'streak'    | 'charts'  | 'coach'| 'records'| 'history'| 'profile'
 """
 import streamlit as st
 from auth_token import logout
 
 NAV_PAGES = [
-    ("dashboard",  "🏠 Home",     "pages/2_Dashboard.py"),
-    ("workout",    "⚡ Workout",   "pages/3_Workout_Plan.py"),
-    ("diet",       "🥗 Diet",      "pages/4_Diet_Plan.py"),
-    ("ai_coach",   "🤖 AI Coach",  "pages/5_ai_coach.py"),
-    ("records",    "🏆 Records",   "pages/6_records.py"),
-    ("photos",     "📸 Photos",    "pages/7_progress_photos.py"),
-    ("history",    "📅 History",   "pages/9_history.py"),
+    ("dashboard", "🏠 Home",     "pages/2_Dashboard.py"),
+    ("workout",   "⚡ Workout",  "pages/3_Workout_Plan.py"),
+    ("diet",      "🥗 Diet",     "pages/4_Diet_Plan.py"),
+    ("meals",     "🍽️ Meals",   "pages/11_meal_planner.py"),
+    ("sleep",     "😴 Sleep",    "pages/12_sleep_tracker.py"),
+    ("cardio",    "🏃 Cardio",   "pages/13_cardio_tracker.py"),
+    ("streak",    "🔥 Streak",   "pages/14_streaks.py"),
+    ("charts",    "📈 Charts",   "pages/15_progress_charts.py"),
+    ("coach",     "🤖 Coach",    "pages/5_ai_coach.py"),
+    ("records",   "🏆 Records",  "pages/6_records.py"),
 ]
 
 NAV_CSS = """
@@ -30,7 +36,7 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"] >
   background:rgba(18,4,4,0.82)!important;border:1.5px solid rgba(229,9,20,0.30)!important;
   color:rgba(255,255,255,0.75)!important;border-radius:9px!important;
   font-family:'DM Sans',sans-serif!important;font-size:0.68rem!important;font-weight:700!important;
-  padding:5px 8px!important;height:32px!important;min-height:32px!important;
+  padding:4px 6px!important;height:30px!important;min-height:30px!important;
   white-space:nowrap!important;box-shadow:none!important;
   transition:all 0.15s ease!important;text-transform:none!important;
   animation:none!important;}
@@ -42,7 +48,6 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"] >
   border:1.5px solid rgba(229,9,20,0.85)!important;
   color:#fff!important;
   box-shadow:0 0 10px rgba(229,9,20,0.35)!important;}
-/* Sign Out - subdued, no pulse */
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]:last-child > button{
   background:rgba(60,5,5,0.55)!important;
   border:1.5px solid rgba(229,9,20,0.30)!important;
@@ -64,14 +69,19 @@ _CLEAR_KEYS = [
 ]
 
 def render_nav(current_page: str, username: str = None):
-    """Render the shared nav bar. current_page is the key string, e.g. 'dashboard'."""
+    """
+    Render the shared nav bar.
+    current_page: key string e.g. 'dashboard', 'streak', 'charts'
+    username: optional, defaults to session state
+    """
     if username is None:
         username = st.session_state.get("username", "Athlete")
 
     st.markdown(NAV_CSS, unsafe_allow_html=True)
     st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
 
-    cols = st.columns([1.6, 1, 1, 1, 1, 1, 1, 1, 1.1])
+    # 12 cols: logo + 10 nav buttons + sign out
+    cols = st.columns([1.6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.1])
 
     with cols[0]:
         st.markdown("<div class='nav-logo'>&#9889; FITPLAN PRO</div>", unsafe_allow_html=True)
@@ -81,7 +91,8 @@ def render_nav(current_page: str, username: str = None):
             is_active = (page_key == current_page)
             if is_active:
                 st.markdown("<div class='nav-active'>", unsafe_allow_html=True)
-            if st.button(label, key=f"nav_{page_key}", use_container_width=True):
+            btn_label = ("● " + label) if is_active else label
+            if st.button(btn_label, key=f"nav_{page_key}", use_container_width=True):
                 try:
                     st.switch_page(path)
                 except Exception:
@@ -89,7 +100,7 @@ def render_nav(current_page: str, username: str = None):
             if is_active:
                 st.markdown("</div>", unsafe_allow_html=True)
 
-    with cols[8]:
+    with cols[11]:
         if st.button("🚪 Sign Out", key="nav_signout", use_container_width=True):
             logout(username)
             for k in _CLEAR_KEYS:
