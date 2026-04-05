@@ -126,27 +126,29 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:none!important;}
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
 st.markdown("<div style='padding:6px 0;margin-bottom:12px'>", unsafe_allow_html=True)
-_n = st.columns([1.6,1,1,1,1,1,1,1,1.2])
+_n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1.2])
 with _n[0]:
     st.markdown(
         "<div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;letter-spacing:5px;"
         "color:#E50914;text-shadow:0 0 24px rgba(229,9,20,0.60);line-height:1;padding-top:4px'>"
         "&#9889; FITPLAN PRO</div>", unsafe_allow_html=True)
 nav_pages = [
-    ("🏠 Home",    "pages/2_Dashboard.py",     "ac_db"),
-    ("⚡ Workout", "pages/3_Workout_Plan.py",   "ac_wp"),
-    ("🥗 Diet",    "pages/4_Diet_Plan.py",      "ac_dp"),
-    ("🍽️ Meals",  "pages/11_meal_planner.py",  "ac_mp"),
-    ("🤖 Coach",   "pages/5_ai_coach.py",       "ac_ai"),
-    ("🏆 Records", "pages/6_records.py",        "ac_rc"),
-    ("📸 Photos",  "pages/7_progress_photos.py","ac_ph"),
+    ("🏠 Home",    "pages/2_Dashboard.py",       "ac_db"),
+    ("⚡ Workout", "pages/3_Workout_Plan.py",     "ac_wp"),
+    ("🥗 Diet",    "pages/4_Diet_Plan.py",        "ac_dp"),
+    ("🍽️ Meals",  "pages/11_meal_planner.py",    "ac_mp"),
+    ("😴 Sleep",   "pages/12_sleep_tracker.py",  "ac_sl"),
+    ("🏃 Cardio",  "pages/13_cardio_tracker.py", "ac_ca"),
+    ("🤖 Coach",   "pages/5_ai_coach.py",         "ac_ai"),
+    ("🏆 Records", "pages/6_records.py",          "ac_rc"),
+    ("📸 Photos",  "pages/7_progress_photos.py",  "ac_ph"),
 ]
 for i,(lbl,path,key) in enumerate(nav_pages):
     with _n[i+1]:
         if st.button(lbl, key=key, use_container_width=True):
             try: st.switch_page(path)
             except Exception: pass
-with _n[8]:
+with _n[10]:
     if st.button("🚪 Sign Out", key="ac_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
