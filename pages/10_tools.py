@@ -87,19 +87,24 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 1px 4px rgba(0,0,0,0
 """, unsafe_allow_html=True)
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
-_n = st.columns([1.6,1,1,1,1,1,1,1.2])
+_n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1.2])
 with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
 for i,(lbl,path,key) in enumerate([
-    ("🏠 Home","pages/2_Dashboard.py","tl_db"),
-    ("⚡ Workout","pages/3_Workout_Plan.py","tl_wp"),
-    ("🥗 Diet","pages/4_Diet_Plan.py","tl_dp"),
-    ("🤖 Coach","pages/5_ai_coach.py","tl_ai"),
-    ("🏆 Records","pages/6_records.py","tl_rc"),
-    ("🧮 Tools","pages/10_tools.py","tl_tl"),
+    ("🏠 Home",    "pages/2_Dashboard.py",       "tl_db"),
+    ("⚡ Workout", "pages/3_Workout_Plan.py",    "tl_wp"),
+    ("🥗 Diet",    "pages/4_Diet_Plan.py",        "tl_dp"),
+    ("🍽️ Meals",  "pages/11_meal_planner.py",   "tl_mp"),
+    ("😴 Sleep",   "pages/12_sleep_tracker.py",  "tl_sl"),
+    ("🏃 Cardio",  "pages/13_cardio_tracker.py", "tl_ca"),
+    ("🤖 Coach",   "pages/5_ai_coach.py",         "tl_ai"),
+    ("🏆 Records", "pages/6_records.py",          "tl_rc"),
+    ("🧮 Tools",   "pages/10_tools.py",           "tl_tl"),
 ]):
     with _n[i+1]:
-        if st.button(lbl, key=key, use_container_width=True): st.switch_page(path)
-with _n[7]:
+        if st.button(lbl, key=key, use_container_width=True):
+            try: st.switch_page(path)
+            except Exception: pass
+with _n[10]:
     if st.button("🚪 Sign Out", key="tl_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
@@ -223,6 +228,30 @@ with tab1:
     act_level = st.selectbox("Activity Level", list(activity_map.keys()),
                               index=2, key="bmi_activity")
     tdee = round(bmr * activity_map[act_level])
+
+    # ── AUTO-SAVE BMI TO DB ───────────────────────────────────────────────────
+    try:
+        from utils.db import save_user_setting, get_user_setting
+        import json as _jbmi
+        from datetime import date as _dbmi
+        _bmi_record = {
+            "date": _dbmi.today().isoformat(),
+            "bmi": round(bmi, 1), "bmi_cat": bmi_cat,
+            "body_fat": round(bf, 1), "bf_cat": bf_cat,
+            "lean_mass": lean_mass, "fat_mass": fat_mass,
+            "bmr": int(bmr), "tdee": tdee,
+            "weight": b_weight, "height": b_height,
+        }
+        # Load existing BMI log and prepend
+        _existing = get_user_setting(uname, "bmi_log")
+        _bmi_log  = _jbmi.loads(_existing) if _existing else []
+        # Only save if different from last entry
+        if not _bmi_log or _bmi_log[0].get("date") != _bmi_record["date"]:
+            _bmi_log.insert(0, _bmi_record)
+            _bmi_log = _bmi_log[:30]  # keep last 30 entries
+            save_user_setting(uname, "bmi_log", _jbmi.dumps(_bmi_log))
+    except Exception:
+        pass
 
     st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
