@@ -68,41 +68,59 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 .stMarkdown p,.stMarkdown li{color:#fff!important;font-size:1.05rem!important;line-height:1.75!important;}
 </style>""", unsafe_allow_html=True)
 
-# ── NAV ───────────────────────────────────────────────────────────────────────
-_n = st.columns([1.5,1,1,1,1,1,1,1,1,1,1.2])
-with _n[0]: st.markdown("<div class='nav-logo'>&#9889; FITPLAN PRO</div>", unsafe_allow_html=True)
+# ── NAV ─────────────────────────────────────────────────────────────────────
+st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
+_n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1,1.2])
+with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
 with _n[1]:
-    if st.button("🏠 Home",     key="hi_db", use_container_width=True): st.switch_page("pages/2_Dashboard.py")
+    if st.button("🏠 Home", key="hi_db", use_container_width=True):
+        try: st.switch_page("pages/2_Dashboard.py")
+        except Exception: pass
 with _n[2]:
-    if st.button("⚡ Workout",  key="hi_wp", use_container_width=True): st.switch_page("pages/3_Workout_Plan.py")
+    if st.button("⚡ Workout", key="hi_wp", use_container_width=True):
+        try: st.switch_page("pages/3_Workout_Plan.py")
+        except Exception: pass
 with _n[3]:
-    if st.button("🥗 Diet",     key="hi_dp", use_container_width=True): st.switch_page("pages/4_Diet_Plan.py")
+    if st.button("🥗 Diet", key="hi_dp", use_container_width=True):
+        try: st.switch_page("pages/4_Diet_Plan.py")
+        except Exception: pass
 with _n[4]:
-    if st.button("🍽️ Meals",   key="hi_mp", use_container_width=True):
+    if st.button("🍽️ Meals", key="hi_mp", use_container_width=True):
         try: st.switch_page("pages/11_meal_planner.py")
         except Exception: pass
 with _n[5]:
-    if st.button("🤖 AI Coach", key="hi_ai", use_container_width=True): st.switch_page("pages/5_ai_coach.py")
-with _n[6]:
-    if st.button("🏆 Records",  key="hi_rc", use_container_width=True): st.switch_page("pages/6_records.py")
-with _n[7]:
-    if st.button("● 📅 History",key="hi_hi", use_container_width=True): st.switch_page("pages/9_history.py")
-with _n[8]:
-    if st.button("😴 Sleep",   key="hi_sl", use_container_width=True):
+    if st.button("😴 Sleep", key="hi_sl", use_container_width=True):
         try: st.switch_page("pages/12_sleep_tracker.py")
         except Exception: pass
-with _n[9]:
-    if st.button("🏃 Cardio",  key="hi_ca", use_container_width=True):
+with _n[6]:
+    if st.button("🏃 Cardio", key="hi_ca", use_container_width=True):
         try: st.switch_page("pages/13_cardio_tracker.py")
         except Exception: pass
+with _n[7]:
+    if st.button("🔥 Streak", key="hi_st", use_container_width=True):
+        try: st.switch_page("pages/14_streaks.py")
+        except Exception: pass
+with _n[8]:
+    if st.button("📈 Charts", key="hi_ch", use_container_width=True):
+        try: st.switch_page("pages/15_progress_charts.py")
+        except Exception: pass
+with _n[9]:
+    if st.button("🤖 Coach", key="hi_ai", use_container_width=True):
+        try: st.switch_page("pages/5_ai_coach.py")
+        except Exception: pass
 with _n[10]:
+    if st.button("🏆 Records", key="hi_rc", use_container_width=True):
+        try: st.switch_page("pages/6_records.py")
+        except Exception: pass
+with _n[11]:
     if st.button("🚪 Sign Out", key="hi_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
-                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration","plan_for",
+                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration",
                    "force_regen","tracking","_plan_checked","_db_loaded_dash"]:
             st.session_state.pop(_k, None)
         st.switch_page("app.py")
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ── HERO ──────────────────────────────────────────────────────────────────────
 st.markdown("""
