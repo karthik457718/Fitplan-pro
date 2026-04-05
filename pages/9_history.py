@@ -69,7 +69,7 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 </style>""", unsafe_allow_html=True)
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
-_n = st.columns([1.5,1,1,1,1,1,1,1,1.2])
+_n = st.columns([1.5,1,1,1,1,1,1,1,1,1,1.2])
 with _n[0]: st.markdown("<div class='nav-logo'>&#9889; FITPLAN PRO</div>", unsafe_allow_html=True)
 with _n[1]:
     if st.button("🏠 Home",     key="hi_db", use_container_width=True): st.switch_page("pages/2_Dashboard.py")
@@ -88,6 +88,14 @@ with _n[6]:
 with _n[7]:
     if st.button("● 📅 History",key="hi_hi", use_container_width=True): st.switch_page("pages/9_history.py")
 with _n[8]:
+    if st.button("😴 Sleep",   key="hi_sl", use_container_width=True):
+        try: st.switch_page("pages/12_sleep_tracker.py")
+        except Exception: pass
+with _n[9]:
+    if st.button("🏃 Cardio",  key="hi_ca", use_container_width=True):
+        try: st.switch_page("pages/13_cardio_tracker.py")
+        except Exception: pass
+with _n[10]:
     if st.button("🚪 Sign Out", key="hi_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
