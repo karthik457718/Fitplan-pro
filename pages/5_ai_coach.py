@@ -126,58 +126,11 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:none!important;}
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
 st.markdown("<div style='padding:6px 0;margin-bottom:12px'>", unsafe_allow_html=True)
-st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
-_n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1,1.2])
-with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
-with _n[1]:
-    if st.button("🏠 Home", key="ai_db", use_container_width=True):
-        try: st.switch_page("pages/2_Dashboard.py")
-        except Exception: pass
-with _n[2]:
-    if st.button("⚡ Workout", key="ai_wp", use_container_width=True):
-        try: st.switch_page("pages/3_Workout_Plan.py")
-        except Exception: pass
-with _n[3]:
-    if st.button("🥗 Diet", key="ai_dp", use_container_width=True):
-        try: st.switch_page("pages/4_Diet_Plan.py")
-        except Exception: pass
-with _n[4]:
-    if st.button("🍽️ Meals", key="ai_mp", use_container_width=True):
-        try: st.switch_page("pages/11_meal_planner.py")
-        except Exception: pass
-with _n[5]:
-    if st.button("😴 Sleep", key="ai_sl", use_container_width=True):
-        try: st.switch_page("pages/12_sleep_tracker.py")
-        except Exception: pass
-with _n[6]:
-    if st.button("🏃 Cardio", key="ai_ca", use_container_width=True):
-        try: st.switch_page("pages/13_cardio_tracker.py")
-        except Exception: pass
-with _n[7]:
-    if st.button("🔥 Streak", key="ai_st", use_container_width=True):
-        try: st.switch_page("pages/14_streaks.py")
-        except Exception: pass
-with _n[8]:
-    if st.button("📈 Charts", key="ai_ch", use_container_width=True):
-        try: st.switch_page("pages/15_progress_charts.py")
-        except Exception: pass
-with _n[9]:
-    if st.button("● 🤖 Coach", key="ai_ai", use_container_width=True):
-        try: st.switch_page("pages/5_ai_coach.py")
-        except Exception: pass
-with _n[10]:
-    if st.button("🏆 Records", key="ai_rc", use_container_width=True):
-        try: st.switch_page("pages/6_records.py")
-        except Exception: pass
-with _n[11]:
-    if st.button("🚪 Sign Out", key="ai_so", use_container_width=True):
-        logout(uname)
-        for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
-                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration",
-                   "force_regen","tracking","_plan_checked","_db_loaded_dash"]:
-            st.session_state.pop(_k, None)
-        st.switch_page("app.py")
-st.markdown("</div>", unsafe_allow_html=True)
+try:
+    from nav_component import render_nav
+    render_nav("coach", uname)
+except Exception as _nav_err:
+    st.warning(f"Nav error: {_nav_err}")
 
 # ── CONTEXT ───────────────────────────────────────────────────────────────────
 sdays    = st.session_state.get("structured_days", [])
