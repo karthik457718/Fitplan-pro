@@ -126,35 +126,55 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:none!important;}
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
 st.markdown("<div style='padding:6px 0;margin-bottom:12px'>", unsafe_allow_html=True)
-_n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1.2])
-with _n[0]:
-    st.markdown(
-        "<div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;letter-spacing:5px;"
-        "color:#E50914;text-shadow:0 0 24px rgba(229,9,20,0.60);line-height:1;padding-top:4px'>"
-        "&#9889; FITPLAN PRO</div>", unsafe_allow_html=True)
-nav_pages = [
-    ("🏠 Home",    "pages/2_Dashboard.py",       "ac_db"),
-    ("⚡ Workout", "pages/3_Workout_Plan.py",     "ac_wp"),
-    ("🥗 Diet",    "pages/4_Diet_Plan.py",        "ac_dp"),
-    ("🍽️ Meals",  "pages/11_meal_planner.py",    "ac_mp"),
-    ("😴 Sleep",   "pages/12_sleep_tracker.py",  "ac_sl"),
-    ("🏃 Cardio",  "pages/13_cardio_tracker.py", "ac_ca"),
-    ("🤖 Coach",   "pages/5_ai_coach.py",         "ac_ai"),
-    ("🏆 Records", "pages/6_records.py",          "ac_rc"),
-    ("📸 Photos",  "pages/7_progress_photos.py",  "ac_ph"),
-]
-for i,(lbl,path,key) in enumerate(nav_pages):
-    with _n[i+1]:
-        if st.button(lbl, key=key, use_container_width=True):
-            try: st.switch_page(path)
-            except Exception: pass
+st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
+_n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1,1.2])
+with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
+with _n[1]:
+    if st.button("🏠 Home", key="ai_db", use_container_width=True):
+        try: st.switch_page("pages/2_Dashboard.py")
+        except Exception: pass
+with _n[2]:
+    if st.button("⚡ Workout", key="ai_wp", use_container_width=True):
+        try: st.switch_page("pages/3_Workout_Plan.py")
+        except Exception: pass
+with _n[3]:
+    if st.button("🥗 Diet", key="ai_dp", use_container_width=True):
+        try: st.switch_page("pages/4_Diet_Plan.py")
+        except Exception: pass
+with _n[4]:
+    if st.button("🍽️ Meals", key="ai_mp", use_container_width=True):
+        try: st.switch_page("pages/11_meal_planner.py")
+        except Exception: pass
+with _n[5]:
+    if st.button("😴 Sleep", key="ai_sl", use_container_width=True):
+        try: st.switch_page("pages/12_sleep_tracker.py")
+        except Exception: pass
+with _n[6]:
+    if st.button("🏃 Cardio", key="ai_ca", use_container_width=True):
+        try: st.switch_page("pages/13_cardio_tracker.py")
+        except Exception: pass
+with _n[7]:
+    if st.button("🔥 Streak", key="ai_st", use_container_width=True):
+        try: st.switch_page("pages/14_streaks.py")
+        except Exception: pass
+with _n[8]:
+    if st.button("📈 Charts", key="ai_ch", use_container_width=True):
+        try: st.switch_page("pages/15_progress_charts.py")
+        except Exception: pass
+with _n[9]:
+    if st.button("● 🤖 Coach", key="ai_ai", use_container_width=True):
+        try: st.switch_page("pages/5_ai_coach.py")
+        except Exception: pass
 with _n[10]:
-    if st.button("🚪 Sign Out", key="ac_so", use_container_width=True):
+    if st.button("🏆 Records", key="ai_rc", use_container_width=True):
+        try: st.switch_page("pages/6_records.py")
+        except Exception: pass
+with _n[11]:
+    if st.button("🚪 Sign Out", key="ai_so", use_container_width=True):
         logout(uname)
         for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
-                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration","plan_for",
-                   "force_regen","tracking","_plan_checked","_db_loaded_dash","_auto_redirect",
-                   "_diet_chosen","_needs_rerun","_db_streak","edit_profile_mode"]:
+                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration",
+                   "force_regen","tracking","_plan_checked","_db_loaded_dash"]:
             st.session_state.pop(_k, None)
         st.switch_page("app.py")
 st.markdown("</div>", unsafe_allow_html=True)
