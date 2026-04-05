@@ -132,49 +132,54 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 
 # ── NAV ────────────────────────────────────────────────────────────────────────
 st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
-_n = st.columns([1.8,1,1,1,1,1,1,1,1,1,1,1,1.3])
+_n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1,1.2])
 with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
 with _n[1]:
-    if st.button("🏠 Home", key="nb_db", use_container_width=True):
-        st.switch_page("pages/2_Dashboard.py")
+    if st.button("🏠 Home", key="wp_db", use_container_width=True):
+        try: st.switch_page("pages/2_Dashboard.py")
+        except Exception: pass
 with _n[2]:
-    if st.button("● ⚡ Workout", key="nb_wp", use_container_width=True):
-        st.switch_page("pages/3_Workout_Plan.py")
+    if st.button("● ⚡ Workout", key="wp_wp", use_container_width=True):
+        try: st.switch_page("pages/3_Workout_Plan.py")
+        except Exception: pass
 with _n[3]:
-    if st.button("🥗 Diet", key="nb_dp", use_container_width=True):
-        st.switch_page("pages/4_Diet_Plan.py")
+    if st.button("🥗 Diet", key="wp_dp", use_container_width=True):
+        try: st.switch_page("pages/4_Diet_Plan.py")
+        except Exception: pass
 with _n[4]:
-    if st.button("🍽️ Meals", key="nb_mp", use_container_width=True):
+    if st.button("🍽️ Meals", key="wp_mp", use_container_width=True):
         try: st.switch_page("pages/11_meal_planner.py")
-        except Exception as e: st.warning(f"Upload 11_meal_planner.py: {e}")
+        except Exception: pass
 with _n[5]:
-    if st.button("🤖 AI Coach", key="nb_ai", use_container_width=True):
-        try: st.switch_page("pages/5_ai_coach.py")
-        except Exception as e: st.warning(f"Upload 5_AI_Coach.py: {e}")
-with _n[6]:
-    if st.button("🏆 Records", key="nb_rc", use_container_width=True):
-        try: st.switch_page("pages/6_records.py")
-        except Exception as e: st.warning(f"Upload 6_Records.py: {e}")
-with _n[7]:
-    if st.button("📸 Photos", key="nb_ph", use_container_width=True):
-        try: st.switch_page("pages/7_progress_photos.py")
-        except Exception as e: st.warning(f"Upload 7_Progress_Photos.py: {e}")
-with _n[8]:
-    if st.button("😴 Sleep",   key="nb_sl", use_container_width=True):
+    if st.button("😴 Sleep", key="wp_sl", use_container_width=True):
         try: st.switch_page("pages/12_sleep_tracker.py")
         except Exception: pass
-with _n[9]:
-    if st.button("🏃 Cardio",  key="nb_ca", use_container_width=True):
+with _n[6]:
+    if st.button("🏃 Cardio", key="wp_ca", use_container_width=True):
         try: st.switch_page("pages/13_cardio_tracker.py")
         except Exception: pass
+with _n[7]:
+    if st.button("🔥 Streak", key="wp_st", use_container_width=True):
+        try: st.switch_page("pages/14_streaks.py")
+        except Exception: pass
+with _n[8]:
+    if st.button("📈 Charts", key="wp_ch", use_container_width=True):
+        try: st.switch_page("pages/15_progress_charts.py")
+        except Exception: pass
+with _n[9]:
+    if st.button("🤖 Coach", key="wp_ai", use_container_width=True):
+        try: st.switch_page("pages/5_ai_coach.py")
+        except Exception: pass
 with _n[10]:
-    if st.button("🚪 Sign Out", key="nb_so", use_container_width=True):
+    if st.button("🏆 Records", key="wp_rc", use_container_width=True):
+        try: st.switch_page("pages/6_records.py")
+        except Exception: pass
+with _n[11]:
+    if st.button("🚪 Sign Out", key="wp_so", use_container_width=True):
         logout(uname)
-        for _k in ["logged_in","username","auth_token","user_data","workout_plan",
-                   "structured_days","dietary_type","full_plan_data","plan_id","plan_start",
-                   "plan_duration","plan_for","force_regen","tracking","_plan_checked",
-                   "_db_loaded_dash","_auto_redirect","_diet_chosen","_needs_rerun",
-                   "_db_streak","edit_profile_mode","_login_db_err","_notes_loaded"]:
+        for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
+                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration",
+                   "force_regen","tracking","_plan_checked","_db_loaded_dash"]:
             st.session_state.pop(_k, None)
         st.switch_page("app.py")
 st.markdown("</div>", unsafe_allow_html=True)
