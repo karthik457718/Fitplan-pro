@@ -23,56 +23,96 @@ st.markdown("""
 
 html,body,.stApp,[data-testid="stAppViewContainer"]{
   background:
-    radial-gradient(ellipse at 10% 10%, rgba(229,9,20,0.16)  0%,transparent 40%),
-    radial-gradient(ellipse at 88% 12%, rgba(251,191,36,0.14) 0%,transparent 38%),
-    radial-gradient(ellipse at 92% 78%, rgba(249,115,22,0.12) 0%,transparent 38%),
-    radial-gradient(ellipse at 8%  80%, rgba(34,197,94,0.10)  0%,transparent 35%),
-    linear-gradient(160deg,#0f0404 0%,#180604 30%,#100403 65%,#0c0302 100%)
+    radial-gradient(ellipse at 8%   8%,  rgba(239,68,68,0.30)  0%,transparent 38%),
+    radial-gradient(ellipse at 92%  10%, rgba(249,115,22,0.25) 0%,transparent 35%),
+    radial-gradient(ellipse at 85%  78%, rgba(251,191,36,0.18) 0%,transparent 38%),
+    radial-gradient(ellipse at 12%  82%, rgba(239,68,68,0.15)  0%,transparent 35%),
+    radial-gradient(ellipse at 50%  40%, rgba(30,5,5,0.50)     0%,transparent 55%),
+    linear-gradient(160deg,#0f0202 0%,#1a0303 25%,#120202 55%,#0d0202 100%)
     !important;
   color:#fff!important;font-family:'DM Sans',sans-serif!important;}
+
+/* Speed lines texture */
+[data-testid="stAppViewContainer"]>section{
+  background-image:repeating-linear-gradient(
+    105deg,
+    transparent,transparent 120px,
+    rgba(239,68,68,0.015) 120px,rgba(239,68,68,0.015) 121px
+  );}
 
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stDecoration"],
 [data-testid="stSidebarNav"],section[data-testid="stSidebar"]{display:none!important;}
 
 [data-testid="stAppViewContainer"]>section>div.block-container{
-  max-width:1060px!important;margin:0 auto!important;padding:0 22px 100px!important;}
+  max-width:1060px!important;margin:0 auto!important;padding:0 22px 100px!important;
+  position:relative;z-index:2;}
 
-.nav-wrap{background:rgba(15,4,4,0.97);backdrop-filter:blur(36px);
-  border-bottom:1.5px solid rgba(229,9,20,0.22);padding:5px 0;margin-bottom:4px;}
+/* NAV */
+.nav-wrap{background:rgba(12,2,2,0.96);backdrop-filter:blur(40px);
+  border-bottom:1px solid rgba(239,68,68,0.18);padding:5px 0;margin-bottom:6px;
+  box-shadow:0 4px 30px rgba(0,0,0,0.70);}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:5px;
-  color:#E50914;text-shadow:0 0 18px rgba(229,9,20,0.45);line-height:1;}
+  color:#ef4444;text-shadow:0 0 20px rgba(239,68,68,0.55);line-height:1;}
 
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button{
-  background:rgba(20,4,4,0.90)!important;border:1px solid rgba(229,9,20,0.28)!important;
-  color:rgba(255,255,255,0.75)!important;border-radius:8px!important;
-  font-size:0.80rem!important;font-weight:600!important;height:30px!important;
+  background:rgba(20,4,4,0.85)!important;border:1px solid rgba(239,68,68,0.25)!important;
+  color:rgba(255,255,255,0.72)!important;border-radius:8px!important;
+  font-size:0.78rem!important;font-weight:600!important;height:30px!important;
   min-height:30px!important;white-space:nowrap!important;transition:all 0.15s!important;
   box-shadow:none!important;}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button:hover{
-  background:rgba(229,9,20,0.20)!important;border-color:rgba(229,9,20,0.70)!important;color:#fff!important;}
+  background:rgba(239,68,68,0.20)!important;border-color:rgba(239,68,68,0.65)!important;
+  color:#fff!important;box-shadow:0 0 12px rgba(239,68,68,0.30)!important;}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]:last-child>button{
-  background:rgba(229,9,20,0.22)!important;border-color:rgba(229,9,20,0.50)!important;}
+  background:rgba(239,68,68,0.22)!important;border-color:rgba(239,68,68,0.50)!important;}
 
+/* ACTION BUTTONS */
 .stButton>button{
-  background:linear-gradient(135deg,#E50914,#b0000a)!important;
-  border:none!important;color:#fff!important;border-radius:12px!important;
-  font-weight:700!important;font-size:0.92rem!important;
-  box-shadow:0 4px 18px rgba(229,9,20,0.40)!important;transition:all 0.22s!important;}
-.stButton>button:hover{transform:translateY(-2px) scale(1.02)!important;
-  box-shadow:0 8px 26px rgba(229,9,20,0.60)!important;}
+  background:linear-gradient(135deg,#dc2626 0%,#b91c1c 50%,#991b1b 100%)!important;
+  border:none!important;color:#fff!important;border-radius:14px!important;
+  font-weight:700!important;font-size:0.95rem!important;letter-spacing:0.5px!important;
+  box-shadow:0 6px 24px rgba(220,38,38,0.50),0 0 0 1px rgba(239,68,68,0.20)!important;
+  transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1)!important;}
+.stButton>button:hover{transform:translateY(-3px) scale(1.02)!important;
+  box-shadow:0 10px 32px rgba(220,38,38,0.70)!important;}
 
+/* INPUTS */
 [data-testid="stWidgetLabel"],[data-testid="stWidgetLabel"] p{
-  color:rgba(255,255,255,0.80)!important;font-size:0.88rem!important;
-  font-weight:600!important;letter-spacing:1.5px!important;text-transform:uppercase!important;}
-input,.stTextArea textarea,.stNumberInput input{background:#1a0404!important;
-  border:1.5px solid rgba(229,9,20,0.28)!important;color:#fff!important;border-radius:10px!important;}
-.stSelectbox [data-baseweb="select"]>div{background:#1a0404!important;
-  border:1.5px solid rgba(229,9,20,0.28)!important;color:#fff!important;}
-.stMarkdown p{color:rgba(255,255,255,0.80)!important;}
+  color:rgba(252,165,165,0.90)!important;font-size:0.78rem!important;
+  font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;}
+input,.stTextArea textarea,.stNumberInput input{
+  background:rgba(25,5,5,0.80)!important;
+  border:1.5px solid rgba(239,68,68,0.25)!important;color:#fff!important;
+  border-radius:12px!important;backdrop-filter:blur(10px)!important;}
+input:focus{border-color:rgba(239,68,68,0.65)!important;
+  box-shadow:0 0 0 3px rgba(239,68,68,0.15)!important;}
+.stSelectbox [data-baseweb="select"]>div{
+  background:rgba(25,5,5,0.80)!important;
+  border:1.5px solid rgba(239,68,68,0.25)!important;color:#fff!important;
+  border-radius:12px!important;}
+.stMarkdown p{color:rgba(255,220,210,0.80)!important;line-height:1.7!important;}
+.stNumberInput [data-testid="stNumberInputStepUp"],
+.stNumberInput [data-testid="stNumberInputStepDown"]{
+  background:rgba(239,68,68,0.20)!important;border:none!important;
+  color:#fff!important;border-radius:6px!important;}
+
+/* GLASS CARDS */
+.glass-card-red{
+  background:rgba(25,5,5,0.70);
+  border:1px solid rgba(239,68,68,0.20);
+  border-radius:22px;
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,100,100,0.06);
+  position:relative;overflow:hidden;}
+.glass-card-red::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
+  background:linear-gradient(90deg,transparent,#ef4444 35%,#f97316 65%,transparent);}
+
+@keyframes pulse-run{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
 </style>
 """, unsafe_allow_html=True)
 
-# ── NAV ───────────────────────────────────────────────────────────────────────
 st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
 _n = st.columns([1.6,1,1,1,1,1,1,1,1,1.2])
 with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
@@ -136,46 +176,77 @@ sessions  = len(week_log)
 all_km    = round(sum(c.get("distance_km",0) for c in cardio_log), 1)
 
 # ── HERO ──────────────────────────────────────────────────────────────────────
+# Performance insight
+perf_tip = ("🔥 Beast mode! You're crushing your cardio this week." if total_km > 20
+            else "💪 Solid week — keep pushing for more distance!" if total_km > 10
+            else "🏃 Good start — aim for 3+ sessions this week." if sessions > 0
+            else "👟 No sessions yet this week. Lace up and go!")
+
 st.markdown(f"""
-<div style='background:linear-gradient(135deg,rgba(229,9,20,0.14),rgba(120,0,8,0.08) 50%,rgba(15,4,4,0.70));
-  border:1.5px solid rgba(229,9,20,0.42);border-radius:20px;padding:26px 32px;margin:10px 0 20px;
-  position:relative;overflow:hidden;backdrop-filter:blur(20px);'>
+<div style='background:linear-gradient(135deg,rgba(220,38,38,0.18),rgba(153,27,27,0.10) 50%,rgba(12,2,2,0.75));
+  border:1px solid rgba(239,68,68,0.30);border-radius:24px;padding:32px 36px;margin:10px 0 24px;
+  position:relative;overflow:hidden;backdrop-filter:blur(30px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,150,150,0.07);'>
+  <!-- Top accent line -->
   <div style='position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent,#E50914 35%,rgba(251,191,36,0.60) 65%,transparent)'></div>
-  <div style='position:absolute;bottom:-40px;right:-40px;width:200px;height:200px;border-radius:50%;
-    background:radial-gradient(circle,rgba(229,9,20,0.14) 0%,transparent 70%);pointer-events:none'></div>
-  <div style='font-size:0.72rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-    color:rgba(229,9,20,0.80);margin-bottom:8px'>🏃 Cardio Tracker</div>
-  <div style='font-family:Barlow Condensed,sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);
-    font-weight:900;text-transform:uppercase;color:#fff;line-height:1;margin-bottom:16px'>
-    <span style='color:#E50914'>{_display}'s</span> Cardio Log
+    background:linear-gradient(90deg,transparent,#ef4444 25%,#f97316 55%,#fbbf24,transparent)'></div>
+  <!-- BG runner icon -->
+  <div style='position:absolute;right:28px;top:20px;font-size:5rem;opacity:0.08;
+    animation:pulse-run 2s ease-in-out infinite;user-select:none;line-height:1'>🏃</div>
+
+  <div style='font-size:0.68rem;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;
+    color:rgba(252,165,165,0.75);margin-bottom:10px;'>🏃 Cardio Tracker</div>
+  <div style='font-family:Barlow Condensed,sans-serif;font-size:clamp(2rem,5vw,3.2rem);
+    font-weight:900;text-transform:uppercase;line-height:1;margin-bottom:22px;'>
+    <span style='background:linear-gradient(90deg,#fca5a5,#ef4444);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;'>{_display}'s</span>
+    <span style='color:#fff;'> Cardio Log</span>
   </div>
-  <div style='display:flex;gap:20px;flex-wrap:wrap'>
-    <div style='background:rgba(229,9,20,0.12);border:1px solid rgba(229,9,20,0.28);
-      border-radius:12px;padding:12px 20px;text-align:center;min-width:90px'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2rem;color:#E50914;line-height:1'>{total_km}</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>km this week</div>
+
+  <!-- 5 stats in a grid -->
+  <div style='display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px;'>
+    <div style='background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.22);
+      border-radius:16px;padding:14px 10px;text-align:center;'>
+      <div style='font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(252,165,165,0.55);margin-bottom:5px;'>KM · Week</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.2rem;color:#ef4444;line-height:1;
+        text-shadow:0 0 20px rgba(239,68,68,0.45);'>{total_km}</div>
     </div>
-    <div style='background:rgba(251,191,36,0.10);border:1px solid rgba(251,191,36,0.25);
-      border-radius:12px;padding:12px 20px;text-align:center;min-width:90px'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2rem;color:#fcd34d;line-height:1'>{total_min}</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>min this week</div>
+    <div style='background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.20);
+      border-radius:16px;padding:14px 10px;text-align:center;'>
+      <div style='font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(253,186,116,0.55);margin-bottom:5px;'>Minutes</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.2rem;color:#f97316;line-height:1;
+        text-shadow:0 0 20px rgba(249,115,22,0.40);'>{total_min}</div>
     </div>
-    <div style='background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.25);
-      border-radius:12px;padding:12px 20px;text-align:center;min-width:90px'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2rem;color:#fdba74;line-height:1'>{total_cal}</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>kcal burned</div>
+    <div style='background:rgba(251,191,36,0.10);border:1px solid rgba(251,191,36,0.20);
+      border-radius:16px;padding:14px 10px;text-align:center;'>
+      <div style='font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(252,211,77,0.55);margin-bottom:5px;'>Calories</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.2rem;color:#fbbf24;line-height:1;
+        text-shadow:0 0 20px rgba(251,191,36,0.40);'>{total_cal}</div>
     </div>
-    <div style='background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.25);
-      border-radius:12px;padding:12px 20px;text-align:center;min-width:90px'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2rem;color:#86efac;line-height:1'>{sessions}</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>sessions</div>
+    <div style='background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.20);
+      border-radius:16px;padding:14px 10px;text-align:center;'>
+      <div style='font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(134,239,172,0.55);margin-bottom:5px;'>Sessions</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.2rem;color:#34d399;line-height:1;
+        text-shadow:0 0 20px rgba(52,211,153,0.40);'>{sessions}</div>
     </div>
-    <div style='background:rgba(59,130,246,0.10);border:1px solid rgba(59,130,246,0.25);
-      border-radius:12px;padding:12px 20px;text-align:center;min-width:90px'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2rem;color:#93c5fd;line-height:1'>{all_km}</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>total km</div>
+    <div style='background:rgba(96,165,250,0.10);border:1px solid rgba(96,165,250,0.20);
+      border-radius:16px;padding:14px 10px;text-align:center;'>
+      <div style='font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(147,197,253,0.55);margin-bottom:5px;'>Total KM</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.2rem;color:#60a5fa;line-height:1;
+        text-shadow:0 0 20px rgba(96,165,250,0.40);'>{all_km}</div>
     </div>
+  </div>
+
+  <!-- Perf tip -->
+  <div style='background:rgba(239,68,68,0.10);border:1px solid rgba(239,68,68,0.18);
+    border-radius:12px;padding:10px 16px;font-size:0.82rem;color:rgba(255,220,210,0.80);'>
+    {perf_tip}
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -185,12 +256,15 @@ col_form, col_hist = st.columns([1, 1.4], gap="large")
 
 with col_form:
     st.markdown("""
-<div style='background:rgba(20,4,4,0.90);border:1.5px solid rgba(229,9,20,0.32);border-radius:18px;
-  padding:20px 24px;position:relative;overflow:hidden;backdrop-filter:blur(20px);margin-bottom:16px'>
-  <div style='position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent,#E50914,transparent)'></div>
-  <div style='font-size:0.68rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
-    color:rgba(229,9,20,0.80);margin-bottom:14px'>➕ Log New Session</div>
+<div style='background:rgba(22,4,4,0.75);border:1px solid rgba(239,68,68,0.22);border-radius:22px;
+  padding:22px 26px;position:relative;overflow:hidden;
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,100,100,0.06);
+  margin-bottom:16px'>
+  <div style='position:absolute;top:0;left:0;right:0;height:1.5px;
+    background:linear-gradient(90deg,transparent,#ef4444 35%,#f97316 65%,transparent)'></div>
+  <div style='font-size:0.65rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+    color:rgba(252,165,165,0.80);margin-bottom:16px;'>➕ Log New Session</div>
 """, unsafe_allow_html=True)
 
     _act_label = st.selectbox("Activity", list(ACTIVITIES.keys()), key="ca_act")
@@ -256,12 +330,14 @@ with col_form:
 # ── WEEKLY BAR CHART ──────────────────────────────────────────────────────────
 with col_hist:
     st.markdown("""
-<div style='background:rgba(20,4,4,0.90);border:1.5px solid rgba(229,9,20,0.25);border-radius:18px;
-  padding:20px 24px;backdrop-filter:blur(20px);position:relative;overflow:hidden;margin-bottom:16px'>
-  <div style='position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent,#f59e0b,transparent)'></div>
-  <div style='font-size:0.68rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
-    color:rgba(251,191,36,0.80);margin-bottom:16px'>📊 Weekly Distance (km)</div>
+<div style='background:rgba(22,4,4,0.75);border:1px solid rgba(239,68,68,0.18);border-radius:22px;
+  padding:22px 26px;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,100,100,0.06);
+  position:relative;overflow:hidden;margin-bottom:16px'>
+  <div style='position:absolute;top:0;left:0;right:0;height:1.5px;
+    background:linear-gradient(90deg,transparent,#f97316,transparent)'></div>
+  <div style='font-size:0.65rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+    color:rgba(253,186,116,0.80);margin-bottom:18px;'>📊 Weekly Distance (km)</div>
 """, unsafe_allow_html=True)
 
     # Build 7-day distance data
