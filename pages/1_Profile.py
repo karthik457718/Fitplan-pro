@@ -153,7 +153,7 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"] >
 """, unsafe_allow_html=True)
 
 _has_plan = bool(st.session_state.get("structured_days"))
-_pn = st.columns([1.6, 0.8, 0.8, 0.8, 0.8, 0.9, 0.9, 0.8, 0.85, 0.95])
+_pn = st.columns([1.4, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.85])
 with _pn[0]:
     st.markdown("<div class='nav-logo' style='font-size:1.1rem;letter-spacing:3px;'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
 with _pn[1]:
@@ -171,21 +171,25 @@ with _pn[4]:
         try: st.switch_page("pages/11_meal_planner.py")
         except Exception: pass
 with _pn[5]:
-    if st.button("🤖 AI Coach",key="pn_ai", use_container_width=True):
-        try: st.switch_page("pages/5_ai_coach.py")
+    if st.button("😴 Sleep",   key="pn_sl", use_container_width=True):
+        try: st.switch_page("pages/12_sleep_tracker.py")
         except Exception: pass
 with _pn[6]:
+    if st.button("🏃 Cardio",  key="pn_ca", use_container_width=True):
+        try: st.switch_page("pages/13_cardio_tracker.py")
+        except Exception: pass
+with _pn[7]:
+    if st.button("🤖 Coach",   key="pn_ai", use_container_width=True):
+        try: st.switch_page("pages/5_ai_coach.py")
+        except Exception: pass
+with _pn[8]:
     if st.button("🏆 Records", key="pn_rc", use_container_width=True):
         try: st.switch_page("pages/6_records.py")
         except Exception: pass
-with _pn[7]:
-    if st.button("📸 Photos",  key="pn_ph", use_container_width=True):
-        try: st.switch_page("pages/7_progress_photos.py")
-        except Exception: pass
-with _pn[8]:
+with _pn[9]:
     if st.button("● Profile",  key="pn_pr", use_container_width=True):
         st.rerun()
-with _pn[9]:
+with _pn[10]:
     if st.button("🚪 Sign Out",key="pn_so", use_container_width=True):
         logout(uname)
         for k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
