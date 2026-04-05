@@ -1023,3 +1023,109 @@ def save_body_measurements(username, meas_list):
                           m.get("Chest (cm)", 0), m.get("Waist (cm)", 0),
                           m.get("Hips (cm)", 0), m.get("Left Arm (cm)", 0),
                           m.get("Left Thigh (cm)", 0))
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SLEEP TRACKER
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _init_sleep_tracker():
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS sleep_tracker (
+            id TEXT PRIMARY KEY, username TEXT, date TEXT,
+            hours REAL, quality INTEGER, notes TEXT,
+            UNIQUE(username, date)
+        )""")
+    conn.commit(); conn.close()
+
+_init_sleep_tracker()
+
+def save_sleep(username, date_str, hours, quality, notes=""):
+    row_id = f"{username}_{date_str}"
+    if USE_SUPABASE:
+        _sb_post("sleep_tracker", {"id": row_id, "username": username,
+            "date": date_str, "hours": hours, "quality": quality, "notes": notes})
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("INSERT OR REPLACE INTO sleep_tracker VALUES (?,?,?,?,?,?)",
+                 (row_id, username, date_str, hours, quality, notes))
+    conn.commit(); conn.close()
+
+def get_sleep(username, limit=30):
+    if USE_SUPABASE:
+        rows = _sb_get("sleep_tracker",
+                       f"username=eq.{username}&order=date.desc&limit={limit}")
+        return rows if rows else []
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute(
+        "SELECT * FROM sleep_tracker WHERE username=? ORDER BY date DESC LIMIT ?",
+        (username, limit)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+def get_sleep_entry(username, date_str):
+    if USE_SUPABASE:
+        rows = _sb_get("sleep_tracker",
+                       f"username=eq.{username}&date=eq.{date_str}&limit=1")
+        return rows[0] if rows else None
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    row = conn.execute(
+        "SELECT * FROM sleep_tracker WHERE username=? AND date=?",
+        (username, date_str)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# CARDIO TRACKER
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _init_cardio_tracker():
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS cardio_tracker (
+            id TEXT PRIMARY KEY, username TEXT, date TEXT,
+            activity TEXT, distance_km REAL, duration_min INTEGER,
+            calories INTEGER, notes TEXT
+        )""")
+    conn.commit(); conn.close()
+
+_init_cardio_tracker()
+
+def save_cardio(username, date_str, activity, distance_km, duration_min, calories, notes=""):
+    row_id = str(uuid.uuid4())
+    if USE_SUPABASE:
+        _sb_post("cardio_tracker", {"id": row_id, "username": username,
+            "date": date_str, "activity": activity, "distance_km": distance_km,
+            "duration_min": duration_min, "calories": calories, "notes": notes})
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("INSERT INTO cardio_tracker VALUES (?,?,?,?,?,?,?,?)",
+                 (row_id, username, date_str, activity, distance_km,
+                  duration_min, calories, notes))
+    conn.commit(); conn.close()
+
+def get_cardio(username, limit=50):
+    if USE_SUPABASE:
+        rows = _sb_get("cardio_tracker",
+                       f"username=eq.{username}&order=date.desc&limit={limit}")
+        return rows if rows else []
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute(
+        "SELECT * FROM cardio_tracker WHERE username=? ORDER BY date DESC LIMIT ?",
+        (username, limit)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+def delete_cardio(username, row_id):
+    if USE_SUPABASE:
+        try:
+            import requests as _req
+            _req.delete(f"{SUPABASE_URL}/rest/v1/cardio_tracker?id=eq.{row_id}",
+                        headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"})
+        except Exception: pass
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("DELETE FROM cardio_tracker WHERE id=? AND username=?", (row_id, username))
+    conn.commit(); conn.close()
