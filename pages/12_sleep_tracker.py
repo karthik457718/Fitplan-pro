@@ -111,28 +111,55 @@ input:focus{border-color:rgba(167,139,250,0.70)!important;
 
 # ── NAV ───────────────────────────────────────────────────────────────────────
 st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
-_n = st.columns([1.6,1,1,1,1,1,1,1,1,1.2])
+_n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1,1.2])
 with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
-for idx, (lbl, pg, key) in enumerate([
-    ("🏠 Home",    "pages/2_Dashboard.py",       "sl_db"),
-    ("⚡ Workout", "pages/3_Workout_Plan.py",    "sl_wp"),
-    ("🥗 Diet",    "pages/4_Diet_Plan.py",        "sl_dp"),
-    ("🍽️ Meals",  "pages/11_meal_planner.py",   "sl_mp"),
-    ("😴 Sleep",   "pages/12_sleep_tracker.py",  "sl_sl"),
-    ("🏃 Cardio",  "pages/13_cardio_tracker.py", "sl_ca"),
-    ("🤖 Coach",   "pages/5_ai_coach.py",         "sl_ai"),
-    ("🏆 Records", "pages/6_records.py",          "sl_rc"),
-]):
-    with _n[idx+1]:
-        if st.button(lbl, key=key, use_container_width=True):
-            try: st.switch_page(pg)
-            except Exception: pass
+with _n[1]:
+    if st.button("🏠 Home", key="sl_db", use_container_width=True):
+        try: st.switch_page("pages/2_Dashboard.py")
+        except Exception: pass
+with _n[2]:
+    if st.button("⚡ Workout", key="sl_wp", use_container_width=True):
+        try: st.switch_page("pages/3_Workout_Plan.py")
+        except Exception: pass
+with _n[3]:
+    if st.button("🥗 Diet", key="sl_dp", use_container_width=True):
+        try: st.switch_page("pages/4_Diet_Plan.py")
+        except Exception: pass
+with _n[4]:
+    if st.button("🍽️ Meals", key="sl_mp", use_container_width=True):
+        try: st.switch_page("pages/11_meal_planner.py")
+        except Exception: pass
+with _n[5]:
+    if st.button("● 😴 Sleep", key="sl_sl", use_container_width=True):
+        try: st.switch_page("pages/12_sleep_tracker.py")
+        except Exception: pass
+with _n[6]:
+    if st.button("🏃 Cardio", key="sl_ca", use_container_width=True):
+        try: st.switch_page("pages/13_cardio_tracker.py")
+        except Exception: pass
+with _n[7]:
+    if st.button("🔥 Streak", key="sl_st", use_container_width=True):
+        try: st.switch_page("pages/14_streaks.py")
+        except Exception: pass
+with _n[8]:
+    if st.button("📈 Charts", key="sl_ch", use_container_width=True):
+        try: st.switch_page("pages/15_progress_charts.py")
+        except Exception: pass
 with _n[9]:
+    if st.button("🤖 Coach", key="sl_ai", use_container_width=True):
+        try: st.switch_page("pages/5_ai_coach.py")
+        except Exception: pass
+with _n[10]:
+    if st.button("🏆 Records", key="sl_rc", use_container_width=True):
+        try: st.switch_page("pages/6_records.py")
+        except Exception: pass
+with _n[11]:
     if st.button("🚪 Sign Out", key="sl_so", use_container_width=True):
         logout(uname)
-        for k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
-                  "dietary_type","full_plan_data","plan_id","force_regen","tracking","_plan_checked"]:
-            st.session_state.pop(k, None)
+        for _k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
+                   "dietary_type","full_plan_data","plan_id","plan_start","plan_duration",
+                   "force_regen","tracking","_plan_checked","_db_loaded_dash"]:
+            st.session_state.pop(_k, None)
         st.switch_page("app.py")
 st.markdown("</div>", unsafe_allow_html=True)
 
