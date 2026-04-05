@@ -23,11 +23,11 @@ st.markdown("""
 
 html,body,.stApp,[data-testid="stAppViewContainer"]{
   background:
-    radial-gradient(ellipse at 12% 8%,  rgba(251,146,60,0.32)  0%,transparent 38%),
-    radial-gradient(ellipse at 88% 12%, rgba(239,68,68,0.25)   0%,transparent 35%),
-    radial-gradient(ellipse at 75% 80%, rgba(251,191,36,0.20)  0%,transparent 40%),
-    radial-gradient(ellipse at 15% 78%, rgba(249,115,22,0.18)  0%,transparent 35%),
-    linear-gradient(160deg,#0f0600 0%,#1a0a00 28%,#130700 58%,#0c0400 100%)
+    radial-gradient(ellipse at 12% 8%,  rgba(251,146,60,0.22)  0%,transparent 38%),
+    radial-gradient(ellipse at 88% 12%, rgba(239,68,68,0.18)   0%,transparent 35%),
+    radial-gradient(ellipse at 75% 80%, rgba(251,191,36,0.14)  0%,transparent 40%),
+    radial-gradient(ellipse at 15% 78%, rgba(249,115,22,0.12)  0%,transparent 35%),
+    linear-gradient(160deg,#1a0a02 0%,#261200 28%,#1e0e00 58%,#160900 100%)
     !important;
   color:#fff!important;font-family:'DM Sans',sans-serif!important;}
 
@@ -59,7 +59,10 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]:l
   box-shadow:0 6px 24px rgba(234,88,12,0.50)!important;transition:all 0.22s!important;}
 .stButton>button:hover{transform:translateY(-3px) scale(1.02)!important;
   box-shadow:0 10px 32px rgba(234,88,12,0.70)!important;}
-.stMarkdown p{color:rgba(255,220,180,0.80)!important;line-height:1.7!important;}
+.stMarkdown p{color:#fff!important;line-height:1.7!important;}
+p,div,span,label{color:#fff!important;text-shadow:0 1px 4px rgba(0,0,0,0.80)!important;}
+[data-testid="stWidgetLabel"],[data-testid="stWidgetLabel"] p{
+  color:#fff!important;font-weight:700!important;}
 
 @keyframes firePulse{0%,100%{text-shadow:0 0 20px rgba(251,146,60,0.80),0 0 40px rgba(239,68,68,0.50)}
   50%{text-shadow:0 0 30px rgba(251,191,36,1),0 0 60px rgba(251,146,60,0.80)}}
@@ -176,7 +179,7 @@ st.markdown(f"""
     </div>
     <!-- Stats grid -->
     <div style='display:grid;grid-template-columns:repeat(3,1fr);gap:10px;'>
-      <div style='background:rgba(255,255,255,0.05);border:1px solid rgba(251,146,60,0.18);
+      <div style='background:rgba(30,12,0,0.80);border:1px solid rgba(251,146,60,0.35);
         border-radius:16px;padding:14px;text-align:center;'>
         <div style='font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
           color:rgba(253,186,116,0.55);margin-bottom:5px;'>Best Streak</div>
@@ -184,7 +187,7 @@ st.markdown(f"""
           {max(longest_st, real_current)}</div>
         <div style='font-size:0.60rem;color:rgba(255,255,255,0.30);margin-top:2px;'>days ever</div>
       </div>
-      <div style='background:rgba(255,255,255,0.05);border:1px solid rgba(251,146,60,0.18);
+      <div style='background:rgba(30,12,0,0.80);border:1px solid rgba(251,146,60,0.35);
         border-radius:16px;padding:14px;text-align:center;'>
         <div style='font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
           color:rgba(253,186,116,0.55);margin-bottom:5px;'>Total Done</div>
@@ -192,7 +195,7 @@ st.markdown(f"""
           {total_done}</div>
         <div style='font-size:0.60rem;color:rgba(255,255,255,0.30);margin-top:2px;'>workouts</div>
       </div>
-      <div style='background:rgba(255,255,255,0.05);border:1px solid rgba(251,146,60,0.18);
+      <div style='background:rgba(30,12,0,0.80);border:1px solid rgba(251,146,60,0.35);
         border-radius:16px;padding:14px;text-align:center;'>
         <div style='font-size:0.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
           color:rgba(253,186,116,0.55);margin-bottom:5px;'>This Week</div>
@@ -207,7 +210,7 @@ st.markdown(f"""
 
 # ── MILESTONE BADGES ──────────────────────────────────────────────────────────
 st.markdown("""<div style='font-size:0.68rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-color:rgba(251,146,60,0.60);margin-bottom:12px;display:flex;align-items:center;gap:10px'>
+color:rgba(251,146,60,0.90);margin-bottom:12px;display:flex;align-items:center;gap:10px'>
 <span>🏅 Milestone Badges</span>
 <span style='flex:1;height:1px;background:linear-gradient(90deg,rgba(251,146,60,0.30),transparent);display:block'></span>
 </div>""", unsafe_allow_html=True)
@@ -226,24 +229,24 @@ MILESTONES = [
 badge_html = "<div style='display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;'>"
 for days, icon, name, desc in MILESTONES:
     earned   = max(longest_st, real_current) >= days or total_done >= days
-    bg       = "rgba(251,146,60,0.15)" if earned else "rgba(255,255,255,0.03)"
-    border   = "rgba(251,146,60,0.35)" if earned else "rgba(255,255,255,0.08)"
+    bg       = "rgba(251,146,60,0.15)" if earned else "rgba(25,10,0,0.75)"
+    border   = "rgba(251,146,60,0.35)" if earned else "rgba(255,255,255,0.20)"
     opacity  = "1" if earned else "0.35"
     glow     = f"box-shadow:0 0 20px rgba(251,146,60,0.30);" if earned else ""
     badge_html += f"""
 <div style='background:{bg};border:1px solid {border};border-radius:16px;padding:16px 12px;
   text-align:center;opacity:{opacity};{glow}transition:all 0.3s;'>
   <div style='font-size:2rem;margin-bottom:6px;{"animation:badgePop 0.5s ease both;" if earned else ""}'>{icon}</div>
-  <div style='font-size:0.82rem;font-weight:700;color:#fff;margin-bottom:3px;'>{name}</div>
-  <div style='font-size:0.65rem;color:rgba(255,255,255,0.40);'>{desc}</div>
-  {"<div style='font-size:0.60rem;color:#fb923c;margin-top:5px;font-weight:700;'>✓ EARNED</div>" if earned else f"<div style='font-size:0.60rem;color:rgba(255,255,255,0.25);margin-top:5px;'>{days - max(longest_st,real_current)} days to go</div>"}
+  <div style='font-size:0.82rem;font-weight:700;color:#fff;font-weight:800;margin-bottom:3px;'>{name}</div>
+  <div style='font-size:0.65rem;color:rgba(255,200,150,0.70);'>{desc}</div>
+  {"<div style='font-size:0.60rem;color:#fb923c;margin-top:5px;font-weight:700;'>✓ EARNED</div>" if earned else f"<div style='font-size:0.60rem;color:rgba(255,200,150,0.70);margin-top:5px;'>{days - max(longest_st,real_current)} days to go</div>"}
 </div>"""
 badge_html += "</div>"
 st.markdown(badge_html, unsafe_allow_html=True)
 
 # ── 90-DAY HEATMAP ────────────────────────────────────────────────────────────
 st.markdown("""<div style='font-size:0.68rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-color:rgba(251,146,60,0.60);margin-bottom:12px;display:flex;align-items:center;gap:10px'>
+color:rgba(251,146,60,0.90);margin-bottom:12px;display:flex;align-items:center;gap:10px'>
 <span>📅 90-Day Activity Heatmap</span>
 <span style='flex:1;height:1px;background:linear-gradient(90deg,rgba(251,146,60,0.30),transparent);display:block'></span>
 </div>""", unsafe_allow_html=True)
@@ -288,7 +291,7 @@ grid_html += "<div style='display:flex;gap:3px;'>"
 dow_labels = ["Mon","","Wed","","Fri","","Sun"]
 grid_html += "<div style='display:flex;flex-direction:column;gap:3px;margin-right:4px;'>"
 for lbl in dow_labels:
-    grid_html += f"<div style='height:18px;font-size:0.50rem;color:rgba(255,255,255,0.25);display:flex;align-items:center;'>{lbl}</div>"
+    grid_html += f"<div style='height:18px;font-size:0.50rem;color:rgba(255,200,150,0.60);display:flex;align-items:center;'>{lbl}</div>"
 grid_html += "</div>"
 
 for wk in weeks:
@@ -302,7 +305,7 @@ for wk in weeks:
             is_td  = ds == today_str
             future = d > today
             if future:
-                col, brd, tip = "rgba(255,255,255,0.03)", "rgba(255,255,255,0.05)", ""
+                col, brd, tip = "rgba(20,8,0,0.60)", "rgba(255,255,255,0.08)", ""
             elif done:
                 # Intensity based on how recent
                 days_ago = (today - d).days
@@ -311,7 +314,7 @@ for wk in weeks:
                 brd  = f"rgba(251,146,60,{min(alpha+0.2,1):.2f})"
                 tip  = "✓"
             else:
-                col, brd, tip = "rgba(255,255,255,0.05)", "rgba(255,255,255,0.08)", ""
+                col, brd, tip = "rgba(35,15,2,0.85)", "rgba(255,180,80,0.18)", ""
             outline = "outline:2px solid #fff;outline-offset:1px;" if is_td else ""
             grid_html += f"<div title='{ds} {tip}' style='width:18px;height:18px;border-radius:4px;background:{col};border:1px solid {brd};{outline}'></div>"
     grid_html += "</div>"
@@ -319,13 +322,13 @@ for wk in weeks:
 grid_html += "</div>"
 # Legend
 grid_html += """<div style='display:flex;align-items:center;gap:10px;margin-top:12px;justify-content:flex-end;'>
-  <span style='font-size:0.62rem;color:rgba(255,255,255,0.30);'>Less</span>
-  <div style='width:14px;height:14px;border-radius:3px;background:rgba(255,255,255,0.05);'></div>
+  <span style='font-size:0.62rem;color:rgba(255,200,150,0.65);'>Less</span>
+  <div style='width:14px;height:14px;border-radius:3px;background:rgba(40,20,5,0.70);'></div>
   <div style='width:14px;height:14px;border-radius:3px;background:rgba(251,146,60,0.35);'></div>
   <div style='width:14px;height:14px;border-radius:3px;background:rgba(251,146,60,0.65);'></div>
   <div style='width:14px;height:14px;border-radius:3px;background:rgba(251,146,60,0.90);'></div>
   <span style='font-size:0.62rem;color:rgba(255,255,255,0.30);'>More</span>
-  <span style='font-size:0.62rem;color:rgba(255,255,255,0.20);margin-left:8px;'>■ Today</span>
+  <span style='font-size:0.62rem;color:rgba(255,200,150,0.65);margin-left:8px;'>■ Today</span>
 </div>"""
 grid_html += "</div>"
 st.markdown(grid_html, unsafe_allow_html=True)
@@ -345,12 +348,12 @@ for w in range(7, -1, -1):
     wk_dates  = [(wk_start + timedelta(days=d)).isoformat() for d in range(7)]
     done_w    = sum(1 for d in wk_dates if d in workout_dates)
     pct       = min(100, int(done_w / max(target_per_week, 1) * 100))
-    col       = ("#22c55e" if pct >= 100 else "#fb923c" if pct >= 60 else "#ef4444" if pct > 0 else "rgba(255,255,255,0.06)")
+    col       = ("#22c55e" if pct >= 100 else "#fb923c" if pct >= 60 else "#ef4444" if pct > 0 else "rgba(40,20,5,0.70)")
     lbl       = "This week" if w == 0 else f"{w}w ago"
     week_bars += f"""
 <div style='text-align:center;'>
   <div style='font-size:0.62rem;font-weight:600;color:{col};margin-bottom:5px;'>{done_w}/{target_per_week}</div>
-  <div style='background:rgba(255,255,255,0.05);border-radius:8px;height:80px;
+  <div style='background:rgba(25,10,0,0.80);border-radius:8px;height:80px;
     display:flex;align-items:flex-end;overflow:hidden;'>
     <div style='width:100%;height:{max(pct,4)}%;background:{col};border-radius:8px 8px 0 0;
       transition:height 0.5s ease;'></div>
