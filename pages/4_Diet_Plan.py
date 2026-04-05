@@ -197,7 +197,7 @@ try:
     _render_nav("diet", uname)
 except ImportError:
     from auth_token import logout
-    _n = st.columns([1.6,1,1,1,1,1,1,1,1.2])
+    _n = st.columns([1.6,1,1,1,1,1,1,1,1,1,1.2])
     with _n[0]:
         st.markdown(
             f"<div style='font-family:Bebas Neue,sans-serif;font-size:1.5rem;letter-spacing:5px;"
@@ -206,20 +206,22 @@ except ImportError:
             unsafe_allow_html=True
         )
     nav_items = [
-        ("Home",     "pages/2_Dashboard.py",      "fd_db"),
-        ("Workout",  "pages/3_Workout_Plan.py",   "fd_wp"),
-        ("● Diet",   "pages/4_Diet_Plan.py",      "fd_dp"),
-        ("🍽️ Meals", "pages/11_meal_planner.py",  "fd_mp"),
-        ("AI Coach", "pages/5_ai_coach.py",        "fd_ai"),
-        ("Records",  "pages/6_records.py",         "fd_rc"),
-        ("Photos",   "pages/7_progress_photos.py", "fd_ph"),
+        ("Home",     "pages/2_Dashboard.py",       "fd_db"),
+        ("Workout",  "pages/3_Workout_Plan.py",    "fd_wp"),
+        ("● Diet",   "pages/4_Diet_Plan.py",       "fd_dp"),
+        ("🍽️ Meals", "pages/11_meal_planner.py",   "fd_mp"),
+        ("😴 Sleep",  "pages/12_sleep_tracker.py", "fd_sl"),
+        ("🏃 Cardio", "pages/13_cardio_tracker.py","fd_ca"),
+        ("AI Coach", "pages/5_ai_coach.py",         "fd_ai"),
+        ("Records",  "pages/6_records.py",          "fd_rc"),
+        ("Photos",   "pages/7_progress_photos.py",  "fd_ph"),
     ]
     for i, (lbl, path, key) in enumerate(nav_items):
         with _n[i+1]:
             if st.button(lbl, key=key, use_container_width=True):
                 try: st.switch_page(path)
                 except Exception: pass
-    with _n[8]:
+    with _n[10]:
         if st.button("Sign Out", key="fd_so", use_container_width=True):
             logout(uname)
             for k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
