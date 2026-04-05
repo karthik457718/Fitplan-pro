@@ -132,7 +132,7 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 
 # ── NAV ────────────────────────────────────────────────────────────────────────
 st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
-_n = st.columns([1.8,1,1,1,1,1,1,1,1,1,1.3])
+_n = st.columns([1.8,1,1,1,1,1,1,1,1,1,1,1,1.3])
 with _n[0]: st.markdown("<div class='nav-logo'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
 with _n[1]:
     if st.button("🏠 Home", key="nb_db", use_container_width=True):
@@ -1326,6 +1326,24 @@ for tab, day_data in zip(tabs, sdays):
                                 if not st.session_state.get(_celeb_key):
                                     st.session_state[_celeb_key] = True
                                     st.session_state["_show_celebration"] = dn
+                                    # ── UPDATE STREAK ─────────────────────────
+                                    try:
+                                        from utils.streak_manager import update_streak, check_streak_milestone
+                                        _new_streak = update_streak(uname, day_completed=True)
+                                        _milestone  = check_streak_milestone(_new_streak)
+                                        if _milestone:
+                                            st.toast(f"🏆 {_milestone}", icon="🔥")
+                                        else:
+                                            st.toast(f"🔥 Streak: {_new_streak} days!", icon="⚡")
+                                    except Exception:
+                                        pass
+                            elif not _cb_new:
+                                # User unchecked — decrement streak
+                                try:
+                                    from utils.streak_manager import update_streak
+                                    update_streak(uname, day_completed=False)
+                                except Exception:
+                                    pass
                             st.session_state["_needs_rerun"] = True
 
             rpe_key     = f"rpe_d{dn}"
