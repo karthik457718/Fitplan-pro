@@ -23,56 +23,89 @@ st.markdown("""
 
 html,body,.stApp,[data-testid="stAppViewContainer"]{
   background:
-    radial-gradient(ellipse at 15% 10%, rgba(99,60,220,0.22) 0%,transparent 45%),
-    radial-gradient(ellipse at 85% 15%, rgba(59,130,246,0.15) 0%,transparent 40%),
-    radial-gradient(ellipse at 90% 80%, rgba(139,92,246,0.12) 0%,transparent 40%),
-    radial-gradient(ellipse at 10% 85%, rgba(30,20,60,0.80)   0%,transparent 50%),
-    linear-gradient(160deg,#06040f 0%,#09061a 35%,#070414 65%,#05030e 100%)
+    radial-gradient(ellipse at 20% 15%, rgba(139,92,246,0.35) 0%,transparent 40%),
+    radial-gradient(ellipse at 80% 10%, rgba(99,60,220,0.25)  0%,transparent 38%),
+    radial-gradient(ellipse at 60% 70%, rgba(59,130,246,0.18) 0%,transparent 42%),
+    radial-gradient(ellipse at 10% 80%, rgba(167,139,250,0.15)0%,transparent 38%),
+    radial-gradient(ellipse at 90% 85%, rgba(109,40,217,0.20) 0%,transparent 40%),
+    linear-gradient(170deg,#03020d 0%,#06041a 30%,#080520 60%,#04020f 100%)
     !important;
   color:#fff!important;font-family:'DM Sans',sans-serif!important;}
+
+/* Stars texture via repeating dots */
+[data-testid="stAppViewContainer"]>section{
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(255,255,255,0.06) 1px,transparent 0),
+    radial-gradient(circle at 1px 1px,rgba(167,139,250,0.04) 1px,transparent 0);
+  background-size:40px 40px, 80px 80px;}
 
 #MainMenu,footer,header,[data-testid="stToolbar"],[data-testid="stDecoration"],
 [data-testid="stSidebarNav"],section[data-testid="stSidebar"]{display:none!important;}
 
 [data-testid="stAppViewContainer"]>section>div.block-container{
-  max-width:1000px!important;margin:0 auto!important;padding:0 22px 100px!important;}
+  max-width:1060px!important;margin:0 auto!important;padding:0 22px 100px!important;
+  position:relative;z-index:2;}
 
 /* NAV */
-.nav-wrap{background:rgba(6,4,15,0.97);backdrop-filter:blur(36px);
-  border-bottom:1.5px solid rgba(99,60,220,0.25);padding:5px 0;margin-bottom:4px;}
+.nav-wrap{background:rgba(4,2,15,0.96);backdrop-filter:blur(40px);
+  border-bottom:1px solid rgba(139,92,246,0.20);padding:5px 0;margin-bottom:6px;
+  box-shadow:0 4px 30px rgba(0,0,0,0.60);}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:5px;
-  color:#a78bfa;text-shadow:0 0 18px rgba(167,139,250,0.45);line-height:1;}
+  color:#a78bfa;text-shadow:0 0 20px rgba(167,139,250,0.55);line-height:1;}
 
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button{
-  background:rgba(10,6,24,0.90)!important;border:1px solid rgba(99,60,220,0.30)!important;
-  color:rgba(255,255,255,0.75)!important;border-radius:8px!important;
-  font-size:0.80rem!important;font-weight:600!important;height:30px!important;
+  background:rgba(8,5,22,0.85)!important;border:1px solid rgba(139,92,246,0.28)!important;
+  color:rgba(255,255,255,0.72)!important;border-radius:8px!important;
+  font-size:0.78rem!important;font-weight:600!important;height:30px!important;
   min-height:30px!important;white-space:nowrap!important;transition:all 0.15s!important;
   box-shadow:none!important;}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]>button:hover{
-  background:rgba(99,60,220,0.20)!important;border-color:rgba(99,60,220,0.70)!important;color:#fff!important;}
+  background:rgba(139,92,246,0.22)!important;border-color:rgba(167,139,250,0.65)!important;
+  color:#fff!important;box-shadow:0 0 12px rgba(139,92,246,0.30)!important;}
 div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"]:last-child>button{
-  background:rgba(229,9,20,0.18)!important;border-color:rgba(229,9,20,0.45)!important;}
+  background:rgba(229,9,20,0.20)!important;border-color:rgba(229,9,20,0.45)!important;}
 
-/* GENERAL BUTTONS */
+/* ACTION BUTTONS */
 .stButton>button{
-  background:linear-gradient(135deg,#6b3bdc,#3b82f6)!important;
-  border:none!important;color:#fff!important;border-radius:12px!important;
-  font-weight:700!important;font-size:0.92rem!important;
-  box-shadow:0 4px 18px rgba(99,60,220,0.40)!important;transition:all 0.22s!important;}
-.stButton>button:hover{transform:translateY(-2px) scale(1.02)!important;
-  box-shadow:0 8px 26px rgba(99,60,220,0.60)!important;}
+  background:linear-gradient(135deg,#7c3aed 0%,#4f46e5 50%,#2563eb 100%)!important;
+  border:none!important;color:#fff!important;border-radius:14px!important;
+  font-weight:700!important;font-size:0.95rem!important;letter-spacing:0.5px!important;
+  box-shadow:0 6px 24px rgba(109,40,217,0.45),0 0 0 1px rgba(139,92,246,0.20)!important;
+  transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1)!important;}
+.stButton>button:hover{transform:translateY(-3px) scale(1.02)!important;
+  box-shadow:0 10px 32px rgba(109,40,217,0.65)!important;}
 
 /* INPUTS */
 [data-testid="stWidgetLabel"],[data-testid="stWidgetLabel"] p{
-  color:rgba(255,255,255,0.80)!important;font-size:0.88rem!important;
-  font-weight:600!important;letter-spacing:1.5px!important;text-transform:uppercase!important;}
-.stSlider [data-testid="stWidgetLabel"] p{color:rgba(255,255,255,0.80)!important;}
-input,.stTextArea textarea{background:#0d0a1e!important;
-  border:1.5px solid rgba(99,60,220,0.30)!important;color:#fff!important;border-radius:10px!important;}
-.stSelectbox [data-baseweb="select"]>div{background:#0d0a1e!important;
-  border:1.5px solid rgba(99,60,220,0.30)!important;color:#fff!important;}
-.stMarkdown p{color:rgba(255,255,255,0.80)!important;}
+  color:rgba(196,181,253,0.90)!important;font-size:0.78rem!important;
+  font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;}
+input,.stTextArea textarea,.stNumberInput input{
+  background:rgba(15,10,40,0.80)!important;
+  border:1.5px solid rgba(139,92,246,0.28)!important;color:#fff!important;
+  border-radius:12px!important;backdrop-filter:blur(10px)!important;}
+input:focus{border-color:rgba(167,139,250,0.70)!important;
+  box-shadow:0 0 0 3px rgba(139,92,246,0.15)!important;}
+.stSelectbox [data-baseweb="select"]>div{
+  background:rgba(15,10,40,0.80)!important;
+  border:1.5px solid rgba(139,92,246,0.28)!important;color:#fff!important;
+  border-radius:12px!important;}
+.stMarkdown p{color:rgba(220,210,255,0.80)!important;line-height:1.7!important;}
+.stSlider [data-testid="stWidgetLabel"] p{color:rgba(196,181,253,0.90)!important;}
+
+/* GLASS CARDS */
+.glass-card{
+  background:rgba(15,10,40,0.65);
+  border:1px solid rgba(139,92,246,0.22);
+  border-radius:20px;
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  box-shadow:0 8px 40px rgba(0,0,0,0.50),inset 0 1px 0 rgba(255,255,255,0.06);
+  position:relative;overflow:hidden;}
+.glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
+  background:linear-gradient(90deg,transparent,#7c3aed 35%,#818cf8 65%,transparent);}
+
+@keyframes moonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes starPulse{0%,100%{opacity:0.6}50%{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -130,44 +163,84 @@ for i in range(len(sleep_log)):
     else:
         break
 
-quality_label = ("💀 Critical" if avg_qual < 2 else "😴 Poor" if avg_qual < 3
-                 else "😐 Fair" if avg_qual < 4 else "😊 Good" if avg_qual < 4.5 else "🌟 Excellent")
-hrs_color = "#E50914" if avg_hrs < 6 else "#f59e0b" if avg_hrs < 7 else "#22c55e"
+hrs_color  = "#E50914" if avg_hrs < 6 else "#f59e0b" if avg_hrs < 7 else "#22c55e"
+qual_stars = "★" * int(round(avg_qual)) + "☆" * (5 - int(round(avg_qual))) if avg_qual > 0 else "☆☆☆☆☆"
+qual_label = ("💀 Critical" if avg_qual < 2 else "😴 Poor" if avg_qual < 3
+              else "😐 Fair" if avg_qual < 4 else "😊 Good" if avg_qual < 4.5 else "🌟 Excellent")
+sleep_tip  = ("⚠️ You need more sleep urgently. Take rest today." if avg_hrs < 6
+              else "🟡 Try to get 30 more minutes — it makes a big difference." if avg_hrs < 7
+              else "✅ Great sleep habits! Your recovery is on point." if avg_hrs < 9
+              else "💤 You're well rested and primed to perform.")
 
 st.markdown(f"""
-<div style='background:linear-gradient(135deg,rgba(99,60,220,0.16),rgba(59,130,246,0.08) 50%,rgba(6,4,15,0.70));
-  border:1.5px solid rgba(99,60,220,0.40);border-radius:20px;padding:26px 32px;margin:10px 0 20px;
-  position:relative;overflow:hidden;backdrop-filter:blur(20px);'>
+<div style='background:linear-gradient(135deg,rgba(109,40,217,0.22),rgba(79,70,229,0.12) 50%,rgba(4,2,15,0.75));
+  border:1px solid rgba(139,92,246,0.35);border-radius:24px;padding:32px 36px;margin:10px 0 24px;
+  position:relative;overflow:hidden;backdrop-filter:blur(30px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.60),inset 0 1px 0 rgba(255,255,255,0.07);'>
+  <!-- Top glow line -->
   <div style='position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent,#6b3bdc 35%,#3b82f6 65%,transparent)'></div>
-  <div style='position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;
-    background:radial-gradient(circle,rgba(99,60,220,0.20) 0%,transparent 70%);pointer-events:none'></div>
-  <div style='font-size:0.72rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-    color:rgba(167,139,250,0.80);margin-bottom:8px'>😴 Sleep Tracker</div>
-  <div style='font-family:Barlow Condensed,sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);
-    font-weight:900;text-transform:uppercase;color:#fff;line-height:1;margin-bottom:6px'>
-    <span style='color:#a78bfa'>{_display}'s</span> Sleep Dashboard
+    background:linear-gradient(90deg,transparent,#7c3aed 30%,#818cf8 60%,#60a5fa,transparent)'></div>
+  <!-- Moon decoration -->
+  <div style='position:absolute;right:32px;top:24px;font-size:4.5rem;opacity:0.12;
+    animation:moonFloat 6s ease-in-out infinite;user-select:none;line-height:1'>🌙</div>
+  <!-- Stars decoration -->
+  <div style='position:absolute;right:120px;top:18px;font-size:1rem;opacity:0.20;
+    animation:starPulse 3s ease-in-out infinite;'>✦</div>
+  <div style='position:absolute;right:90px;top:50px;font-size:0.7rem;opacity:0.15;
+    animation:starPulse 4s ease-in-out infinite 1s;'>✦</div>
+  <div style='position:absolute;right:160px;top:40px;font-size:0.5rem;opacity:0.18;
+    animation:starPulse 5s ease-in-out infinite 2s;'>✦</div>
+
+  <div style='font-size:0.68rem;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;
+    color:rgba(167,139,250,0.75);margin-bottom:10px;'>🌙 Sleep Tracker</div>
+  <div style='font-family:Barlow Condensed,sans-serif;font-size:clamp(2rem,5vw,3.2rem);
+    font-weight:900;text-transform:uppercase;line-height:1;margin-bottom:20px;'>
+    <span style='background:linear-gradient(90deg,#c4b5fd,#818cf8);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;'>{_display}'s</span>
+    <span style='color:#fff;'> Sleep</span>
   </div>
-  <div style='display:flex;gap:24px;margin-top:16px;flex-wrap:wrap'>
-    <div style='text-align:center'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2.4rem;color:{hrs_color};line-height:1'>{avg_hrs}h</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>7-day avg</div>
+
+  <!-- Stat cards row -->
+  <div style='display:grid;grid-template-columns:repeat(4,1fr);gap:12px;'>
+    <div style='background:rgba(255,255,255,0.05);border:1px solid rgba(139,92,246,0.20);
+      border-radius:16px;padding:16px;text-align:center;backdrop-filter:blur(10px);'>
+      <div style='font-size:0.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(196,181,253,0.55);margin-bottom:6px;'>7-Day Avg</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.6rem;color:{hrs_color};
+        line-height:1;text-shadow:0 0 20px {hrs_color}40;'>{avg_hrs}h</div>
+      <div style='font-size:0.62rem;color:rgba(255,255,255,0.35);margin-top:3px;'>hours/night</div>
     </div>
-    <div style='width:1px;background:rgba(255,255,255,0.10)'></div>
-    <div style='text-align:center'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2.4rem;color:#a78bfa;line-height:1'>{avg_qual}/5</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>quality · {quality_label}</div>
+    <div style='background:rgba(255,255,255,0.05);border:1px solid rgba(139,92,246,0.20);
+      border-radius:16px;padding:16px;text-align:center;backdrop-filter:blur(10px);'>
+      <div style='font-size:0.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(196,181,253,0.55);margin-bottom:6px;'>Quality</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.6rem;color:#c4b5fd;
+        line-height:1;text-shadow:0 0 20px rgba(196,181,253,0.40);'>{avg_qual if avg_qual > 0 else "—"}</div>
+      <div style='font-size:0.62rem;color:rgba(255,255,255,0.35);margin-top:3px;'>{qual_label}</div>
     </div>
-    <div style='width:1px;background:rgba(255,255,255,0.10)'></div>
-    <div style='text-align:center'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2.4rem;color:#60a5fa;line-height:1'>{streak_s}</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>day streak</div>
+    <div style='background:rgba(255,255,255,0.05);border:1px solid rgba(139,92,246,0.20);
+      border-radius:16px;padding:16px;text-align:center;backdrop-filter:blur(10px);'>
+      <div style='font-size:0.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(196,181,253,0.55);margin-bottom:6px;'>Streak</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.6rem;color:#60a5fa;
+        line-height:1;text-shadow:0 0 20px rgba(96,165,250,0.40);'>{streak_s}</div>
+      <div style='font-size:0.62rem;color:rgba(255,255,255,0.35);margin-top:3px;'>days logged</div>
     </div>
-    <div style='width:1px;background:rgba(255,255,255,0.10)'></div>
-    <div style='text-align:center'>
-      <div style='font-family:Bebas Neue,sans-serif;font-size:2.4rem;color:#34d399;line-height:1'>{len(sleep_log)}</div>
-      <div style='font-size:0.60rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.40)'>nights logged</div>
+    <div style='background:rgba(255,255,255,0.05);border:1px solid rgba(139,92,246,0.20);
+      border-radius:16px;padding:16px;text-align:center;backdrop-filter:blur(10px);'>
+      <div style='font-size:0.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+        color:rgba(196,181,253,0.55);margin-bottom:6px;'>Total</div>
+      <div style='font-family:Bebas Neue,sans-serif;font-size:2.6rem;color:#34d399;
+        line-height:1;text-shadow:0 0 20px rgba(52,211,153,0.40);'>{len(sleep_log)}</div>
+      <div style='font-size:0.62rem;color:rgba(255,255,255,0.35);margin-top:3px;'>nights logged</div>
     </div>
+  </div>
+
+  <!-- Tip bar -->
+  <div style='margin-top:16px;background:rgba(139,92,246,0.10);border:1px solid rgba(139,92,246,0.20);
+    border-radius:12px;padding:10px 16px;font-size:0.82rem;color:rgba(220,210,255,0.75);'>
+    {sleep_tip}
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -178,17 +251,22 @@ col_log, col_chart = st.columns([1, 1.4], gap="large")
 # ── LOG FORM ──────────────────────────────────────────────────────────────────
 with col_log:
     already_logged = today_entry is not None
-    border_col = "rgba(34,197,94,0.40)" if already_logged else "rgba(99,60,220,0.35)"
-    top_col    = "#22c55e" if already_logged else "#6b3bdc"
+    border_col = "rgba(52,211,153,0.40)" if already_logged else "rgba(139,92,246,0.30)"
+    top_col    = "#34d399" if already_logged else "#7c3aed"
+    status_txt = "✅ Tonight Already Logged" if already_logged else "🌙 Log Tonight's Sleep"
+    status_col = "rgba(52,211,153,0.80)" if already_logged else "rgba(196,181,253,0.80)"
 
     st.markdown(f"""
-<div style='background:rgba(8,5,20,0.90);border:1.5px solid {border_col};border-radius:18px;
-  padding:20px 24px;position:relative;overflow:hidden;backdrop-filter:blur(20px);margin-bottom:16px'>
-  <div style='position:absolute;top:0;left:0;right:0;height:2px;
+<div style='background:rgba(12,8,32,0.75);border:1px solid {border_col};border-radius:22px;
+  padding:22px 26px;position:relative;overflow:hidden;
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.50),inset 0 1px 0 rgba(255,255,255,0.06);
+  margin-bottom:16px'>
+  <div style='position:absolute;top:0;left:0;right:0;height:1.5px;
     background:linear-gradient(90deg,transparent,{top_col},transparent)'></div>
-  <div style='font-size:0.68rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
-    color:{"rgba(34,197,94,0.80)" if already_logged else "rgba(167,139,250,0.80)"};margin-bottom:14px'>
-    {"✅ Tonight Logged" if already_logged else "🌙 Log Tonight's Sleep"}
+  <div style='font-size:0.65rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+    color:{status_col};margin-bottom:16px;display:flex;align-items:center;gap:8px;'>
+    {status_txt}
   </div>
 """, unsafe_allow_html=True)
 
@@ -245,12 +323,14 @@ with col_log:
 # ── 7-DAY CHART ───────────────────────────────────────────────────────────────
 with col_chart:
     st.markdown(f"""
-<div style='background:rgba(8,5,20,0.90);border:1.5px solid rgba(99,60,220,0.28);border-radius:18px;
-  padding:20px 24px;backdrop-filter:blur(20px);position:relative;overflow:hidden'>
-  <div style='position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent,#3b82f6,transparent)'></div>
-  <div style='font-size:0.68rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
-    color:rgba(96,165,250,0.80);margin-bottom:16px'>📊 Last 7 Nights</div>
+<div style='background:rgba(12,8,32,0.75);border:1px solid rgba(139,92,246,0.22);border-radius:22px;
+  padding:22px 26px;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.50),inset 0 1px 0 rgba(255,255,255,0.06);
+  position:relative;overflow:hidden'>
+  <div style='position:absolute;top:0;left:0;right:0;height:1.5px;
+    background:linear-gradient(90deg,transparent,#60a5fa,transparent)'></div>
+  <div style='font-size:0.65rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+    color:rgba(96,165,250,0.80);margin-bottom:18px;'>📊 Last 7 Nights</div>
 """, unsafe_allow_html=True)
 
     # Build 7-day data
