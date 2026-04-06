@@ -480,4 +480,4 @@ if not st.session_state.chat_messages:
                 f"color:rgba(229,9,20,0.60);margin-bottom:4px'>{title}</div>"
                 f"<div style='font-size:0.74rem;color:rgba(255,255,255,0.38);line-height:1.4'>{sub}</div>"
                 f"</div>",
-                unsafe_allow_html=True)
+                unsafe_allow_html=True) 
