@@ -522,4 +522,4 @@ with tab4:
                         "<div style='font-size:0.65rem;color:rgba(255,255,255,0.40);line-height:1.4'>" + desc + "</div></div>")
             st.markdown(locked_html + "</div>", unsafe_allow_html=True)
     except Exception as e:
-        st.error("Achievements error: " + str(e))
+        st.error("Achievements error: " + str(e)) 
