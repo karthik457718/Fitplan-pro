@@ -412,4 +412,4 @@ color:rgba(167,139,250,0.60);margin-bottom:10px;display:flex;align-items:center;
   <div style='flex:1;font-size:0.78rem;color:rgba(255,255,255,0.45);font-style:italic'>
     {notes if notes else "—"}</div>
 </div>"""
-    st.markdown(rows_html, unsafe_allow_html=True)
+    st.markdown(rows_html, unsafe_allow_html=True) 
