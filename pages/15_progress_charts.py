@@ -74,6 +74,11 @@ input,.stNumberInput input{background:rgba(2,20,10,0.80)!important;
   color:#fff!important;box-shadow:0 3px 12px rgba(5,150,105,0.40)!important;}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Mobile / Tablet ──────────────────────────────── */
+@media(max-width:900px){
+  [data-testid="stAppViewContainer"]>section>div.block-container{padding:0 10px 80px!important;}
+}
 </style>
 """, unsafe_allow_html=True)
 
