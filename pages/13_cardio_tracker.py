@@ -305,7 +305,9 @@ with col_form:
             from utils.db import save_cardio, get_cardio
             save_cardio(uname, _ca_date.isoformat(), _act_label,
                         _dist, _dur, _cal, _notes_c)
+            _load_cardio.clear()
             st.session_state.cardio_log = get_cardio(uname, limit=50)
+            st.cache_data.clear()
             st.toast(f"✅ {_act_label} logged!", icon="🏃")
             st.rerun()
         except Exception as e:
@@ -454,8 +456,9 @@ color:rgba(229,9,20,0.55);margin-bottom:10px;display:flex;align-items:center;gap
                 try:
                     from utils.db import delete_cardio, get_cardio
                     delete_cardio(uname, row_id)
+                    _load_cardio.clear()
                     st.session_state.cardio_log = get_cardio(uname, limit=50)
                     st.toast("Deleted", icon="🗑")
                     st.rerun()
                 except Exception as e:
-                    st.error(str(e)) 
+                    st.error(str(e))
