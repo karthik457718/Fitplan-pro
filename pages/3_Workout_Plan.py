@@ -1009,7 +1009,6 @@ for tab, day_data in zip(tabs, sdays):
                         use_container_width=True
                     ):
                         st.session_state[_vid_key] = not _showing
-                        st.rerun()
                     if _showing:
                         st.markdown(
                             f"<div style='position:relative;padding-bottom:56.25%;height:0;"
