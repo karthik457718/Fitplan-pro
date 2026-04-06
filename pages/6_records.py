@@ -167,6 +167,22 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+@st.cache_data(ttl=180)
+def _load_prs(uname):
+    try:
+        from utils.db import get_personal_records
+        return get_personal_records(uname) or []
+    except Exception:
+        return []
+
+@st.cache_data(ttl=180)
+def _load_measurements(uname):
+    try:
+        from utils.db import get_body_measurements
+        return get_body_measurements(uname) or []
+    except Exception:
+        return []
+
 tab1, tab2, tab3, tab4 = st.tabs(["🏆 Personal Records","📏 Body Measurements","📐 1RM Calculator","🎖️ Achievements"])
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -220,8 +236,10 @@ with tab1:
         st.markdown(
             "<div style='text-align:center;padding:40px;background:rgba(8,4,2,0.70);"
             "border:1px solid rgba(229,9,20,0.15);border-radius:14px;margin-top:12px'>"
-            "<div style='font-size:2.5rem;margin-bottom:10px'>&#127942;</div>"
-            "<div style='font-size:1rem;color:rgba(255,255,255,0.70)'>No PRs yet. Log your first one above!</div>"
+            "<div style='font-size:3rem;margin-bottom:12px'>🏆</div>"
+            "<div style='font-family:Barlow Condensed,sans-serif;font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:8px'>No Personal Records Yet</div>"
+            "<div style='font-size:0.90rem;color:rgba(255,255,255,0.65);max-width:320px;margin:0 auto;line-height:1.6'>Log your first PR using the form above. Track lifts, runs, time — anything you want to beat!</div>"
+            "<div style='margin-top:16px;background:rgba(229,9,20,0.10);border:1px solid rgba(229,9,20,0.25);border-radius:12px;padding:10px 18px;display:inline-block;font-size:0.80rem;color:rgba(229,9,20,0.80);font-weight:700;'>👆 Use the form above to log your first PR</div>"
             "</div>", unsafe_allow_html=True)
     else:
         for ex_name, ex_records in records.items():
@@ -352,7 +370,10 @@ with tab2:
             "<div style='text-align:center;padding:40px;background:rgba(8,4,2,0.70);"
             "border:1px solid rgba(229,9,20,0.15);border-radius:14px;margin-top:12px'>"
             "<div style='font-size:2.5rem;margin-bottom:10px'>&#128207;</div>"
-            "<div style='font-size:1rem;color:rgba(255,255,255,0.70)'>No measurements yet.</div>"
+            "<div style='font-size:3rem;margin-bottom:12px'>📏</div>"
+                "<div style='font-family:Barlow Condensed,sans-serif;font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:8px'>No Measurements Logged</div>"
+                "<div style='font-size:0.90rem;color:rgba(255,255,255,0.65);max-width:320px;margin:0 auto;line-height:1.6'>Start tracking your body measurements to see your transformation over time. Every centimetre counts!</div>"
+                "<div style='margin-top:16px;background:rgba(229,9,20,0.10);border:1px solid rgba(229,9,20,0.25);border-radius:12px;padding:10px 18px;display:inline-block;font-size:0.80rem;color:rgba(229,9,20,0.80);font-weight:700;'>👆 Log your first measurements above</div>"
             "</div>", unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
