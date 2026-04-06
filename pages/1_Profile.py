@@ -788,4 +788,4 @@ else:
     with b2:
         if st.button("✏️ Edit Profile", use_container_width=True, key="pdisp_edit2"):
             st.session_state.edit_profile_mode = True
-            st.rerun()
+            st.rerun() 
