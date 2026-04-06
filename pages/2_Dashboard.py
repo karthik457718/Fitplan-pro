@@ -1024,11 +1024,11 @@ with col_right:
       </div>
       <div style='display:grid;grid-template-columns:1fr 1fr;gap:8px'>
         <div class='db-stat-card'><div class='db-stat-lbl'>Weight</div>
-          <div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:#fff'>{data.get("weight","\u2013")} kg</div></div>
+          <div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:#fff'>{data.get("weight", "-")} kg</div></div>
         <div class='db-stat-card'><div class='db-stat-lbl'>Height</div>
-          <div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:#fff'>{data.get("height","\u2013")} cm</div></div>
+          <div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:#fff'>{data.get("height", "-")} cm</div></div>
         <div class='db-stat-card'><div class='db-stat-lbl'>Age</div>
-          <div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:#fff'>{data.get("age","\u2013")} yrs</div></div>
+          <div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:#fff'>{data.get("age", "-")} yrs</div></div>
         <div class='db-stat-card' style='border-color:rgba(229,9,20,0.22)'><div class='db-stat-lbl'>BMI</div>
           <div style='font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:#E50914'>{bmi_val:.1f}</div></div>
       </div>
@@ -1037,7 +1037,7 @@ with col_right:
     st.markdown("<div class='sec-lbl'>Workout Calendar</div>", unsafe_allow_html=True)
     _plan_end_date = plan_start + timedelta(days=plan_duration - 1)
     _same_month    = plan_start.month == _plan_end_date.month and plan_start.year == _plan_end_date.year
-    month_label    = plan_start.strftime("%B %Y") if _same_month else plan_start.strftime("%b %Y") + " \u2013 " + _plan_end_date.strftime("%b %Y")
+    month_label    = plan_start.strftime("%B %Y") if _same_month else plan_start.strftime("%b %Y") + " - " + _plan_end_date.strftime("%b %Y")
     st.markdown(f"<div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:10px'>"
                 f"<span style='font-size:0.80rem;font-weight:700;color:rgba(255,255,255,0.90)'>{month_label}</span>"
                 f"<span style='font-size:0.85rem;color:rgba(255,255,255,0.90);letter-spacing:1px'>{done_count} done &middot; {skipped_count} skipped</span></div>",
@@ -1147,4 +1147,4 @@ with row3_right:
     if st.button("\u26a1  View Full Workout Plan", key="vfp", use_container_width=True):
         try: st.switch_page("pages/3_Workout_Plan.py")
         except Exception: pass
-    st.markdown("</div>", unsafe_allow_html=True) 
+    st.markdown("</div>", unsafe_allow_html=True)
