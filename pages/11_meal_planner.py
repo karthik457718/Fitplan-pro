@@ -748,4 +748,4 @@ if len(_history) > 1:
                 help=f"{_hcuisine} · {_hdiet} · {_hcal} kcal"
             ):
                 st.session_state["mp_plan"] = _hitem["plan"]
-                st.rerun()
+                st.rerun() 
