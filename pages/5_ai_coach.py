@@ -220,13 +220,16 @@ st.markdown(
 )
 
 # ── CHAT HISTORY ──────────────────────────────────────────────────────────────
-if "chat_messages" not in st.session_state:
+@st.cache_data(ttl=300)
+def _load_chat(uname):
     try:
         from utils.db import get_chat_history
-        _hist = get_chat_history(uname, limit=30)
-        st.session_state.chat_messages = _hist if _hist else []
+        return get_chat_history(uname, limit=30) or []
     except Exception:
-        st.session_state.chat_messages = []
+        return []
+
+if "chat_messages" not in st.session_state:
+    st.session_state.chat_messages = _load_chat(uname)
 
 # ── QUICK QUESTIONS ───────────────────────────────────────────────────────────
 st.markdown(
