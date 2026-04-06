@@ -1147,4 +1147,4 @@ with row3_right:
     if st.button("\u26a1  View Full Workout Plan", key="vfp", use_container_width=True):
         try: st.switch_page("pages/3_Workout_Plan.py")
         except Exception: pass
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True) 
