@@ -196,7 +196,11 @@ if not merged:
     st.markdown("""
     <div style='text-align:center;padding:60px;color:rgba(255,255,255,0.75)'>
       <div style='font-size:3rem;margin-bottom:12px'>&#128197;</div>
-      <div style='font-size:1.1rem;font-weight:600;margin-bottom:6px'>No workout history yet</div>
+      <div style='font-size:3.5rem;margin-bottom:14px'>📅</div>
+      <div style='font-family:Barlow Condensed,sans-serif;font-size:1.8rem;font-weight:900;color:#fff;margin-bottom:10px;letter-spacing:1px;'>NO HISTORY YET</div>
+      <div style='font-size:0.90rem;color:rgba(255,255,255,0.65);max-width:360px;margin:0 auto 16px;line-height:1.7;'>Your completed workouts will appear here. Complete your first workout from the Workout page to start building your history.</div>
+      <a href='#' onclick="window.parent.document.querySelector('[data-testid=stButton]').click()" style='text-decoration:none;'></a>
+      <div style='background:rgba(229,9,20,0.12);border:1px solid rgba(229,9,20,0.30);border-radius:14px;padding:12px 24px;display:inline-block;font-size:0.85rem;font-weight:700;color:rgba(229,9,20,0.90);'>💪 Go complete your first workout</div>
       <div style='font-size:1.00rem'>Complete workouts to see your history here.<br>
       History is saved permanently and survives plan changes.</div>
     </div>""", unsafe_allow_html=True)
