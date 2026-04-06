@@ -120,12 +120,16 @@ except Exception as _nav_err:
 today     = date.today()
 today_str = today.isoformat()
 
-if "sleep_log" not in st.session_state:
+@st.cache_data(ttl=120)
+def _load_sleep(uname):
     try:
         from utils.db import get_sleep
-        st.session_state.sleep_log = get_sleep(uname, limit=30)
+        return get_sleep(uname, limit=30)
     except Exception:
-        st.session_state.sleep_log = []
+        return []
+
+if "sleep_log" not in st.session_state:
+    st.session_state.sleep_log = _load_sleep(uname)
 
 sleep_log = st.session_state.sleep_log
 
