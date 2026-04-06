@@ -625,6 +625,7 @@ if _generate:
                 save_user_setting(uname, "meal_planner_history", json.dumps(_history))
             except Exception:
                 pass
+            st.toast("✅ Meal plan saved to your history!", icon="🍽️")
             st.rerun()
 
         except json.JSONDecodeError:
@@ -649,6 +650,7 @@ if _generate:
                         save_user_setting(uname, "meal_planner_history", json.dumps(_history))
                     except Exception:
                         pass
+                    st.toast("✅ Meal plan saved!", icon="🍽️")
                     st.rerun()
                 else:
                     st.error("AI returned an unexpected format. Please try again.")
