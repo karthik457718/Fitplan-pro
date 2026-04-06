@@ -92,28 +92,28 @@ except Exception as _nav_err:
 # ── LOAD DATA ─────────────────────────────────────────────────────────────────
 today = date.today()
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=60)
 def load_weight(uname):
     try:
         from utils.db import get_weight_log
         return get_weight_log(uname, limit=60)
     except Exception: return []
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=60)
 def load_measurements(uname):
     try:
         from utils.db import get_measurements
         return get_measurements(uname, limit=20)
     except Exception: return []
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=60)
 def load_sleep(uname):
     try:
         from utils.db import get_sleep
         return get_sleep(uname, limit=30)
     except Exception: return []
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=60)
 def load_cardio(uname):
     try:
         from utils.db import get_cardio
@@ -432,4 +432,4 @@ border-radius:20px;padding:22px 24px;backdrop-filter:blur(20px);position:relativ
   padding:6px 16px;margin-bottom:4px;font-size:0.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.30);'>
   <div>Date</div>{"".join(f"<div style='text-align:center;'>{n}</div>" for n,_,_ in fields)}
 </div>"""
-        st.markdown(f"<div style='background:rgba(4,18,8,0.50);border:1px solid rgba(16,185,129,0.15);border-radius:16px;padding:16px;'>{header}{rows}</div>", unsafe_allow_html=True) 
+        st.markdown(f"<div style='background:rgba(4,18,8,0.50);border:1px solid rgba(16,185,129,0.15);border-radius:16px;padding:16px;'>{header}{rows}</div>", unsafe_allow_html=True)
