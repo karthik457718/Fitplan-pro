@@ -458,4 +458,4 @@ color:rgba(229,9,20,0.55);margin-bottom:10px;display:flex;align-items:center;gap
                     st.toast("Deleted", icon="🗑")
                     st.rerun()
                 except Exception as e:
-                    st.error(str(e))
+                    st.error(str(e)) 
