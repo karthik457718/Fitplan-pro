@@ -233,4 +233,4 @@ def render_nav(current_page: str, username: str = None):
         "</script>"
         "<div style='height:4px'></div>",
         unsafe_allow_html=True
-    ) 
+    )
