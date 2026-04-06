@@ -68,6 +68,14 @@ p,div,span,label{color:#fff!important;text-shadow:0 1px 4px rgba(0,0,0,0.80)!imp
   50%{text-shadow:0 0 30px rgba(251,191,36,1),0 0 60px rgba(251,146,60,0.80)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 @keyframes badgePop{0%{transform:scale(0.8);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+
+/* ── Mobile / Tablet responsive ─────────────────────── */
+@media(max-width:900px){
+  [data-testid="stAppViewContainer"]>section>div.block-container{padding:0 12px 80px!important;}
+}
+@media(max-width:700px){
+  .stMarkdown p{font-size:0.92rem!important;}
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -226,7 +234,7 @@ MILESTONES = [
     (180, "👑", "Elite",         "180-day streak"),
 ]
 
-badge_html = "<div style='display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;'>"
+badge_html = "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:24px;'>"
 for days, icon, name, desc in MILESTONES:
     earned   = max(longest_st, real_current) >= days or total_done >= days
     bg       = "rgba(251,146,60,0.15)" if earned else "rgba(25,10,0,0.75)"
