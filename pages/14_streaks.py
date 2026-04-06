@@ -369,4 +369,4 @@ for w in range(7, -1, -1):
   <div style='font-size:0.55rem;color:rgba(255,255,255,0.30);margin-top:5px;'>{lbl}</div>
 </div>"""
 week_bars += "</div>"
-st.markdown(f"<div style='background:rgba(15,6,0,0.70);border:1px solid rgba(251,146,60,0.15);border-radius:18px;padding:20px 22px;backdrop-filter:blur(20px);'>{week_bars}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='background:rgba(15,6,0,0.70);border:1px solid rgba(251,146,60,0.15);border-radius:18px;padding:20px 22px;backdrop-filter:blur(20px);'>{week_bars}</div>", unsafe_allow_html=True) 
