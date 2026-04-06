@@ -128,38 +128,11 @@ html,body,.stApp,.stMarkdown,p,div,span,label{text-shadow:0 2px 6px rgba(0,0,0,0
 """, unsafe_allow_html=True)
 
 # ── NAV ──────────────────────────────────────────────────────────────────────
-st.markdown("<div style='background:rgba(2,4,10,0.97);backdrop-filter:blur(20px);"
-            "border-bottom:1.5px solid rgba(99,102,241,0.25);padding:5px 0;margin-bottom:16px'>",
-            unsafe_allow_html=True)
-_n = st.columns([1.8,1,1,1,1,1,1,1.3])
-with _n[0]: st.markdown("<div class='nav-logo'>FitPlan Pro</div>", unsafe_allow_html=True)
-with _n[1]:
-    if st.button("Home",     key="pp_db", use_container_width=True): st.switch_page("pages/2_Dashboard.py")
-with _n[2]:
-    if st.button("Workout",  key="pp_wp", use_container_width=True): st.switch_page("pages/3_Workout_Plan.py")
-with _n[3]:
-    if st.button("Diet",     key="pp_dp", use_container_width=True): st.switch_page("pages/4_Diet_Plan.py")
-with _n[4]:
-    if st.button("AI Coach", key="pp_ai", use_container_width=True):
-        try: st.switch_page("pages/5_ai_coach.py")
-        except Exception as e: st.warning(str(e))
-with _n[5]:
-    if st.button("Records",  key="pp_rc", use_container_width=True):
-        try: st.switch_page("pages/6_records.py")
-        except Exception as e: st.warning(str(e))
-with _n[6]:
-    if st.button("📸 Photos", key="pp_ph", use_container_width=True): st.switch_page("pages/7_progress_photos.py")
-with _n[7]:
-    if st.button("Sign Out", key="pp_so", use_container_width=True):
-        logout(uname)
-        for _k in ["logged_in","username","auth_token","user_data","workout_plan",
-                   "structured_days","dietary_type","full_plan_data","plan_id","plan_start",
-                   "plan_duration","plan_for","force_regen","tracking","_plan_checked",
-                   "_db_loaded_dash","_auto_redirect","_diet_chosen","_needs_rerun",
-                   "_db_streak","edit_profile_mode","_login_db_err","_notes_loaded"]:
-            st.session_state.pop(_k, None)
-        st.switch_page("app.py")
-st.markdown("</div>", unsafe_allow_html=True)
+try:
+    from nav_component import render_nav
+    render_nav("photos", uname)
+except Exception as _nav_err:
+    st.warning(f"Nav error: {_nav_err}")
 
 # ── HERO — Catchy ─────────────────────────────────────────────────────────────
 st.markdown(
