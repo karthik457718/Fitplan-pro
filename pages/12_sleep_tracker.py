@@ -298,7 +298,11 @@ with col_log:
         try:
             from utils.db import save_sleep, get_sleep
             save_sleep(uname, _log_date.isoformat(), _hours, _quality, _notes)
+            _load_sleep.clear()
             st.session_state.sleep_log = get_sleep(uname, limit=30)
+            st.session_state.pop("_sleep_stats_done", None)
+            # Bust charts page cache so it shows new sleep data
+            st.cache_data.clear()
             st.toast("✅ Sleep logged!", icon="😴")
             st.rerun()
         except Exception as e:
@@ -412,4 +416,4 @@ color:rgba(167,139,250,0.60);margin-bottom:10px;display:flex;align-items:center;
   <div style='flex:1;font-size:0.78rem;color:rgba(255,255,255,0.45);font-style:italic'>
     {notes if notes else "—"}</div>
 </div>"""
-    st.markdown(rows_html, unsafe_allow_html=True) 
+    st.markdown(rows_html, unsafe_allow_html=True)
