@@ -826,4 +826,4 @@ for tab, day_data in zip(tabs, sdays):
             )
             for tip in cfg["tips"][:5]:
                 st.markdown(f"<div class='tip-card'>{tip}</div>", unsafe_allow_html=True)
-            st.markdown("</div>", unsafe_allow_html=True) 
+            st.markdown("</div>", unsafe_allow_html=True)
