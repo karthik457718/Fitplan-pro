@@ -152,55 +152,47 @@ div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="stButton"] >
 </style>
 """, unsafe_allow_html=True)
 
-_has_plan = bool(st.session_state.get("structured_days"))
-_pn = st.columns([1.4, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.85])
-with _pn[0]:
-    st.markdown("<div class='nav-logo' style='font-size:1.1rem;letter-spacing:3px;'>⚡ FITPLAN PRO</div>", unsafe_allow_html=True)
-with _pn[1]:
-    if st.button("🏠 Home",    key="pn_db", use_container_width=True, disabled=not _has_plan):
-        st.switch_page("pages/2_Dashboard.py")
-with _pn[2]:
-    if st.button("⚡ Workout", key="pn_wp", use_container_width=True, disabled=not _has_plan):
-        st.switch_page("pages/3_Workout_Plan.py")
-with _pn[3]:
-    if st.button("🥗 Diet",    key="pn_dp", use_container_width=True, disabled=not _has_plan):
-        try: st.switch_page("pages/4_Diet_Plan.py")
-        except Exception: pass
-with _pn[4]:
-    if st.button("🍽️ Meals",  key="pn_mp", use_container_width=True):
-        try: st.switch_page("pages/11_meal_planner.py")
-        except Exception: pass
-with _pn[5]:
-    if st.button("😴 Sleep",   key="pn_sl", use_container_width=True):
-        try: st.switch_page("pages/12_sleep_tracker.py")
-        except Exception: pass
-with _pn[6]:
-    if st.button("🏃 Cardio",  key="pn_ca", use_container_width=True):
-        try: st.switch_page("pages/13_cardio_tracker.py")
-        except Exception: pass
-with _pn[7]:
-    if st.button("🤖 Coach",   key="pn_ai", use_container_width=True):
-        try: st.switch_page("pages/5_ai_coach.py")
-        except Exception: pass
-with _pn[8]:
-    if st.button("🏆 Records", key="pn_rc", use_container_width=True):
-        try: st.switch_page("pages/6_records.py")
-        except Exception: pass
-with _pn[9]:
-    if st.button("● Profile",  key="pn_pr", use_container_width=True):
-        st.rerun()
-with _pn[10]:
-    if st.button("🚪 Sign Out",key="pn_so", use_container_width=True):
-        logout(uname)
-        for k in ["logged_in","username","auth_token","user_data","workout_plan","structured_days",
-                  "dietary_type","full_plan_data","plan_id","plan_start","plan_duration","plan_for",
-                  "force_regen","tracking","_plan_checked","_db_loaded_dash","_auto_redirect",
-                  "_diet_chosen","_needs_rerun","_db_streak","edit_profile_mode","_login_db_err"]:
-            st.session_state.pop(k, None)
-        st.switch_page("app.py")
-        st.switch_page("app.py")
+try:
+    from nav_component import render_nav
+    render_nav("profile", uname)
+except Exception as _nav_err:
+    st.warning(f"Nav error: {_nav_err}")
 
 st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+
+
+
+# ── Onboarding banner for first-time users ───────────────────────────────────
+_is_new_user = not bool(st.session_state.get("structured_days"))
+_profile_filled = bool(data.get("weight") and data.get("height") and data.get("goal"))
+if _is_new_user and not st.session_state.get("_onboard_dismissed"):
+    _steps = [
+        ("1", "✅" if data.get("name") else "○", "Fill your profile", "Name, age, weight, height, goal"),
+        ("2", "✅" if _profile_filled else "○", "Generate your plan", "Hit 'Generate My Plan' below"),
+        ("3", "○", "Start training", "Go to Workout page and tick off sets"),
+    ]
+    steps_html = ""
+    for num, done, title, desc in _steps:
+        col = "#22c55e" if done == "✅" else "rgba(229,9,20,0.80)"
+        bg  = "rgba(34,197,94,0.08)" if done == "✅" else "rgba(229,9,20,0.08)"
+        brd = "rgba(34,197,94,0.25)" if done == "✅" else "rgba(229,9,20,0.20)"
+        steps_html += f"""<div style='display:flex;align-items:center;gap:12px;background:{bg};border:1px solid {brd};border-radius:12px;padding:10px 16px;'>
+  <div style='width:28px;height:28px;border-radius:50%;background:{col};display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:#fff;flex-shrink:0;'>{done if done=="✅" else num}</div>
+  <div>
+    <div style='font-size:0.88rem;font-weight:700;color:#fff;'>{title}</div>
+    <div style='font-size:0.78rem;color:rgba(255,255,255,0.55);'>{desc}</div>
+  </div>
+</div>"""
+    st.markdown(f"""
+<div style='background:linear-gradient(135deg,rgba(229,9,20,0.10),rgba(10,4,2,0.80));border:1px solid rgba(229,9,20,0.28);border-radius:18px;padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden;'>
+  <div style='position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#E50914,transparent);'></div>
+  <div style='font-size:0.65rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(229,9,20,0.75);margin-bottom:8px;'>👋 Welcome to FitPlan Pro</div>
+  <div style='font-family:Barlow Condensed,sans-serif;font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:14px;'>3 steps to get started</div>
+  <div style='display:flex;flex-direction:column;gap:8px;'>{steps_html}</div>
+</div>""", unsafe_allow_html=True)
+    if st.button("✕ Got it, dismiss", key="_dismiss_onboard"):
+        st.session_state._onboard_dismissed = True
+        st.rerun()
 
 # ── On login: load profile + plan from DB ────────────────────────────────────
 if not st.session_state.get("_plan_checked"):
