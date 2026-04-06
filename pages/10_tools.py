@@ -571,4 +571,4 @@ with tab2:
                 from utils.db import save_user_setting
                 save_user_setting(uname, f"meal_log_{today_str}", "[]")
             except Exception: pass
-            st.rerun()
+            st.rerun() 
