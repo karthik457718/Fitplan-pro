@@ -137,12 +137,16 @@ today     = date.today()
 today_str = today.isoformat()
 
 # ── LOAD DATA ─────────────────────────────────────────────────────────────────
-if "cardio_log" not in st.session_state:
+@st.cache_data(ttl=120)
+def _load_cardio(uname):
     try:
         from utils.db import get_cardio
-        st.session_state.cardio_log = get_cardio(uname, limit=50)
+        return get_cardio(uname, limit=50)
     except Exception:
-        st.session_state.cardio_log = []
+        return []
+
+if "cardio_log" not in st.session_state:
+    st.session_state.cardio_log = _load_cardio(uname)
 
 cardio_log = st.session_state.cardio_log
 
