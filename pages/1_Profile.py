@@ -285,7 +285,7 @@ if not ud or edit_mode:
         display_name = st.text_input(
             "Display Name",
             value=ud.get("display_name", "") or "",
-            placeholder="Enter your name e.g. Karthik, Mounika...",
+            placeholder="Enter your name e.g. Karthik",
             label_visibility="collapsed",
             key="display_name_input"
         )
