@@ -160,14 +160,15 @@ except Exception as _nav_err:
 
 st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
-
+# ── Early ud definition (needed for onboarding banner) ───────────────────────
+ud = st.session_state.get("user_data", {})
 
 # ── Onboarding banner for first-time users ───────────────────────────────────
 _is_new_user = not bool(st.session_state.get("structured_days"))
-_profile_filled = bool(data.get("weight") and data.get("height") and data.get("goal"))
+_profile_filled = bool(ud.get("weight") and ud.get("height") and ud.get("goal"))
 if _is_new_user and not st.session_state.get("_onboard_dismissed"):
     _steps = [
-        ("1", "✅" if data.get("name") else "○", "Fill your profile", "Name, age, weight, height, goal"),
+        ("1", "✅" if ud.get("name") else "○", "Fill your profile", "Name, age, weight, height, goal"),
         ("2", "✅" if _profile_filled else "○", "Generate your plan", "Hit 'Generate My Plan' below"),
         ("3", "○", "Start training", "Go to Workout page and tick off sets"),
     ]
@@ -202,6 +203,7 @@ if not st.session_state.get("_plan_checked"):
         saved_profile = get_user_profile(uname)
         if saved_profile:
             st.session_state.user_data = saved_profile
+            ud = saved_profile  # keep ud in sync
     except Exception:
         import traceback; traceback.print_exc()
     try:
@@ -241,9 +243,11 @@ if st.session_state.get("_auto_redirect"):
     st.session_state.pop("_auto_redirect", None)
     st.switch_page("pages/2_Dashboard.py")
 
+# ── Re-read ud after DB load (may have been updated above) ───────────────────
 ud        = st.session_state.get("user_data", {})
 edit_mode = st.session_state.get("edit_profile_mode", False)
 has_plan  = bool(st.session_state.get("structured_days"))
+
 # Use display_name if set, otherwise fall back to username
 _display  = ud.get("display_name", "").strip() or ud.get("name", "").strip() or uname
 _display  = _display if "@" not in _display else uname  # don't show email as name
@@ -788,4 +792,4 @@ else:
     with b2:
         if st.button("✏️ Edit Profile", use_container_width=True, key="pdisp_edit2"):
             st.session_state.edit_profile_mode = True
-            st.rerun() 
+            st.rerun()
